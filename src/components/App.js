@@ -6,12 +6,13 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      timerCount: '0',
+      seconds: 0,
     };
     this.tick = this.tick.bind(this);
-    this.onTimerStart = this.onTimerStart.bind(this);
-    this.onTimerStop = this.onTimerStop.bind(this);
-    this.onTimerClear = this.onTimerClear.bind(this);
+    this.onTimerStartClick = this.onTimerStartClick.bind(this);
+    this.onTimerPauseClick = this.onTimerPauseClick.bind(this);
+    this.onTimerClearClick = this.onTimerClearClick.bind(this);
+    this.formatTime = this.formatTime.bind(this);
   }
   componentDidMount() {
     console.log('mounted');
@@ -20,31 +21,46 @@ export default class App extends Component {
   componentWillUnmount() {
     clearInterval(this.timerInterval);
   }
-  onTimerStart() {
-    const OG = Date.now();
-    this.timerInterval = setInterval(() => this.tick(OG), 1000);
+  onTimerStartClick() {
+    // start from fresh
+    if (this.state.seconds === 0) {
+      const timerStartDate = Date.now();
+      this.timerInterval = setInterval(() => this.tick(timerStartDate), 1000);
+      this.setState({
+        ticking: true,
+      });
+    } else {
+      // start from paused
+      console.log('lets resume from paused');
+    }
   }
-  onTimerStop() {
-    console.log('stopped at', this.state.timerCount);
+  onTimerPauseClick() {
+    console.log('paused at', this.state.seconds);
     clearInterval(this.timerInterval);
   }
-  onTimerClear() {
+  onTimerClearClick() {
     console.log('clear');
   }
-  tick(ogDate) {
-    console.log('tick');
-    const d = Math.floor((Date.now() - ogDate) / 1000);
+  tick(timerStartDate) {
+    const seconds = Math.floor((Date.now() - timerStartDate) / 1000);
+    console.log('tick, seconds:', seconds);
+    console.log(this.formatTime(seconds));
     this.setState({
-      timerCount: d,
+      seconds,
     });
+  }
+  formatTime(seconds) {
+    // do some time formatting here
+    // const output = `format:${hrs}:${mins}:${secs}`;
+    // return output;
   }
   render() {
     return (
       <div className={styles.container}>
-        <h2>Timer count: {this.state.timerCount}</h2>
-        <button onClick={this.onTimerStart}>Start timer</button>
-        <button onClick={this.onTimerStop}>Stop timer</button>
-        <button onClick={this.onTimerClear}>Reset timer</button>
+        <h2>{this.state.seconds}</h2>
+        <button onClick={this.onTimerStartClick}>Start timer</button>
+        <button onClick={this.onTimerPauseClick}>Pause timer</button>
+        <button onClick={this.onTimerClearClick}>Reset timer</button>
         <ul>
           <li>Hourly</li>
           <li>Pomorodo</li>
