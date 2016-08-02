@@ -23,16 +23,13 @@ export default class App extends Component {
     clearInterval(this.timerInterval);
   }
   onTimerStartClick() {
-    let offset;
-    let timerStartDate;
+    let offset = 0;
     // if paused, offset start date by the num of seconds it was paused at
     // otherwise just use Date.now()
     if (this.state.paused) {
       offset = this.state.seconds * 1000;
-      timerStartDate = (Date.now() - offset);
-    } else {
-      timerStartDate = Date.now();
     }
+    const timerStartDate = (Date.now() - offset);
     this.timerInterval = setInterval(() => this.tick(timerStartDate), 1000);
     this.setState({
       paused: false,
