@@ -13,9 +13,9 @@ export default class App extends Component {
       targetSeconds: 3,
     };
     this.tick = this.tick.bind(this);
-    this.onTimerStartClick = this.onTimerStartClick.bind(this);
-    this.onTimerPauseClick = this.onTimerPauseClick.bind(this);
-    this.onTimerClearClick = this.onTimerClearClick.bind(this);
+    this.onTimerStart = this.onTimerStart.bind(this);
+    this.onTimerPause = this.onTimerPause.bind(this);
+    this.onTimerClear = this.onTimerClear.bind(this);
   }
   componentDidMount() {
     // define timerInterval but don't set it yet
@@ -24,7 +24,7 @@ export default class App extends Component {
   componentWillUnmount() {
     clearInterval(this.timerInterval);
   }
-  onTimerStartClick() {
+  onTimerStart() {
     let offset = 0;
     // if paused, offset start date by the num of seconds it was paused at
     // otherwise just use Date.now()
@@ -38,13 +38,13 @@ export default class App extends Component {
       stopped: false,
     });
   }
-  onTimerPauseClick() {
+  onTimerPause() {
     this.setState({
       paused: true,
       seconds: this.state.seconds,
     }, clearInterval(this.timerInterval));
   }
-  onTimerClearClick() {
+  onTimerClear() {
     this.setState({
       seconds: 0,
       stopped: true,
@@ -67,7 +67,7 @@ export default class App extends Component {
   }
   // fire the chime, message etc when target seconds is arrived at
   targetSecondsReached() {
-    this.onTimerPauseClick();
+    this.onTimerPause();
     console.log('target seconds reached!');
   }
   // take time in seconds and format to hh:mm:ss
@@ -82,7 +82,7 @@ export default class App extends Component {
     const output = `${hours}:${mins}:${secs}`;
     return output;
   }
-  // add padding zero to h/m/s if needed
+  // add padding zero to hh:mm:ss if needed
   zeroPad(num) {
     if (num >= 10) {
       return num;
@@ -104,15 +104,15 @@ export default class App extends Component {
       <div className={styles.container}>
         <h2>{this.state.formattedTime}</h2>
         <button
-          onClick={this.onTimerStartClick}
+          onClick={this.onTimerStart}
           disabled={isPlaying}
         >{startButtonText}</button>
         <button
-          onClick={this.onTimerPauseClick}
+          onClick={this.onTimerPause}
           disabled={isPaused || isStopped}
         >Pause</button>
         <button
-          onClick={this.onTimerClearClick}
+          onClick={this.onTimerClear}
           disabled={isStopped}
         >Reset</button>
         <ul>
