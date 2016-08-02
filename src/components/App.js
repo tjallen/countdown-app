@@ -7,12 +7,12 @@ export default class App extends Component {
     super();
     this.state = {
       seconds: 0,
+      formattedTime: '00:00:00',
     };
     this.tick = this.tick.bind(this);
     this.onTimerStartClick = this.onTimerStartClick.bind(this);
     this.onTimerPauseClick = this.onTimerPauseClick.bind(this);
     this.onTimerClearClick = this.onTimerClearClick.bind(this);
-    this.formatTime = this.formatTime.bind(this);
   }
   componentDidMount() {
     console.log('mounted');
@@ -36,28 +36,42 @@ export default class App extends Component {
   }
   onTimerPauseClick() {
     console.log('paused at', this.state.seconds);
-    clearInterval(this.timerInterval);
   }
   onTimerClearClick() {
-    console.log('clear');
+    this.setState({
+      seconds: 0,
+    });
+    clearInterval(this.timerInterval); // to cb?
   }
+  // tick method run by interval to update timer once a second
   tick(timerStartDate) {
     const seconds = Math.floor((Date.now() - timerStartDate) / 1000);
-    console.log('tick, seconds:', seconds);
-    console.log(this.formatTime(seconds));
     this.setState({
       seconds,
+      formattedTime: this.formatTime(seconds),
     });
   }
+  // take time in seconds and format to hh:mm:ss
   formatTime(seconds) {
-    // do some time formatting here
-    // const output = `format:${hrs}:${mins}:${secs}`;
-    // return output;
+    let mins = Math.floor(seconds / 60);
+    const secs = this.zeroPad(seconds % 60);
+    const hours = this.zeroPad(Math.floor(mins / 60));
+    mins = this.zeroPad(mins % 60);
+    const output = `${hours}:${mins}:${secs}`;
+    return output;
+  }
+  // add padding zero to h/m/s if needed
+  zeroPad(num) {
+    if (num >= 10) {
+      return num;
+    }
+    const paddedNum = `0${num}`;
+    return paddedNum;
   }
   render() {
     return (
       <div className={styles.container}>
-        <h2>{this.state.seconds}</h2>
+        <h2>{this.state.formattedTime}</h2>
         <button onClick={this.onTimerStartClick}>Start timer</button>
         <button onClick={this.onTimerPauseClick}>Pause timer</button>
         <button onClick={this.onTimerClearClick}>Reset timer</button>
