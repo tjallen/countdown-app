@@ -81,7 +81,7 @@ export default class App extends Component {
   render() {
     const isStopped = this.state.stopped;
     const isPaused = this.state.paused;
-    const isPlaying = this.state.seconds !== 0 && !isPaused;
+    const isPlaying = this.state.seconds > 0 && !isPaused;
     let startButtonText;
     if (isPaused) {
       startButtonText = 'Resume';
