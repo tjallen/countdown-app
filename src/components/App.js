@@ -7,7 +7,8 @@ export default class App extends Component {
     super();
     this.state = {
       seconds: 0,
-      formattedTime: '00:00:00',
+      formattedTime: this.formatTime(0),
+      paused: false,
     };
     this.tick = this.tick.bind(this);
     this.onTimerStartClick = this.onTimerStartClick.bind(this);
@@ -15,33 +16,39 @@ export default class App extends Component {
     this.onTimerClearClick = this.onTimerClearClick.bind(this);
   }
   componentDidMount() {
-    console.log('mounted');
+    // define timerInterval but don't set it yet
     this.timerInterval = null;
   }
   componentWillUnmount() {
     clearInterval(this.timerInterval);
   }
   onTimerStartClick() {
-    // start from fresh
-    if (this.state.seconds === 0) {
-      const timerStartDate = Date.now();
-      this.timerInterval = setInterval(() => this.tick(timerStartDate), 1000);
-      this.setState({
-        ticking: true,
-      });
+    let offset;
+    let timerStartDate;
+    // if paused, offset start date by the num of seconds it was paused at
+    // otherwise just use Date.now()
+    if (this.state.paused) {
+      offset = this.state.seconds * 1000;
+      timerStartDate = (Date.now() - offset);
     } else {
-      // start from paused
-      console.log('lets resume from paused');
+      timerStartDate = Date.now();
     }
+    this.timerInterval = setInterval(() => this.tick(timerStartDate), 1000);
+    this.setState({
+      paused: false,
+    });
   }
   onTimerPauseClick() {
-    console.log('paused at', this.state.seconds);
+    this.setState({
+      paused: true,
+      seconds: this.state.seconds,
+    }, clearInterval(this.timerInterval));
   }
   onTimerClearClick() {
     this.setState({
       seconds: 0,
-    });
-    clearInterval(this.timerInterval); // to cb?
+      formattedTime: this.formatTime(0),
+    }, clearInterval(this.timerInterval));
   }
   // tick method run by interval to update timer once a second
   tick(timerStartDate) {
@@ -53,6 +60,9 @@ export default class App extends Component {
   }
   // take time in seconds and format to hh:mm:ss
   formatTime(seconds) {
+    if (seconds === 0) {
+      return '00:00:00';
+    }
     let mins = Math.floor(seconds / 60);
     const secs = this.zeroPad(seconds % 60);
     const hours = this.zeroPad(Math.floor(mins / 60));
@@ -72,9 +82,9 @@ export default class App extends Component {
     return (
       <div className={styles.container}>
         <h2>{this.state.formattedTime}</h2>
-        <button onClick={this.onTimerStartClick}>Start timer</button>
-        <button onClick={this.onTimerPauseClick}>Pause timer</button>
-        <button onClick={this.onTimerClearClick}>Reset timer</button>
+        <button onClick={this.onTimerStartClick}>Start</button>
+        <button onClick={this.onTimerPauseClick}>Pause</button>
+        <button onClick={this.onTimerClearClick}>Reset</button>
         <ul>
           <li>Hourly</li>
           <li>Pomorodo</li>
