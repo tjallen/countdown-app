@@ -9,6 +9,7 @@ export default class App extends Component {
       seconds: 0,
       formattedTime: this.formatTime(0),
       paused: false,
+      stopped: true,
     };
     this.tick = this.tick.bind(this);
     this.onTimerStartClick = this.onTimerStartClick.bind(this);
@@ -33,6 +34,7 @@ export default class App extends Component {
     this.timerInterval = setInterval(() => this.tick(timerStartDate), 1000);
     this.setState({
       paused: false,
+      stopped: false,
     });
   }
   onTimerPauseClick() {
@@ -44,6 +46,7 @@ export default class App extends Component {
   onTimerClearClick() {
     this.setState({
       seconds: 0,
+      stopped: true,
       formattedTime: this.formatTime(0),
     }, clearInterval(this.timerInterval));
   }
@@ -76,12 +79,30 @@ export default class App extends Component {
     return paddedNum;
   }
   render() {
+    const isStopped = this.state.stopped;
+    const isPaused = this.state.paused;
+    const isPlaying = this.state.seconds !== 0 && !isPaused;
+    let startButtonText;
+    if (isPaused) {
+      startButtonText = 'Resume';
+    } else {
+      startButtonText = 'Start';
+    }
     return (
       <div className={styles.container}>
         <h2>{this.state.formattedTime}</h2>
-        <button onClick={this.onTimerStartClick}>Start</button>
-        <button onClick={this.onTimerPauseClick}>Pause</button>
-        <button onClick={this.onTimerClearClick}>Reset</button>
+        <button
+          onClick={this.onTimerStartClick}
+          disabled={isPlaying}
+        >{startButtonText}</button>
+        <button
+          onClick={this.onTimerPauseClick}
+          disabled={isPaused || isStopped}
+        >Pause</button>
+        <button
+          onClick={this.onTimerClearClick}
+          disabled={isStopped}
+        >Reset</button>
         <ul>
           <li>Hourly</li>
           <li>Pomorodo</li>
