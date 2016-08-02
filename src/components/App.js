@@ -10,6 +10,7 @@ export default class App extends Component {
       formattedTime: this.formatTime(0),
       paused: false,
       stopped: true,
+      targetSeconds: 3,
     };
     this.tick = this.tick.bind(this);
     this.onTimerStartClick = this.onTimerStartClick.bind(this);
@@ -47,16 +48,27 @@ export default class App extends Component {
     this.setState({
       seconds: 0,
       stopped: true,
+      paused: false,
       formattedTime: this.formatTime(0),
     }, clearInterval(this.timerInterval));
   }
   // tick method run by interval to update timer once a second
   tick(timerStartDate) {
+    // prepare a callback for when the target second is about to be reached
+    let callback;
+    if (this.state.seconds === (this.state.targetSeconds - 1)) {
+      callback = this.targetSecondsReached();
+    }
     const seconds = Math.floor((Date.now() - timerStartDate) / 1000);
     this.setState({
       seconds,
       formattedTime: this.formatTime(seconds),
-    });
+    }, callback);
+  }
+  // fire the chime, message etc when target seconds is arrived at
+  targetSecondsReached() {
+    this.onTimerPauseClick();
+    console.log('target seconds reached!');
   }
   // take time in seconds and format to hh:mm:ss
   formatTime(seconds) {
