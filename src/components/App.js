@@ -35,6 +35,7 @@ export default class App extends Component {
     this.timerInterval = null;
     // initialize audio element
     this.audioElement.volume = this.state.volume;
+    this.audioElement.muted = this.state.muted;
     // audio element debug info
     console.log(`muted: ${this.audioElement.muted}, volume: ${this.audioElement.volume}`);
   }
@@ -78,12 +79,13 @@ export default class App extends Component {
     this.setState({
       volume: event.target.value,
     });
+    this.audioElement.volume = event.target.value;
   }
   toggleChimeMute() {
-    this.audioElement.muted = !this.audioElement.muted;
     this.setState({
       muted: !this.audioElement.muted,
     });
+    this.audioElement.muted = !this.audioElement.muted;
   }
   toggleCountdown() {
     // toggle count up || count down
@@ -103,7 +105,7 @@ export default class App extends Component {
   }
   // fire the chime, message etc when target seconds is arrived at
   targetSecondsReached() {
-    this.onTimerPause();
+    this.onTimerRestart();
     this.audioElement.play();
     console.log('target seconds reached!');
   }
@@ -138,7 +140,7 @@ export default class App extends Component {
       startButtonText = 'Start';
     }
     // dbg
-    console.log(isMuted, isStopped, isPaused, isPlaying);
+    console.log(`isMuted:${isMuted}, isStopped:${isStopped}, isPaused:${isPaused}, isPlaying:${isPlaying}`);
     return (
       <div className={styles.container}>
         <h2>{this.state.formattedTime}</h2>
