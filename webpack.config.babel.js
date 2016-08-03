@@ -84,6 +84,10 @@ module.exports = {
           'image-webpack',
         ],
       },
+      {
+        test: /\.(mp3|wav)$/,
+        loader: 'file-loader?name=files/chime.[ext]',
+      },
     ],
   },
   // image-webpack-loader options
