@@ -5,6 +5,9 @@ import styles from './App.scss';
 // audio files
 import chime from '../files/chime.mp3';
 
+// child components
+import AudioControls from './AudioControls';
+
 export default class App extends Component {
   constructor() {
     super();
@@ -25,7 +28,7 @@ export default class App extends Component {
     this.onTimerClear = this.onTimerClear.bind(this);
     this.onTimerRestart = this.onTimerRestart.bind(this);
     this.toggleChimeMute = this.toggleChimeMute.bind(this);
-    this.onVolumeInputChange = this.onVolumeInputChange.bind(this);
+    this.onVolumeChange = this.onVolumeChange.bind(this);
   }
   componentDidMount() {
     // define timerInterval but don't set it yet
@@ -70,7 +73,7 @@ export default class App extends Component {
     this.onTimerClear();
     this.onTimerStart();
   }
-  onVolumeInputChange(event) {
+  onVolumeChange(event) {
     console.log(event.target.value);
     this.setState({
       volume: event.target.value,
@@ -134,12 +137,6 @@ export default class App extends Component {
     } else {
       startButtonText = 'Start';
     }
-    let muteButtonText;
-    if (isMuted) {
-      muteButtonText = 'Unmute';
-    } else {
-      muteButtonText = 'Mute';
-    }
     // dbg
     console.log(isMuted, isStopped, isPaused, isPlaying);
     return (
@@ -169,15 +166,12 @@ export default class App extends Component {
         <button>Pomorodo</button>
         <button>Toggle loop</button>
         <p>chime controls</p>
-        <button onClick={this.toggleChimeMute}>{muteButtonText}</button>
-        Volume: <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.1"
-          value={this.state.volume}
-          onChange={this.onVolumeInputChange}
-        ></input>
+        <AudioControls
+          isMuted={this.state.muted}
+          onToggleChimeMute={this.toggleChimeMute}
+          volumeValue={this.state.volume}
+          onVolumeChange={this.onVolumeChange}
+        />
         <audio
           ref={(c) => (this.audioElement = c)}
         >
