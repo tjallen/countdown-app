@@ -1,15 +1,10 @@
-/* sample css module w/ some postcss-cssnext shite */
+$primary: blue;
+$dividers: lightgray;
+$fontsize: 1rem;
+$fontcolor: black;
 
-/* sass-style variable from postcss-simple-variables */
-$foo: yellow;
-
-:root {
-  --myVar: rebeccapurple;
-  --fontSize: 1rem;
-}
-
-* {
-  padding: 10px;
+html, body, div#app, div.container {
+  height: 100%;
 }
 
 img {
@@ -18,11 +13,37 @@ img {
 }
 
 .container {
-  color: var(--myVar);
-  border: 3px solid $foo;
-  h1 {
-    font-size: calc(var(--fontSize) * 2);
+  text-align: center;
+  color: $fontcolor;
+  background-color: gray;
+  div {
+    border: 1px solid #efefef;
   }
+  .main {
+    height: 66%;
+  }
+  .sub {
+    height: 33%;
+  }
+  h1 {
+    font-size: calc($fontsize * 2);
+  }
+}
+
+button {
+  padding: 8px;
+}
+
+hr {
+  width: 35%;
+  margin: 20px auto;
+  border: none;
+  border-bottom: 2px solid $dividers;
+}
+
+.timer {
+  font-size: calc($fontsize * 3);
+  letter-spacing: 0.25rem;
 }
 
 .red {

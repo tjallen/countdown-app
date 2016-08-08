@@ -140,40 +140,38 @@ export default class App extends Component {
       startButtonText = 'Start';
     }
     // dbg
-    console.log(`isMuted:${isMuted}, isStopped:${isStopped}, isPaused:${isPaused}, isPlaying:${isPlaying}`);
+    console.log(`Muted:${isMuted}, Stopped:${isStopped}, Paused:${isPaused}, Playing:${isPlaying}`);
     return (
       <div className={styles.container}>
-        <h2>{this.state.formattedTime}</h2>
-        <p>Timer controls</p>
-        <button
-          onClick={this.onTimerStart}
-          disabled={isPlaying}
-        >{startButtonText}</button>
-        <button
-          onClick={this.onTimerPause}
-          disabled={isPaused || isStopped}
-        >Pause</button>
-        <button
-          onClick={this.onTimerClear}
-          disabled={isStopped}
-        >Clear</button>
-        <button
-          onClick={this.onTimerRestart}
-          disabled={isStopped}
-        >Restart</button>
-        <br />
-        <p>Timer type</p>
-        <button>Count down</button>
-        <button>Count up</button>
-        <button>Pomorodo</button>
-        <button>Toggle loop</button>
-        <p>chime controls</p>
-        <AudioControls
-          isMuted={this.state.muted}
-          onToggleChimeMute={this.toggleChimeMute}
-          volumeValue={this.state.volume}
-          onVolumeChange={this.onVolumeChange}
-        />
+        <div className={styles.main}>
+          <h2 className={styles.timer}>{this.state.formattedTime}</h2>
+        </div>
+        <div className={styles.sub}>
+          <button
+            onClick={this.onTimerStart}
+            disabled={isPlaying}
+          >{startButtonText}</button>
+          <button
+            onClick={this.onTimerPause}
+            disabled={isPaused || isStopped}
+          >Pause</button>
+          <button
+            onClick={this.onTimerClear}
+            disabled={isStopped}
+          >Clear</button>
+          <button
+            onClick={this.onTimerRestart}
+            disabled={isStopped}
+          >Restart</button>
+          <br />
+          <hr />
+          <AudioControls
+            isMuted={this.state.muted}
+            onToggleChimeMute={this.toggleChimeMute}
+            volumeValue={this.state.volume}
+            onVolumeChange={this.onVolumeChange}
+          />
+        </div>
         <audio
           ref={(c) => (this.audioElement = c)}
         >
