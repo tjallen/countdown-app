@@ -78,11 +78,18 @@ module.exports = {
         loader: 'handlebars-loader',
       },
       {
-        test: /\.(png|gif|jpe?g|svg)$/,
+        test: /\.(png|gif|jpe?g)$/,
         loaders: [
           'url?limit=5000&name=images/[name][hash:6].[ext]',
           'image-webpack',
         ],
+      },
+      {
+        test: /\.svg$/,
+        loader: 'svg-sprite?' + JSON.stringify({
+          name: '[name]_[hash]',
+          prefixize: true,
+        }),
       },
       {
         test: /\.(mp3|wav)$/,
