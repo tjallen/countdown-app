@@ -7,6 +7,7 @@ import chime from '../files/chime.mp3';
 
 // child components
 import AudioControls from './AudioControls';
+import TimerControls from './TimerControls';
 
 export default class App extends Component {
   constructor() {
@@ -147,22 +148,16 @@ export default class App extends Component {
           <h2 className={styles.timer}>{this.state.formattedTime}</h2>
         </div>
         <div className={styles.sub}>
-          <button
-            onClick={this.onTimerStart}
-            disabled={isPlaying}
-          >{startButtonText}</button>
-          <button
-            onClick={this.onTimerPause}
-            disabled={isPaused || isStopped}
-          >Pause</button>
-          <button
-            onClick={this.onTimerClear}
-            disabled={isStopped}
-          >Clear</button>
-          <button
-            onClick={this.onTimerRestart}
-            disabled={isStopped}
-          >Restart</button>
+          <TimerControls
+            onTimerStart={this.onTimerStart}
+            onTimerPause={this.onTimerPause}
+            onTimerClear={this.onTimerClear}
+            onTimerRestart={this.onTimerRestart}
+            isPlaying={isPlaying}
+            isPaused={isPaused}
+            isStopped={isStopped}
+            startButtonText={startButtonText}
+          />
           <br />
           <hr />
           <AudioControls
