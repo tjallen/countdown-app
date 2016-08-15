@@ -6,6 +6,7 @@ import styles from './App.scss';
 import chime from '../files/chime.mp3';
 
 // child components
+import TimerDisplay from './TimerDisplay';
 import AudioControls from './AudioControls';
 import TimerControls from './TimerControls';
 
@@ -134,18 +135,14 @@ export default class App extends Component {
     // destructure this.state into some helper variables for readability
     const { muted: isMuted, stopped: isStopped, paused: isPaused } = this.state;
     const isPlaying = this.state.seconds > 0 && !isPaused;
-    let startButtonText;
-    if (isPaused) {
-      startButtonText = 'Resume';
-    } else {
-      startButtonText = 'Start';
-    }
     // dbg
     console.log(`Muted:${isMuted}, Stopped:${isStopped}, Paused:${isPaused}, Playing:${isPlaying}`);
     return (
       <div className={styles.container}>
         <div className={styles.main}>
-          <h2 className={styles.timer}>{this.state.formattedTime}</h2>
+          <TimerDisplay
+            time={this.state.formattedTime}
+          />
         </div>
         <div className={styles.sub}>
           <TimerControls
@@ -156,7 +153,6 @@ export default class App extends Component {
             isPlaying={isPlaying}
             isPaused={isPaused}
             isStopped={isStopped}
-            startButtonText={startButtonText}
           />
           <br />
           <hr />
