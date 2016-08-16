@@ -7,6 +7,7 @@ import chime from '../files/chime.mp3';
 
 // child components
 import TimerDisplay from './TimerDisplay';
+import TimerInput from './TimerInput';
 import AudioControls from './AudioControls';
 import TimerControls from './TimerControls';
 
@@ -18,7 +19,7 @@ export default class App extends Component {
       formattedTime: this.formatTime(0),
       paused: false,
       stopped: true,
-      targetSeconds: 3,
+      targetSeconds: 30,
       chime,
       volume: '0.1',
       looping: true,
@@ -31,6 +32,7 @@ export default class App extends Component {
     this.onTimerRestart = this.onTimerRestart.bind(this);
     this.toggleChimeMute = this.toggleChimeMute.bind(this);
     this.onVolumeChange = this.onVolumeChange.bind(this);
+    this.updateTime = this.updateTime.bind(this);
   }
   componentDidMount() {
     // define timerInterval but don't set it yet
@@ -102,7 +104,7 @@ export default class App extends Component {
     const seconds = Math.floor((Date.now() - timerStartDate) / 1000);
     this.setState({
       seconds,
-      formattedTime: this.formatTime(seconds),
+      formattedTime: this.formatTime(this.state.targetSeconds - seconds),
     }, callback);
   }
   // fire the chime, message etc when target seconds is arrived at
@@ -131,6 +133,11 @@ export default class App extends Component {
     const paddedNum = `0${num}`;
     return paddedNum;
   }
+  // update state.targetSeconds from user h/m/s inputs
+  updateTime(evt) {
+    console.log('UT', evt.target.value);
+    console.log(evt.target.id);
+  }
   render() {
     // destructure this.state into some helper variables for readability
     const { muted: isMuted, stopped: isStopped, paused: isPaused } = this.state;
@@ -142,6 +149,9 @@ export default class App extends Component {
         <div className={styles.main}>
           <TimerDisplay
             time={this.state.formattedTime}
+          />
+          <TimerInput
+            updateTime={this.updateTime}
           />
         </div>
         <div className={styles.sub}>
