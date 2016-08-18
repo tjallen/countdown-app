@@ -141,6 +141,7 @@ export default class App extends Component {
     const s = (hours * 3600) + (minutes * 60);
     this.setState({
       totalSeconds: s,
+      remainingSeconds: s,
     });
   }
   render() {
