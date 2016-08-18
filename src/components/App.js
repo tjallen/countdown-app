@@ -15,14 +15,13 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      seconds: 0,
-      formattedTime: this.formatTime(0),
+      remainingSeconds: 5,
+      totalSeconds: null,
       paused: false,
       stopped: true,
-      targetSeconds: 30,
+      loop: false,
       chime,
       volume: '0.1',
-      looping: true,
       muted: false,
     };
     this.tick = this.tick.bind(this);
@@ -37,23 +36,28 @@ export default class App extends Component {
   componentDidMount() {
     // define timerInterval but don't set it yet
     this.timerInterval = null;
+    this.state.totalSeconds = this.state.remainingSeconds;
     // initialize audio element
     this.audioElement.volume = this.state.volume;
     this.audioElement.muted = this.state.muted;
-    // audio element debug info
-    console.log(`muted: ${this.audioElement.muted}, volume: ${this.audioElement.volume}`);
   }
   componentWillUnmount() {
     clearInterval(this.timerInterval);
   }
   onTimerStart() {
+    this.totalSeconds = this.state.remainingSeconds;
     let offset = 0;
     // if paused, offset start date by the num of seconds it was paused at
     // otherwise just use Date.now()
     if (this.state.paused) {
-      offset = this.state.seconds * 1000;
+      offset = (this.state.totalSeconds - this.state.remainingSeconds) * 1000;
     }
     const timerStartDate = (Date.now() - offset);
+/*    if (this.state.paused) {
+      console.log('try and resume from paused');
+    }
+    const timerStartDate = (Date.now());*/
+    console.log('started', timerStartDate);
     this.timerInterval = setInterval(() => this.tick(timerStartDate), 1000);
     this.setState({
       paused: false,
@@ -63,12 +67,12 @@ export default class App extends Component {
   onTimerPause() {
     this.setState({
       paused: true,
-      seconds: this.state.seconds,
+      remainingSeconds: this.state.remainingSeconds,
     }, clearInterval(this.timerInterval));
   }
   onTimerClear() {
     this.setState({
-      seconds: 0,
+      remainingSeconds: 0,
       stopped: true,
       paused: false,
       formattedTime: this.formatTime(0),
@@ -91,33 +95,33 @@ export default class App extends Component {
     });
     this.audioElement.muted = !this.audioElement.muted;
   }
-  toggleCountdown() {
-    // toggle count up || count down
-  }
   // tick method run by interval to update timer once a second
   tick(timerStartDate) {
-    // prepare a callback for when the target second is about to be reached
+    // on the penultimate tick, prepare a callback for the final tick
     let callback;
-    if (this.state.seconds === (this.state.targetSeconds - 1)) {
-      callback = this.targetSecondsReached();
+    if (this.state.remainingSeconds === 1) {
+      callback = this.timerCompleted();
     }
-    const seconds = Math.floor((Date.now() - timerStartDate) / 1000);
+    const passedSeconds = Math.round((Date.now() - timerStartDate) / 1000);
+    const remainingSeconds = this.state.totalSeconds - passedSeconds;
+    console.log('passedSeconds', passedSeconds);
+    console.log('remainingSeconds', remainingSeconds);
     this.setState({
-      seconds,
-      formattedTime: this.formatTime(this.state.targetSeconds - seconds),
+      remainingSeconds,
     }, callback);
   }
   // fire the chime, message etc when target seconds is arrived at
-  targetSecondsReached() {
-    this.onTimerRestart();
-    this.audioElement.play();
-    console.log('target seconds reached!');
+  timerCompleted() {
+    console.log('target seconds reached!', Date.now());
+    this.onTimerClear();
+    if (this.state.loop) {
+      console.log('loop plz');
+    } else if (!this.state.loop) {
+      console.log('do not loop');
+    }
   }
   // take time in seconds and format to hh:mm:ss
   formatTime(seconds) {
-    if (seconds === 0) {
-      return '00:00:00';
-    }
     let mins = Math.floor(seconds / 60);
     const secs = this.zeroPad(seconds % 60);
     const hours = this.zeroPad(Math.floor(mins / 60));
@@ -134,21 +138,25 @@ export default class App extends Component {
     return paddedNum;
   }
   // update state.targetSeconds from user h/m/s inputs
-  updateTime(evt) {
-    console.log('UT', evt.target.value);
-    console.log(evt.target.id);
+  updateTime(hours, minutes) {
+    console.log(`UT. hrs: ${hours}, mins: ${minutes}`);
+    const s = (hours * 3600) + (minutes * 60);
+    this.setState({
+      totalSeconds: s,
+    });
   }
   render() {
+    let formattedTime = this.formatTime(this.state.remainingSeconds);
     // destructure this.state into some helper variables for readability
     const { muted: isMuted, stopped: isStopped, paused: isPaused } = this.state;
-    const isPlaying = this.state.seconds > 0 && !isPaused;
+    const isPlaying = !isStopped && !isPaused;
     // dbg
-    console.log(`Muted:${isMuted}, Stopped:${isStopped}, Paused:${isPaused}, Playing:${isPlaying}`);
+    // console.log(`Mute:${isMuted}, Stop:${isStopped}, Pause:${isPaused}, Play:${isPlaying}`);
     return (
       <div className={styles.container}>
         <div className={styles.main}>
           <TimerDisplay
-            time={this.state.formattedTime}
+            time={formattedTime}
           />
           <TimerInput
             updateTime={this.updateTime}
@@ -167,7 +175,7 @@ export default class App extends Component {
           <br />
           <hr />
           <AudioControls
-            isMuted={this.state.muted}
+            isMuted={isMuted}
             onToggleChimeMute={this.toggleChimeMute}
             volumeValue={this.state.volume}
             onVolumeChange={this.onVolumeChange}

@@ -25,10 +25,6 @@ const TimerControls = (props) => {
         glyph={restart}
       />
       <button
-        onClick={props.onTimerPause}
-        disabled={props.isPaused || props.isStopped}
-      >Pause</button>
-      <button
         onClick={props.onTimerClear}
         disabled={props.isStopped}
       >Clear</button>
