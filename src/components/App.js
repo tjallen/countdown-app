@@ -55,10 +55,6 @@ export default class App extends Component {
       offset = (this.state.totalSeconds - this.state.remainingSeconds) * 1000;
     }
     const timerStartDate = (Date.now() - offset);
-/*    if (this.state.paused) {
-      console.log('try and resume from paused');
-    }
-    const timerStartDate = (Date.now());*/
     console.log('started', timerStartDate);
     this.timerInterval = setInterval(() => this.tick(timerStartDate), 1000);
     this.setState({
