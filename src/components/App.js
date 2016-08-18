@@ -15,8 +15,8 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      remainingSeconds: null,
-      totalSeconds: null,
+      remainingSeconds: 0,
+      totalSeconds: 0,
       paused: false,
       stopped: true,
       loop: false,
@@ -47,6 +47,10 @@ export default class App extends Component {
     clearInterval(this.timerInterval);
   }
   onTimerStart() {
+    if (this.state.totalSeconds === 0) {
+      alert('time must be above 0 seconds');
+      return;
+    }
     this.totalSeconds = this.state.remainingSeconds;
     let offset = 0;
     // if paused, offset start date by the num of seconds it was paused at
