@@ -9,6 +9,7 @@ export default class TimerInput extends Component {
     this.state = {
       hours: 0,
       minutes: 0,
+      seconds: 0,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -33,13 +34,19 @@ export default class TimerInput extends Component {
         });
         break;
       }
+      case 'seconds': {
+        this.setState({
+          seconds: inputValue,
+        });
+        break;
+      }
       default:
       // nothing
     }
   }
   handleSubmit(evt) {
     evt.preventDefault();
-    this.props.updateTime(this.state.hours, this.state.minutes);
+    this.props.updateTime(this.state.hours, this.state.minutes, this.state.seconds);
   }
   render() {
     return (
@@ -64,6 +71,16 @@ export default class TimerInput extends Component {
             defaultValue="0"
           ></input>
           <label htmlFor="minutes">Minutes</label>
+          <br />
+          <input
+            id="seconds"
+            type="number"
+            min="0"
+            max="59"
+            step="1"
+            defaultValue="0"
+          ></input>
+          <label htmlFor="seconds">Secs</label>
           <br />
           <input type="submit" value="Start" />
         </form>

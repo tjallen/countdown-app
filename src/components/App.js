@@ -15,7 +15,7 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      remainingSeconds: 5,
+      remainingSeconds: null,
       totalSeconds: null,
       paused: false,
       stopped: true,
@@ -68,12 +68,12 @@ export default class App extends Component {
     }, clearInterval(this.timerInterval));
   }
   onTimerClear() {
+    console.log('clear!');
     this.setState({
       remainingSeconds: 0,
       totalSeconds: 0,
       stopped: true,
       paused: false,
-      formattedTime: this.formatTime(0),
     }, clearInterval(this.timerInterval));
   }
   onTimerRestart() {
@@ -93,6 +93,7 @@ export default class App extends Component {
   }
   // tick method run by interval to update timer once a second
   tick(timerStartDate) {
+    console.log('========= new tick =========');
     // on the penultimate tick, prepare a callback for the final tick
     let callback;
     if (this.state.remainingSeconds === 1) {
@@ -100,8 +101,7 @@ export default class App extends Component {
     }
     const passedSeconds = Math.round((Date.now() - timerStartDate) / 1000);
     const remainingSeconds = this.state.totalSeconds - passedSeconds;
-    console.log('passedSeconds', passedSeconds);
-    console.log('remainingSeconds', remainingSeconds);
+    console.log(`passed: ${passedSeconds} | remaining: ${remainingSeconds}`);
     this.setState({
       remainingSeconds,
     }, callback);
@@ -111,9 +111,9 @@ export default class App extends Component {
     console.log('target seconds reached!', Date.now());
     this.onTimerClear();
     if (this.state.loop) {
-      console.log('loop plz');
+      // loop
     } else if (!this.state.loop) {
-      console.log('do not loop');
+      // dont loop
     }
   }
   // take time in seconds and format to hh:mm:ss
@@ -134,9 +134,9 @@ export default class App extends Component {
     return paddedNum;
   }
   // update state.targetSeconds from user h/m/s inputs
-  updateTime(hours, minutes) {
+  updateTime(hours, minutes, seconds) {
     console.log(`UT. hrs: ${hours}, mins: ${minutes}`);
-    const s = (hours * 3600) + (minutes * 60);
+    const s = (hours * 3600) + (minutes * 60) + seconds;
     this.setState({
       totalSeconds: s,
       remainingSeconds: s,
