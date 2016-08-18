@@ -55,7 +55,6 @@ export default class App extends Component {
       offset = (this.state.totalSeconds - this.state.remainingSeconds) * 1000;
     }
     const timerStartDate = (Date.now() - offset);
-    console.log('started', timerStartDate);
     this.timerInterval = setInterval(() => this.tick(timerStartDate), 1000);
     this.setState({
       paused: false,
@@ -71,17 +70,16 @@ export default class App extends Component {
   onTimerClear() {
     this.setState({
       remainingSeconds: 0,
+      totalSeconds: 0,
       stopped: true,
       paused: false,
       formattedTime: this.formatTime(0),
     }, clearInterval(this.timerInterval));
   }
   onTimerRestart() {
-    this.onTimerClear();
-    this.onTimerStart();
+    console.log('restart - wheres my code dogg?');
   }
   onVolumeChange(event) {
-    console.log(event.target.value);
     this.setState({
       volume: event.target.value,
     });

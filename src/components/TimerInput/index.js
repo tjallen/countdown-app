@@ -1,6 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 export default class TimerInput extends Component {
+  static propTypes = {
+    updateTime: PropTypes.func.isRequired,
+  };
   constructor() {
     super();
     this.state = {

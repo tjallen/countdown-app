@@ -24,14 +24,6 @@ const TimerControls = (props) => {
         action={props.onTimerRestart}
         glyph={restart}
       />
-      <button
-        onClick={props.onTimerClear}
-        disabled={props.isStopped}
-      >Clear</button>
-      <button
-        onClick={props.onTimerRestart}
-        disabled={props.isStopped}
-      >Restart</button>
     </div>
   );
 };
