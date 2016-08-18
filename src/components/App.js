@@ -33,10 +33,12 @@ export default class App extends Component {
     this.onVolumeChange = this.onVolumeChange.bind(this);
     this.updateTime = this.updateTime.bind(this);
   }
-  componentDidMount() {
+  componentWillMount() {
     // define timerInterval but don't set it yet
     this.timerInterval = null;
     this.state.totalSeconds = this.state.remainingSeconds;
+  }
+  componentDidMount() {
     // initialize audio element
     this.audioElement.volume = this.state.volume;
     this.audioElement.muted = this.state.muted;
@@ -146,18 +148,24 @@ export default class App extends Component {
     });
   }
   render() {
-    let formattedTime = this.formatTime(this.state.remainingSeconds);
-    // destructure this.state into some helper variables for readability
+    // helper/readability vars for jsx
+    let { totalSeconds, remainingSeconds } = this.state;
+    totalSeconds = this.formatTime(totalSeconds);
+    remainingSeconds = this.formatTime(remainingSeconds);
     const { muted: isMuted, stopped: isStopped, paused: isPaused } = this.state;
     const isPlaying = !isStopped && !isPaused;
+    let timerDisplayConditional;
+    if (isStopped) {
+      timerDisplayConditional = <TimerDisplay time={totalSeconds} />;
+    } else {
+      timerDisplayConditional = <TimerDisplay time={remainingSeconds} />;
+    }
     // dbg
     // console.log(`Mute:${isMuted}, Stop:${isStopped}, Pause:${isPaused}, Play:${isPlaying}`);
     return (
       <div className={styles.container}>
         <div className={styles.main}>
-          <TimerDisplay
-            time={formattedTime}
-          />
+          {timerDisplayConditional}
           <TimerInput
             updateTime={this.updateTime}
           />
