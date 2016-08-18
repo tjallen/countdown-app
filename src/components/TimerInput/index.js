@@ -13,11 +13,6 @@ export default class TimerInput extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  componentDidUpdate() {
-    const hours = this.state.hours;
-    const minutes = this.state.minutes;
-    console.log(`TI updated. hours: ${hours} minutes: ${minutes}`);
-  }
   // handle change of input fields & update local state
   handleChange(evt) {
     let inputValue = parseInt(evt.target.value, 10);
