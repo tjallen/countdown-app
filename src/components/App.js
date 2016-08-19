@@ -81,7 +81,10 @@ export default class App extends Component {
     }, clearInterval(this.timerInterval));
   }
   onTimerRestart() {
-    console.log('restart - wheres my code dogg?');
+    this.onTimerPause();
+    this.setState({
+      remainingSeconds: this.state.totalSeconds,
+    }, this.onTimerStart);
   }
   onVolumeChange(event) {
     this.setState({
