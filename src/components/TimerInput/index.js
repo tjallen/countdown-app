@@ -25,19 +25,19 @@ export default class TimerInput extends Component {
       case 'minutes': {
         this.setState({
           minutes: inputValue,
-        });
+        }, this.changeCallback);
         break;
       }
       case 'hours': {
         this.setState({
           hours: inputValue,
-        });
+        }, this.changeCallback);
         break;
       }
       case 'seconds': {
         this.setState({
           seconds: inputValue,
-        });
+        }, this.changeCallback);
         break;
       }
       default:
@@ -46,6 +46,9 @@ export default class TimerInput extends Component {
   }
   handleSubmit(evt) {
     evt.preventDefault();
+    this.props.updateTime(this.state.hours, this.state.minutes, this.state.seconds);
+  }
+  changeCallback() {
     this.props.updateTime(this.state.hours, this.state.minutes, this.state.seconds);
   }
   render() {
