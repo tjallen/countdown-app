@@ -139,7 +139,6 @@ export default class App extends Component {
   }
   // update state.targetSeconds from user h/m/s inputs
   updateTime(hours, minutes, seconds) {
-    console.log(`UT. hrs: ${hours}, mins: ${minutes}`);
     const s = (hours * 3600) + (minutes * 60) + seconds;
     this.setState({
       totalSeconds: s,
@@ -153,6 +152,7 @@ export default class App extends Component {
     remainingSeconds = this.formatTime(remainingSeconds);
     const { muted: isMuted, stopped: isStopped, paused: isPaused } = this.state;
     const isPlaying = !isStopped && !isPaused;
+    // show total seconds while we're setting timer, current while playing
     let timerDisplayConditional;
     if (isStopped) {
       timerDisplayConditional = <TimerDisplay time={totalSeconds} />;
@@ -191,7 +191,7 @@ export default class App extends Component {
         <audio
           ref={(c) => (this.audioElement = c)}
         >
-          html5 <code>audio</code> element isn't supported by your browser, dayum.
+          html5 <code>audio</code> element not supported by your browser, dayum.
           <source src={this.state.chime} type="audio/mpeg">
           </source>
         </audio>
