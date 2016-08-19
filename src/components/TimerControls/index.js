@@ -8,22 +8,22 @@ import restart from '../../icons/ic_replay_24px.svg';
 
 const TimerControls = (props) => {
   let playOrPause;
+  let clearButton;
+  let restartButton;
   if (props.isPlaying) {
     playOrPause = <TimerButton action={props.onTimerPause} glyph={pause} />;
   } else {
     playOrPause = <TimerButton action={props.onTimerStart} glyph={play} />;
   }
+  if (!props.isStopped) {
+    clearButton = <TimerButton action={props.onTimerClear} glyph={clear} />;
+    restartButton = <TimerButton action={props.onTimerRestart} glyph={restart} />;
+  }
   return (
     <div>
-      <TimerButton
-        action={props.onTimerClear}
-        glyph={clear}
-      />
+      {clearButton}
       {playOrPause}
-      <TimerButton
-        action={props.onTimerRestart}
-        glyph={restart}
-      />
+      {restartButton}
     </div>
   );
 };
