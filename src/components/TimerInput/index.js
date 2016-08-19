@@ -78,8 +78,6 @@ export default class TimerInput extends Component {
           defaultValue="0"
         ></input>
         <label htmlFor="seconds">Secs</label>
-        <br />
-        <input type="submit" value="Start" />
       </div>
     );
   }
