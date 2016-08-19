@@ -12,7 +12,6 @@ export default class TimerInput extends Component {
       seconds: 0,
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
   // handle change of input fields & update local state
   handleChange(evt) {
@@ -44,49 +43,43 @@ export default class TimerInput extends Component {
       // nothing
     }
   }
-  handleSubmit(evt) {
-    evt.preventDefault();
-    this.props.updateTime(this.state.hours, this.state.minutes, this.state.seconds);
-  }
   changeCallback() {
     this.props.updateTime(this.state.hours, this.state.minutes, this.state.seconds);
   }
   render() {
     return (
       <div onChange={this.handleChange}>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            id="hours"
-            type="number"
-            min="0"
-            max="24"
-            step="1"
-            defaultValue="0"
-          ></input>
-          <label htmlFor="hours">Hours</label>
-          <br />
-          <input
-            id="minutes"
-            type="number"
-            min="0"
-            max="59"
-            step="1"
-            defaultValue="0"
-          ></input>
-          <label htmlFor="minutes">Minutes</label>
-          <br />
-          <input
-            id="seconds"
-            type="number"
-            min="0"
-            max="59"
-            step="1"
-            defaultValue="0"
-          ></input>
-          <label htmlFor="seconds">Secs</label>
-          <br />
-          <input type="submit" value="Start" />
-        </form>
+        <input
+          id="hours"
+          type="number"
+          min="0"
+          max="24"
+          step="1"
+          defaultValue="0"
+        ></input>
+        <label htmlFor="hours">Hours</label>
+        <br />
+        <input
+          id="minutes"
+          type="number"
+          min="0"
+          max="59"
+          step="1"
+          defaultValue="0"
+        ></input>
+        <label htmlFor="minutes">Minutes</label>
+        <br />
+        <input
+          id="seconds"
+          type="number"
+          min="0"
+          max="59"
+          step="1"
+          defaultValue="0"
+        ></input>
+        <label htmlFor="seconds">Secs</label>
+        <br />
+        <input type="submit" value="Start" />
       </div>
     );
   }
