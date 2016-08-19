@@ -178,6 +178,7 @@ export default class App extends Component {
             isPlaying={isPlaying}
             isPaused={isPaused}
             isStopped={isStopped}
+            totalSeconds={this.state.totalSeconds}
           />
           <br />
           <hr />

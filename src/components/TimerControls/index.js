@@ -10,10 +10,12 @@ const TimerControls = (props) => {
   let playOrPause;
   let clearButton;
   let restartButton;
-  if (props.isPlaying) {
-    playOrPause = <TimerButton action={props.onTimerPause} glyph={pause} />;
-  } else {
-    playOrPause = <TimerButton action={props.onTimerStart} glyph={play} />;
+  if (props.totalSeconds > 0) {
+    if (props.isPlaying) {
+      playOrPause = <TimerButton action={props.onTimerPause} glyph={pause} />;
+    } else {
+      playOrPause = <TimerButton action={props.onTimerStart} glyph={play} />;
+    }
   }
   if (!props.isStopped) {
     clearButton = <TimerButton action={props.onTimerClear} glyph={clear} />;
@@ -35,6 +37,7 @@ TimerControls.propTypes = {
   isStopped: PropTypes.bool,
   isPlaying: PropTypes.bool,
   isPaused: PropTypes.bool,
+  totalSeconds: PropTypes.number,
 };
 
 export default TimerControls;
