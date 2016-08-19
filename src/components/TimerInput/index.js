@@ -15,33 +15,16 @@ export default class TimerInput extends Component {
   }
   // handle change of input fields & update local state
   handleChange(evt) {
+    const type = evt.target.id;
     let inputValue = parseInt(evt.target.value, 10);
     // if field cleared we reset to 0
     if (isNaN(inputValue)) {
       inputValue = 0;
     }
-    switch (evt.target.id) {
-      case 'minutes': {
-        this.setState({
-          minutes: inputValue,
-        }, this.changeCallback);
-        break;
-      }
-      case 'hours': {
-        this.setState({
-          hours: inputValue,
-        }, this.changeCallback);
-        break;
-      }
-      case 'seconds': {
-        this.setState({
-          seconds: inputValue,
-        }, this.changeCallback);
-        break;
-      }
-      default:
-      // nothing
-    }
+    // dynamically setState using ES6 computed property name
+    this.setState({
+      [type]: inputValue,
+    }, this.changeCallback);
   }
   changeCallback() {
     this.props.updateTime(this.state.hours, this.state.minutes, this.state.seconds);
