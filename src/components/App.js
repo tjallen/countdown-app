@@ -152,10 +152,12 @@ export default class App extends Component {
     remainingSeconds = this.formatTime(remainingSeconds);
     const { muted: isMuted, stopped: isStopped, paused: isPaused } = this.state;
     const isPlaying = !isStopped && !isPaused;
-    // show total seconds while we're setting timer, current while playing
+    // conditional rendering for TimerInput, TimerDisplay time prop
     let timerDisplayConditional;
+    let timerInputConditional;
     if (isStopped) {
       timerDisplayConditional = <TimerDisplay time={totalSeconds} />;
+      timerInputConditional = <TimerInput updateTime={this.updateTime} />;
     } else {
       timerDisplayConditional = <TimerDisplay time={remainingSeconds} />;
     }
@@ -165,9 +167,7 @@ export default class App extends Component {
       <div className={styles.container}>
         <div className={styles.main}>
           {timerDisplayConditional}
-          <TimerInput
-            updateTime={this.updateTime}
-          />
+          {timerInputConditional}
         </div>
         <div className={styles.sub}>
           <TimerControls
