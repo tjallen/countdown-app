@@ -24,6 +24,7 @@ export default class App extends Component {
       volume: '0.1',
       muted: false,
       lastSecond: null,
+      tickDelay: 1000,
     };
     this.tick = this.tick.bind(this);
     this.onTimerStart = this.onTimerStart.bind(this);
@@ -60,7 +61,7 @@ export default class App extends Component {
       offset = (this.state.totalSeconds - this.state.remainingSeconds) * 1000;
     }
     const timerStartDate = (Date.now() - offset);
-    this.timerInterval = setInterval(() => this.tick(timerStartDate), 1000);
+    this.timerInterval = setInterval(() => this.tick(timerStartDate), this.state.tickDelay);
     this.setState({
       paused: false,
       stopped: false,
