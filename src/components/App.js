@@ -157,12 +157,12 @@ export default class App extends Component {
     let { totalSeconds, remainingSeconds } = this.state;
     totalSeconds = this.formatTime(totalSeconds);
     remainingSeconds = this.formatTime(remainingSeconds);
-    const { muted: isMuted, stopped: isStopped, paused: isPaused } = this.state;
-    const isPlaying = !isStopped && !isPaused;
+    const { muted, stopped, paused } = this.state;
+    const playing = !stopped && !paused;
     // conditional rendering for TimerInput, TimerDisplay time prop
     let timerDisplayConditional;
     let timerInputConditional;
-    if (isStopped) {
+    if (stopped) {
       timerDisplayConditional = <TimerDisplay time={totalSeconds} />;
       timerInputConditional = <TimerInput updateTime={this.updateTime} />;
     } else {
@@ -180,15 +180,15 @@ export default class App extends Component {
             onTimerPause={this.onTimerPause}
             onTimerClear={this.onTimerClear}
             onTimerRestart={this.onTimerRestart}
-            isPlaying={isPlaying}
-            isPaused={isPaused}
-            isStopped={isStopped}
+            playing={playing}
+            paused={paused}
+            stopped={stopped}
             totalSeconds={this.state.totalSeconds}
           />
           <br />
           <hr />
           <AudioControls
-            isMuted={isMuted}
+            muted={muted}
             onToggleChimeMute={this.toggleChimeMute}
             volumeValue={this.state.volume}
             onVolumeChange={this.onVolumeChange}

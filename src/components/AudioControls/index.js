@@ -5,7 +5,7 @@ import VolumeSlider from './VolumeSlider';
 
 const AudioControls = (props) => <div>
   <MuteToggle
-    isMuted={props.isMuted}
+    muted={props.muted}
     onToggleChimeMute={props.onToggleChimeMute}
   />
   <VolumeSlider
@@ -16,7 +16,7 @@ const AudioControls = (props) => <div>
 
 AudioControls.propTypes = {
   onToggleChimeMute: PropTypes.func,
-  isMuted: PropTypes.bool,
+  muted: PropTypes.bool,
   volumeValue: PropTypes.string,
   onVolumeChange: PropTypes.func,
 };
