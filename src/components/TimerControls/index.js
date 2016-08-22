@@ -7,19 +7,22 @@ import clear from '../../icons/ic_delete_24px.svg';
 import restart from '../../icons/ic_replay_24px.svg';
 
 const TimerControls = (props) => {
+  const {
+    onTimerPause, onTimerStart, onTimerClear, onTimerRestart, stopped, playing, totalSeconds,
+  } = props;
   let playOrPause;
   let clearButton;
   let restartButton;
-  if (props.totalSeconds > 0) {
-    if (props.playing) {
-      playOrPause = <TimerButton action={props.onTimerPause} glyph={pause} />;
+  if (totalSeconds > 0) {
+    if (playing) {
+      playOrPause = <TimerButton action={onTimerPause} glyph={pause} />;
     } else {
-      playOrPause = <TimerButton action={props.onTimerStart} glyph={play} />;
+      playOrPause = <TimerButton action={onTimerStart} glyph={play} />;
     }
   }
-  if (!props.stopped) {
-    clearButton = <TimerButton action={props.onTimerClear} glyph={clear} />;
-    restartButton = <TimerButton action={props.onTimerRestart} glyph={restart} />;
+  if (!stopped) {
+    clearButton = <TimerButton action={onTimerClear} glyph={clear} />;
+    restartButton = <TimerButton action={onTimerRestart} glyph={restart} />;
   }
   return (
     <div>
