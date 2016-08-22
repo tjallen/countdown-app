@@ -49,19 +49,19 @@ export default class App extends Component {
     clearInterval(this.timerInterval);
   }
   onTimerStart() {
-    if (this.state.totalSeconds === 0) {
+    const { totalSeconds, remainingSeconds, tickDelay, paused } = this.state;
+    if (totalSeconds === 0) {
       alert('time must be above 0 seconds');
       return;
     }
-    this.totalSeconds = this.state.remainingSeconds;
     let offset = 0;
     // if paused, offset start date by the num of seconds it was paused at
     // otherwise just use Date.now()
-    if (this.state.paused) {
-      offset = (this.state.totalSeconds - this.state.remainingSeconds) * 1000;
+    if (paused) {
+      offset = (totalSeconds - remainingSeconds) * 1000;
     }
     const timerStartDate = (Date.now() - offset);
-    this.timerInterval = setInterval(() => this.tick(timerStartDate), this.state.tickDelay);
+    this.timerInterval = setInterval(() => this.tick(timerStartDate), tickDelay);
     this.setState({
       paused: false,
       stopped: false,
