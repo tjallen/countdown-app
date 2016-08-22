@@ -74,7 +74,6 @@ export default class App extends Component {
     }, clearInterval(this.timerInterval));
   }
   onTimerClear() {
-    console.log('clear!');
     this.setState({
       remainingSeconds: 0,
       totalSeconds: 0,
@@ -122,7 +121,6 @@ export default class App extends Component {
   }
   // fire the chime, message etc when target seconds is arrived at
   timerCompleted() {
-    console.log('target seconds reached!', Date.now());
     if (this.state.loop) {
       this.onTimerRestart();
     } else if (!this.state.loop) {
@@ -170,8 +168,6 @@ export default class App extends Component {
     } else {
       timerDisplayConditional = <TimerDisplay time={remainingSeconds} />;
     }
-    // dbg
-    // console.log(`Mute:${isMuted}, Stop:${isStopped}, Pause:${isPaused}, Play:${isPlaying}`);
     return (
       <div className={styles.container}>
         <div className={styles.main}>
