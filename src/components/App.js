@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-// css modules
+// css module
 import styles from './App.scss';
 
 // audio files
 import chime from '../files/chime.mp3';
 
 // child components
+import TimerControls from './TimerControls';
 import TimerDisplay from './TimerDisplay';
 import TimerInput from './TimerInput';
 import AudioControls from './AudioControls';
-import TimerControls from './TimerControls';
 
 export default class App extends Component {
   constructor() {
@@ -54,9 +54,9 @@ export default class App extends Component {
       alert('time must be above 0 seconds');
       return;
     }
-    let offset = 0;
     // if paused, offset start date by the num of seconds it was paused at
     // otherwise just use Date.now()
+    let offset = 0;
     if (paused) {
       offset = (totalSeconds - remainingSeconds) * 1000;
     }
@@ -110,7 +110,6 @@ export default class App extends Component {
     const remainingSeconds = this.state.totalSeconds - passedSeconds;
     console.log('========= new tick =========');
     console.log(`passed: ${passedSeconds} | remaining: ${remainingSeconds}`);
-    console.log(`(${this.state.totalSeconds} - ${passedSeconds})`);
     if (remainingSeconds <= 0) {
       this.timerCompleted();
     }
