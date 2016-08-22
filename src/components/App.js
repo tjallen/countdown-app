@@ -23,6 +23,7 @@ export default class App extends Component {
       chime,
       volume: '0.1',
       muted: false,
+      lastSecond: null,
     };
     this.tick = this.tick.bind(this);
     this.onTimerStart = this.onTimerStart.bind(this);
@@ -100,7 +101,6 @@ export default class App extends Component {
   }
   // tick method run by interval to update timer once a second
   tick(timerStartDate) {
-    console.log('========= new tick =========');
     // on the penultimate tick, prepare a callback for the final tick
     let callback;
     if (this.state.remainingSeconds === 1) {
@@ -108,19 +108,24 @@ export default class App extends Component {
     }
     const passedSeconds = Math.round((Date.now() - timerStartDate) / 1000);
     const remainingSeconds = this.state.totalSeconds - passedSeconds;
+    console.log('========= new tick =========');
     console.log(`passed: ${passedSeconds} | remaining: ${remainingSeconds}`);
+    console.log(`(${this.state.totalSeconds} - ${passedSeconds})`);
+    if (remainingSeconds <= 0) {
+      this.timerCompleted();
+    }
     this.setState({
       remainingSeconds,
+      lastSecond: remainingSeconds,
     }, callback);
   }
   // fire the chime, message etc when target seconds is arrived at
   timerCompleted() {
     console.log('target seconds reached!', Date.now());
-    this.onTimerClear();
     if (this.state.loop) {
-      // loop
+      this.onTimerRestart();
     } else if (!this.state.loop) {
-      // dont loop
+      this.onTimerClear();
     }
   }
   // take time in seconds and format to hh:mm:ss
