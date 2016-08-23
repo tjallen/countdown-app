@@ -6,10 +6,9 @@ import pause from '../../icons/ic_pause_24px.svg';
 import clear from '../../icons/ic_delete_24px.svg';
 import restart from '../../icons/ic_replay_24px.svg';
 
-const TimerControls = (props) => {
-  const {
-    onTimerPause, onTimerStart, onTimerClear, onTimerRestart, stopped, playing, totalSeconds,
-  } = props;
+const TimerControls = ({
+  onTimerPause, onTimerStart, onTimerClear, onTimerRestart, stopped, playing, totalSeconds,
+}) => {
   let playOrPause;
   let clearButton;
   let restartButton;
@@ -33,12 +32,12 @@ const TimerControls = (props) => {
   );
 };
 TimerControls.propTypes = {
-  onTimerStart: PropTypes.func,
-  onTimerPause: PropTypes.func,
   onTimerClear: PropTypes.func,
+  onTimerPause: PropTypes.func,
   onTimerRestart: PropTypes.func,
-  stopped: PropTypes.bool,
+  onTimerStart: PropTypes.func,
   playing: PropTypes.bool,
+  stopped: PropTypes.bool,
   totalSeconds: PropTypes.number,
 };
 
