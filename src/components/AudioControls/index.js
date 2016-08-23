@@ -3,22 +3,22 @@ import React, { PropTypes } from 'react';
 import MuteToggle from './MuteToggle';
 import VolumeSlider from './VolumeSlider';
 
-const AudioControls = (props) => <div>
+const AudioControls = ({ muted, onToggleChimeMute, onVolumeChange, volumeValue }) => <div>
   <MuteToggle
-    muted={props.muted}
-    onToggleChimeMute={props.onToggleChimeMute}
+    muted={muted}
+    onToggleChimeMute={onToggleChimeMute}
   />
   <VolumeSlider
-    volumeValue={props.volumeValue}
-    onVolumeChange={props.onVolumeChange}
+    volumeValue={volumeValue}
+    onVolumeChange={onVolumeChange}
   />
 </div>;
 
 AudioControls.propTypes = {
-  onToggleChimeMute: PropTypes.func,
   muted: PropTypes.bool,
-  volumeValue: PropTypes.string,
+  onToggleChimeMute: PropTypes.func,
   onVolumeChange: PropTypes.func,
+  volumeValue: PropTypes.string,
 };
 
 export default AudioControls;
