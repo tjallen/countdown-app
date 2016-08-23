@@ -23,7 +23,7 @@ export default class App extends Component {
       chime,
       volume: '0.1',
       muted: false,
-      lastSecond: null,
+      lastTime: null,
       tickDelay: 1000,
     };
     this.tick = this.tick.bind(this);
@@ -54,11 +54,11 @@ export default class App extends Component {
       alert('time must be above 0 seconds');
       return;
     }
-    // if paused, offset start date by the num of seconds it was paused at
+    // if paused, offset start date by the time it was paused at
     // otherwise just use Date.now()
     let offset = 0;
     if (paused) {
-      offset = (totalTime - remainingTime) * 1000;
+      offset = (totalTime - remainingTime);
     }
     const timerStartDate = (Date.now() - offset);
     this.timerInterval = setInterval(() => this.tick(timerStartDate), tickDelay);
@@ -106,16 +106,16 @@ export default class App extends Component {
     if (this.state.remainingTime === 1) {
       callback = this.timerCompleted();
     }
-    const passedSeconds = Math.round((Date.now() - timerStartDate) / 1000);
-    const remainingTime = this.state.totalTime - passedSeconds;
+    const timerDuration = Math.round((Date.now() - timerStartDate));
+    const remainingTime = this.state.totalTime - timerDuration;
     console.log('========= new tick =========');
-    console.log(`passed: ${passedSeconds} | remaining: ${remainingTime}`);
+    console.log(`passed: ${timerDuration} | remaining: ${remainingTime}`);
     if (remainingTime <= 0) {
       this.timerCompleted();
     }
     this.setState({
       remainingTime,
-      lastSecond: remainingTime,
+      lastTime: remainingTime,
     }, callback);
   }
   // fire the chime, message etc when target seconds is arrived at
@@ -126,8 +126,9 @@ export default class App extends Component {
       this.onTimerClear();
     }
   }
-  // take time in seconds and format to hh:mm:ss
-  formatTime(seconds) {
+  // takes time in milliseconds, renders to hh:mm:ss for readable time
+  formatTime(ms) {
+    const seconds = ms / 1000;
     let mins = Math.floor(seconds / 60);
     const secs = this.zeroPad(seconds % 60);
     const hours = this.zeroPad(Math.floor(mins / 60));
@@ -143,12 +144,12 @@ export default class App extends Component {
     const paddedNum = `0${num}`;
     return paddedNum;
   }
-  // update state.targetSeconds from user h/m/s inputs
+  // update state.targetTime from user h/m/s inputs
   updateTime(hours, minutes, seconds) {
-    const s = (hours * 3600) + (minutes * 60) + seconds;
+    const ms = ((hours * 3600) + (minutes * 60) + seconds) * 1000;
     this.setState({
-      totalTime: s,
-      remainingTime: s,
+      totalTime: ms,
+      remainingTime: ms,
     });
   }
   render() {
