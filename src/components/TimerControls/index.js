@@ -7,12 +7,12 @@ import clear from '../../icons/ic_delete_24px.svg';
 import restart from '../../icons/ic_replay_24px.svg';
 
 const TimerControls = ({
-  onTimerPause, onTimerStart, onTimerClear, onTimerRestart, stopped, playing, totalSeconds,
+  onTimerPause, onTimerStart, onTimerClear, onTimerRestart, stopped, playing, totalTime,
 }) => {
   let playOrPause;
   let clearButton;
   let restartButton;
-  if (totalSeconds > 0) {
+  if (totalTime > 0) {
     if (playing) {
       playOrPause = <TimerButton action={onTimerPause} glyph={pause} />;
     } else {
@@ -38,7 +38,7 @@ TimerControls.propTypes = {
   onTimerStart: PropTypes.func,
   playing: PropTypes.bool,
   stopped: PropTypes.bool,
-  totalSeconds: PropTypes.number,
+  totalTime: PropTypes.number,
 };
 
 export default TimerControls;

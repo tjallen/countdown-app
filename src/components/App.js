@@ -15,8 +15,8 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      remainingSeconds: 0,
-      totalSeconds: 0,
+      remainingTime: 0,
+      totalTime: 0,
       paused: false,
       stopped: true,
       loop: false,
@@ -38,7 +38,7 @@ export default class App extends Component {
   componentWillMount() {
     // define timerInterval but don't set it yet
     this.timerInterval = null;
-    this.state.totalSeconds = this.state.remainingSeconds;
+    this.state.totalTime = this.state.remainingTime;
   }
   componentDidMount() {
     // initialize audio element
@@ -49,8 +49,8 @@ export default class App extends Component {
     clearInterval(this.timerInterval);
   }
   onTimerStart() {
-    const { totalSeconds, remainingSeconds, tickDelay, paused } = this.state;
-    if (totalSeconds === 0) {
+    const { totalTime, remainingTime, tickDelay, paused } = this.state;
+    if (totalTime === 0) {
       alert('time must be above 0 seconds');
       return;
     }
@@ -58,7 +58,7 @@ export default class App extends Component {
     // otherwise just use Date.now()
     let offset = 0;
     if (paused) {
-      offset = (totalSeconds - remainingSeconds) * 1000;
+      offset = (totalTime - remainingTime) * 1000;
     }
     const timerStartDate = (Date.now() - offset);
     this.timerInterval = setInterval(() => this.tick(timerStartDate), tickDelay);
@@ -70,13 +70,13 @@ export default class App extends Component {
   onTimerPause() {
     this.setState({
       paused: true,
-      remainingSeconds: this.state.remainingSeconds,
+      remainingTime: this.state.remainingTime,
     }, clearInterval(this.timerInterval));
   }
   onTimerClear() {
     this.setState({
-      remainingSeconds: 0,
-      totalSeconds: 0,
+      remainingTime: 0,
+      totalTime: 0,
       stopped: true,
       paused: false,
     }, clearInterval(this.timerInterval));
@@ -84,7 +84,7 @@ export default class App extends Component {
   onTimerRestart() {
     this.onTimerPause();
     this.setState({
-      remainingSeconds: this.state.totalSeconds,
+      remainingTime: this.state.totalTime,
     }, this.onTimerStart);
   }
   onVolumeChange(event) {
@@ -103,19 +103,19 @@ export default class App extends Component {
   tick(timerStartDate) {
     // on the penultimate tick, prepare a callback for the final tick
     let callback;
-    if (this.state.remainingSeconds === 1) {
+    if (this.state.remainingTime === 1) {
       callback = this.timerCompleted();
     }
     const passedSeconds = Math.round((Date.now() - timerStartDate) / 1000);
-    const remainingSeconds = this.state.totalSeconds - passedSeconds;
+    const remainingTime = this.state.totalTime - passedSeconds;
     console.log('========= new tick =========');
-    console.log(`passed: ${passedSeconds} | remaining: ${remainingSeconds}`);
-    if (remainingSeconds <= 0) {
+    console.log(`passed: ${passedSeconds} | remaining: ${remainingTime}`);
+    if (remainingTime <= 0) {
       this.timerCompleted();
     }
     this.setState({
-      remainingSeconds,
-      lastSecond: remainingSeconds,
+      remainingTime,
+      lastSecond: remainingTime,
     }, callback);
   }
   // fire the chime, message etc when target seconds is arrived at
@@ -147,25 +147,25 @@ export default class App extends Component {
   updateTime(hours, minutes, seconds) {
     const s = (hours * 3600) + (minutes * 60) + seconds;
     this.setState({
-      totalSeconds: s,
-      remainingSeconds: s,
+      totalTime: s,
+      remainingTime: s,
     });
   }
   render() {
     // helper/readability vars for jsx
-    let { totalSeconds, remainingSeconds } = this.state;
-    totalSeconds = this.formatTime(totalSeconds);
-    remainingSeconds = this.formatTime(remainingSeconds);
+    let { totalTime, remainingTime } = this.state;
+    totalTime = this.formatTime(totalTime);
+    remainingTime = this.formatTime(remainingTime);
     const { muted, stopped, paused } = this.state;
     const playing = !stopped && !paused;
     // conditional rendering for TimerInput, TimerDisplay time prop
     let timerDisplayConditional;
     let timerInputConditional;
     if (stopped) {
-      timerDisplayConditional = <TimerDisplay time={totalSeconds} />;
+      timerDisplayConditional = <TimerDisplay time={totalTime} />;
       timerInputConditional = <TimerInput updateTime={this.updateTime} />;
     } else {
-      timerDisplayConditional = <TimerDisplay time={remainingSeconds} />;
+      timerDisplayConditional = <TimerDisplay time={remainingTime} />;
     }
     return (
       <div className={styles.container}>
@@ -182,7 +182,7 @@ export default class App extends Component {
             playing={playing}
             paused={paused}
             stopped={stopped}
-            totalSeconds={this.state.totalSeconds}
+            totalTime={this.state.totalTime}
           />
           <br />
           <hr />
