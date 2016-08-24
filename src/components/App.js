@@ -24,6 +24,7 @@ export default class App extends Component {
       volume: '0.1',
       muted: false,
       interval: 1000,
+      timeoutId: null,
     };
     this.tick = this.tick.bind(this);
     this.onTimerStart = this.onTimerStart.bind(this);
@@ -35,8 +36,6 @@ export default class App extends Component {
     this.updateTime = this.updateTime.bind(this);
   }
   componentWillMount() {
-    // define timerInterval but don't set it yet
-    this.timerInterval = null;
     this.state.totalTime = this.state.remainingTime;
   }
   componentDidMount() {
@@ -45,9 +44,10 @@ export default class App extends Component {
     this.audioElement.muted = this.state.muted;
   }
   componentWillUnmount() {
-    clearTimeout(this.timerInterval);
+    clearTimeout(this.state.timeoutId);
   }
   onTimerStart() {
+    clearTimeout(this.state.timeoutId);
     const { totalTime, remainingTime, interval, paused } = this.state;
     if (totalTime === 0) {
       alert('time must be above 0 seconds');
@@ -60,10 +60,10 @@ export default class App extends Component {
       offset = (totalTime - remainingTime);
     }
     const timerStartDate = (Date.now() - offset);
-    this.timerInterval = setTimeout(() => this.tick(timerStartDate), interval);
     this.setState({
       paused: false,
       stopped: false,
+      timeoutId: setTimeout(() => this.tick(timerStartDate), interval),
     });
   }
   onTimerPause() {
@@ -71,21 +71,36 @@ export default class App extends Component {
     this.setState({
       paused: true,
       remainingTime: this.state.remainingTime,
-    }, clearTimeout(this.timerInterval));
+    }, clearTimeout(this.state.timeoutId));
   }
   onTimerClear() {
+    clearTimeout(this.state.timeoutId);
     this.setState({
       remainingTime: 0,
       totalTime: 0,
       stopped: true,
       paused: false,
-    }, clearTimeout(this.timerInterval));
+      timeoutId: null,
+    });
   }
   onTimerRestart() {
-    this.onTimerPause();
+    clearTimeout(this.state.timeoutId);
+    const total = this.state.totalTime;
     this.setState({
-      remainingTime: this.state.totalTime,
+      remainingTime: total,
+      totalTime: total,
+      timeoutId: null,
     }, this.onTimerStart);
+  }
+  onTimerStop() {
+    clearTimeout(this.state.timeoutId);
+    this.setState({
+      remainingTime: 0,
+      totalTime: 0,
+      stopped: true,
+      paused: false,
+      timeoutId: null,
+    });
   }
   onVolumeChange(event) {
     this.setState({
@@ -113,8 +128,10 @@ export default class App extends Component {
     const nextInterval = (this.state.interval - (delta % this.state.interval));
     // continue the setTimeout loop / fire next tick() and update state
     if (!this.state.paused && !this.state.stopped) {
-      setTimeout(() => this.tick(timerStartDate), nextInterval);
+      // store current timeout id in state
+      const timeoutId = setTimeout(() => this.tick(timerStartDate), nextInterval);
       this.setState({
+        timeoutId,
         remainingTime,
       });
     }
