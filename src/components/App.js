@@ -49,7 +49,7 @@ export default class App extends Component {
   onTimerStart() {
     clearTimeout(this.state.timeoutId);
     const { totalTime, remainingTime, interval, paused } = this.state;
-    if (totalTime === 0) {
+    if (totalTime <= 0) {
       alert('time must be above 0 seconds');
       return;
     }
