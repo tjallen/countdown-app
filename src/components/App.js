@@ -23,8 +23,7 @@ export default class App extends Component {
       chime,
       volume: '0.1',
       muted: false,
-      lastTime: null,
-      tickDelay: 1000,
+      interval: 1000,
     };
     this.tick = this.tick.bind(this);
     this.onTimerStart = this.onTimerStart.bind(this);
@@ -46,10 +45,10 @@ export default class App extends Component {
     this.audioElement.muted = this.state.muted;
   }
   componentWillUnmount() {
-    clearInterval(this.timerInterval);
+    clearTimeout(this.timerInterval);
   }
   onTimerStart() {
-    const { totalTime, remainingTime, tickDelay, paused } = this.state;
+    const { totalTime, remainingTime, interval, paused } = this.state;
     if (totalTime === 0) {
       alert('time must be above 0 seconds');
       return;
@@ -61,17 +60,18 @@ export default class App extends Component {
       offset = (totalTime - remainingTime);
     }
     const timerStartDate = (Date.now() - offset);
-    this.timerInterval = setInterval(() => this.tick(timerStartDate), tickDelay);
+    this.timerInterval = setTimeout(() => this.tick(timerStartDate), interval);
     this.setState({
       paused: false,
       stopped: false,
     });
   }
   onTimerPause() {
+    console.log('timerPause');
     this.setState({
       paused: true,
       remainingTime: this.state.remainingTime,
-    }, clearInterval(this.timerInterval));
+    }, clearTimeout(this.timerInterval));
   }
   onTimerClear() {
     this.setState({
@@ -79,7 +79,7 @@ export default class App extends Component {
       totalTime: 0,
       stopped: true,
       paused: false,
-    }, clearInterval(this.timerInterval));
+    }, clearTimeout(this.timerInterval));
   }
   onTimerRestart() {
     this.onTimerPause();
@@ -99,27 +99,29 @@ export default class App extends Component {
     });
     this.audioElement.muted = !this.audioElement.muted;
   }
-  // tick method run by interval to update timer once a second
+  // tick method run by looping setTimeout to update timer every ~1000ms
   tick(timerStartDate) {
-    // on the penultimate tick, prepare a callback for the final tick
-    let callback;
-    if (this.state.remainingTime === 1) {
-      callback = this.timerCompleted();
-    }
-    const timerDuration = Math.round((Date.now() - timerStartDate));
-    const remainingTime = this.state.totalTime - timerDuration;
-    console.log('========= new tick =========');
-    console.log(`passed: ${timerDuration} | remaining: ${remainingTime}`);
+    // delta time / how long since timer started
+    const delta = Date.now() - timerStartDate;
+    // remaining time until 0; just 0 if last tick takes into minus
+    const remainingTime = Math.max(this.state.totalTime - delta, 0);
+    // fire complete method if we've reached 0
     if (remainingTime <= 0) {
       this.timerCompleted();
     }
-    this.setState({
-      remainingTime,
-      lastTime: remainingTime,
-    }, callback);
+    // how long should next interval be to compensate for drift
+    const nextInterval = (this.state.interval - (delta % this.state.interval));
+    // continue the setTimeout loop / fire next tick() and update state
+    if (!this.state.paused && !this.state.stopped) {
+      setTimeout(() => this.tick(timerStartDate), nextInterval);
+      this.setState({
+        remainingTime,
+      });
+    }
   }
   // fire the chime, message etc when target seconds is arrived at
   timerCompleted() {
+    console.log('timerCompleted');
     if (this.state.loop) {
       this.onTimerRestart();
     } else if (!this.state.loop) {
@@ -130,7 +132,7 @@ export default class App extends Component {
   formatTime(ms) {
     const seconds = ms / 1000;
     let mins = Math.floor(seconds / 60);
-    const secs = this.zeroPad(seconds % 60);
+    const secs = this.zeroPad(Math.ceil(seconds % 60));
     const hours = this.zeroPad(Math.floor(mins / 60));
     mins = this.zeroPad(mins % 60);
     const output = `${hours}:${mins}:${secs}`;
