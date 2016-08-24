@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 
-export default class TimerInput extends Component {
+import TimerFormInput from './TimerFormInput';
+
+export default class TimerForm extends Component {
   static propTypes = {
     updateTime: PropTypes.func.isRequired,
   };
@@ -32,35 +34,24 @@ export default class TimerInput extends Component {
   render() {
     return (
       <div onChange={this.handleChange}>
-        <input
+        <TimerFormInput
           id="hours"
           type="number"
           min="0"
           max="24"
-          step="1"
-          defaultValue="0"
-        ></input>
-        <label htmlFor="hours">Hours</label>
-        <br />
-        <input
+        />
+        <TimerFormInput
           id="minutes"
           type="number"
           min="0"
           max="59"
-          step="1"
-          defaultValue="0"
-        ></input>
-        <label htmlFor="minutes">Minutes</label>
-        <br />
-        <input
+        />
+        <TimerFormInput
           id="seconds"
           type="number"
           min="0"
           max="59"
-          step="1"
-          defaultValue="0"
-        ></input>
-        <label htmlFor="seconds">Secs</label>
+        />
       </div>
     );
   }

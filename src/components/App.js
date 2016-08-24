@@ -8,7 +8,7 @@ import chime from '../files/chime.mp3';
 // child components
 import TimerControls from './TimerControls';
 import TimerDisplay from './TimerDisplay';
-import TimerInput from './TimerInput';
+import TimerForm from './TimerForm';
 import AudioControls from './AudioControls';
 
 export default class App extends Component {
@@ -178,12 +178,12 @@ export default class App extends Component {
     remainingTime = this.formatTime(remainingTime);
     const { muted, stopped, paused } = this.state;
     const playing = !stopped && !paused;
-    // conditional rendering for TimerInput, TimerDisplay time prop
+    // conditional rendering for TimerForm, TimerDisplay time prop
     let timerDisplayConditional;
     let timerInputConditional;
     if (stopped) {
       timerDisplayConditional = <TimerDisplay time={totalTime} />;
-      timerInputConditional = <TimerInput updateTime={this.updateTime} />;
+      timerInputConditional = <TimerForm updateTime={this.updateTime} />;
     } else {
       timerDisplayConditional = <TimerDisplay time={remainingTime} />;
     }
