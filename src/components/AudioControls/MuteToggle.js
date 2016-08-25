@@ -8,6 +8,7 @@ const MuteToggle = (props) =>
   <div>
     <button
       onClick={props.onToggleChimeMute}
+      title="Toggle mute"
     >
       {props.isMuted ? <Icon glyph={unMute} /> : <Icon glyph={mute} />}
     </button>

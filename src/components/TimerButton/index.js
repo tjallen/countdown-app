@@ -1,14 +1,16 @@
 import React, { PropTypes } from 'react';
 import Icon from '../Icon';
 
-const TimerButton = (props) =>
+const TimerButton = ({ action, glyph, title }) =>
   <button
-    onClick={props.action}
+    onClick={action}
+    title={title}
   >
-    <Icon glyph={props.glyph} />
+    <Icon glyph={glyph} />
   </button>;
 TimerButton.propTypes = {
   action: PropTypes.func.isRequired,
   glyph: PropTypes.string,
+  title: PropTypes.string,
 };
 export default TimerButton;
