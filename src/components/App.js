@@ -19,7 +19,7 @@ export default class App extends Component {
       totalTime: 0,
       paused: false,
       stopped: true,
-      loop: false,
+      loop: true,
       chime,
       volume: '0.1',
       muted: false,
@@ -34,6 +34,7 @@ export default class App extends Component {
     this.toggleChimeMute = this.toggleChimeMute.bind(this);
     this.onVolumeChange = this.onVolumeChange.bind(this);
     this.updateTime = this.updateTime.bind(this);
+    this.toggleLoop = this.toggleLoop.bind(this);
   }
   componentWillMount() {
     this.state.totalTime = this.state.remainingTime;
@@ -67,7 +68,6 @@ export default class App extends Component {
     });
   }
   onTimerPause() {
-    console.log('timerPause');
     this.setState({
       paused: true,
       remainingTime: this.state.remainingTime,
@@ -86,6 +86,7 @@ export default class App extends Component {
   onTimerRestart() {
     clearTimeout(this.state.timeoutId);
     const total = this.state.totalTime;
+    this.onTimerClear();
     this.setState({
       remainingTime: total,
       totalTime: total,
@@ -114,6 +115,11 @@ export default class App extends Component {
     });
     this.audioElement.muted = !this.audioElement.muted;
   }
+  toggleLoop() {
+    this.setState({
+      loop: !this.state.loop,
+    });
+  }
   // tick method run by looping setTimeout to update timer every ~1000ms
   tick(timerStartDate) {
     // delta time / how long since timer started
@@ -123,6 +129,7 @@ export default class App extends Component {
     // fire complete method if we've reached 0
     if (remainingTime <= 0) {
       this.timerCompleted();
+      return;
     }
     // how long should next interval be to compensate for drift
     const nextInterval = (this.state.interval - (delta % this.state.interval));
@@ -203,6 +210,7 @@ export default class App extends Component {
             paused={paused}
             stopped={stopped}
             totalTime={this.state.totalTime}
+            toggleLoop={this.toggleLoop}
           />
           <br />
           <hr />

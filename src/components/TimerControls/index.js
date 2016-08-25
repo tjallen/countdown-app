@@ -5,13 +5,15 @@ import play from '../../icons/ic_play_arrow_24px.svg';
 import pause from '../../icons/ic_pause_24px.svg';
 import clear from '../../icons/ic_delete_24px.svg';
 import restart from '../../icons/ic_replay_24px.svg';
+import loop from '../../icons/ic_loop_24px.svg';
 
 const TimerControls = ({
-  onTimerPause, onTimerStart, onTimerClear, onTimerRestart, stopped, playing, totalTime,
+  onTimerPause, onTimerStart, onTimerClear, onTimerRestart, stopped, playing, totalTime, toggleLoop,
 }) => {
   let playOrPause;
   let clearButton;
   let restartButton;
+  let loopToggle;
   if (totalTime > 0) {
     if (playing) {
       playOrPause = <TimerButton action={onTimerPause} glyph={pause} />;
@@ -22,12 +24,15 @@ const TimerControls = ({
   if (!stopped) {
     clearButton = <TimerButton action={onTimerClear} glyph={clear} />;
     restartButton = <TimerButton action={onTimerRestart} glyph={restart} />;
+    loopToggle = <TimerButton action={toggleLoop} glyph={loop} />;
   }
   return (
     <div>
       {clearButton}
-      {playOrPause}
       {restartButton}
+      {loopToggle}
+      <br />
+      {playOrPause}
     </div>
   );
 };
@@ -36,6 +41,7 @@ TimerControls.propTypes = {
   onTimerPause: PropTypes.func,
   onTimerRestart: PropTypes.func,
   onTimerStart: PropTypes.func,
+  toggleLoop: PropTypes.func,
   playing: PropTypes.bool,
   stopped: PropTypes.bool,
   totalTime: PropTypes.number,
