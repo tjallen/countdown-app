@@ -14,9 +14,9 @@ const TimerFormInput = ({ id, min, max, step = 1, defaultValue = 0, type = 'numb
   </div>;
 TimerFormInput.propTypes = {
   id: PropTypes.string.isRequired,
-  min: PropTypes.string.isRequired,
-  max: PropTypes.string.isRequired,
-  step: PropTypes.string,
+  min: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
+  step: PropTypes.number,
   defaultValue: PropTypes.string,
   type: PropTypes.string,
   label: PropTypes.string,

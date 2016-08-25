@@ -37,20 +37,20 @@ export default class TimerForm extends Component {
         <TimerFormInput
           id="hours"
           type="number"
-          min="0"
-          max="24"
+          min={0}
+          max={24}
         />
         <TimerFormInput
           id="minutes"
           type="number"
-          min="0"
-          max="59"
+          min={0}
+          max={59}
         />
         <TimerFormInput
           id="seconds"
           type="number"
-          min="0"
-          max="59"
+          min={0}
+          max={59}
         />
       </div>
     );
