@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import React, { Component, PropTypes } from 'react';
 
 import TimerFormInput from './TimerFormInput';
@@ -19,6 +21,15 @@ export default class TimerForm extends Component {
   handleChange(evt) {
     const type = evt.target.id;
     let inputValue = parseInt(evt.target.value, 10);
+    const max = parseInt(evt.target.max, 10);
+    /*
+    if max broken with keypresses, revert to max value
+    breaks eslint rule: http://eslint.org/docs/rules/no-param-reassign
+    but will do for now
+    */
+    if (inputValue > max) {
+      evt.target.value = max;
+    }
     // if field cleared we reset to 0
     if (isNaN(inputValue)) {
       inputValue = 0;
