@@ -83,9 +83,8 @@ export default class App extends Component {
       timeoutId: null,
     });
   }
-  onTimerRestart() {
+  onTimerRestart(total = this.state.totalTime) {
     clearTimeout(this.state.timeoutId);
-    const total = this.state.totalTime;
     this.onTimerClear();
     this.setState({
       remainingTime: total,
@@ -145,9 +144,12 @@ export default class App extends Component {
   }
   // fire the chime, message etc when target seconds is arrived at
   timerCompleted() {
+    const total = this.state.totalTime;
     console.log('timerCompleted');
     if (this.state.loop) {
-      this.onTimerRestart();
+      this.onTimerClear();
+      console.log('restarting');
+      this.onTimerRestart(total);
     } else if (!this.state.loop) {
       this.onTimerClear();
     }
@@ -156,7 +158,7 @@ export default class App extends Component {
   formatTime(ms) {
     const seconds = ms / 1000;
     let mins = Math.floor(seconds / 60);
-    const secs = this.zeroPad(Math.ceil(seconds % 60));
+    const secs = this.zeroPad(Math.round(seconds % 60));
     const hours = this.zeroPad(Math.floor(mins / 60));
     mins = this.zeroPad(mins % 60);
     const output = `${hours}:${mins}:${secs}`;
