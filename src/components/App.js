@@ -210,8 +210,6 @@ export default class App extends Component {
             totalTime={this.state.totalTime}
             toggleLoop={this.toggleLoop}
           />
-          <br />
-          <hr />
           <AudioControls
             muted={muted}
             onToggleChimeMute={this.toggleChimeMute}
