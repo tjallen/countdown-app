@@ -32,7 +32,6 @@ export default class App extends Component {
     this.onTimerStart = this.onTimerStart.bind(this);
     this.onTimerPause = this.onTimerPause.bind(this);
     this.onTimerClear = this.onTimerClear.bind(this);
-    this.onTimerRestart = this.onTimerRestart.bind(this);
     this.toggleChimeMute = this.toggleChimeMute.bind(this);
     this.onVolumeChange = this.onVolumeChange.bind(this);
     this.updateTime = this.updateTime.bind(this);
@@ -49,7 +48,12 @@ export default class App extends Component {
   componentWillUnmount() {
     clearTimeout(this.state.timeoutId);
   }
-  onTimerStart() {
+  onTimerStart(specified) {
+    // if optional argument is used, prepare to start at a specific time
+    if (typeof(specified) === 'number') {
+      console.log(`onTimerStart recieved argument: ${specified}`);
+      this.updateTime(specified);
+    }
     clearTimeout(this.state.timeoutId);
     const { totalTime, remainingTime, interval, paused } = this.state;
     if (totalTime <= 0) {
@@ -84,15 +88,6 @@ export default class App extends Component {
       paused: false,
       timeoutId: null,
     });
-  }
-  onTimerRestart(total = this.state.totalTime) {
-    clearTimeout(this.state.timeoutId);
-    this.onTimerClear();
-    this.setState({
-      remainingTime: total,
-      totalTime: total,
-      timeoutId: null,
-    }, this.onTimerStart);
   }
   onTimerStop() {
     clearTimeout(this.state.timeoutId);
@@ -146,14 +141,12 @@ export default class App extends Component {
   }
   // fire the chime, message etc when target seconds is arrived at
   timerCompleted() {
-    const total = this.state.totalTime;
     console.log('timerCompleted');
+    const total = this.state.totalTime;
+    this.onTimerClear();
     if (this.state.loop) {
-      this.onTimerClear();
       console.log('restarting');
-      this.onTimerRestart(total);
-    } else if (!this.state.loop) {
-      this.onTimerClear();
+      this.onTimerStart(total);
     }
   }
   // takes time in milliseconds, renders to hh:mm:ss for readable time
@@ -187,6 +180,7 @@ export default class App extends Component {
       totalTime: ms,
       remainingTime: ms,
     });
+    console.log(`time updated to ${ms}`);
   }
   render() {
     // helper/readability vars for jsx
@@ -206,7 +200,6 @@ export default class App extends Component {
             onTimerStart={this.onTimerStart}
             onTimerPause={this.onTimerPause}
             onTimerClear={this.onTimerClear}
-            onTimerRestart={this.onTimerRestart}
             playing={playing}
             paused={paused}
             stopped={stopped}

@@ -8,7 +8,7 @@ import restart from '../../icons/ic_replay_24px.svg';
 import loop from '../../icons/ic_loop_24px.svg';
 
 const TimerControls = ({
-  onTimerPause, onTimerStart, onTimerClear, onTimerRestart, stopped, playing, totalTime, toggleLoop,
+  onTimerPause, onTimerStart, onTimerClear, stopped, playing, totalTime, toggleLoop,
 }) => {
   let playOrPause;
   let clearButton;
@@ -23,7 +23,7 @@ const TimerControls = ({
   }
   if (!stopped) {
     clearButton = <TimerButton action={onTimerClear} glyph={clear} title="Clear timer" />;
-    restartButton = <TimerButton action={onTimerRestart} glyph={restart} title="Restart timer" />;
+    restartButton = <TimerButton action={() => onTimerStart(totalTime)} glyph={restart} title="Restart timer" />;
     loopToggle = <TimerButton action={toggleLoop} glyph={loop} title="Toggle timer loop" />;
   }
   return (
@@ -39,7 +39,6 @@ const TimerControls = ({
 TimerControls.propTypes = {
   onTimerClear: PropTypes.func,
   onTimerPause: PropTypes.func,
-  onTimerRestart: PropTypes.func,
   onTimerStart: PropTypes.func,
   toggleLoop: PropTypes.func,
   playing: PropTypes.bool,
