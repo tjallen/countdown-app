@@ -28,7 +28,7 @@ const TimerControls = ({
     loopToggle = <TimerButton action={toggleLoop} glyph={loop} title="Toggle timer loop" />;
   }
   return (
-    <div>
+    <div className="TimerControls">
       {playOrPause}
       <br />
       {clearButton}

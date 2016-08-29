@@ -193,9 +193,6 @@ export default class App extends Component {
       <div className={styles.container}>
         <div className={styles.main}>
           <TimerDisplay time={remainingTime} />
-          {stopped && <TimerForm updateTime={this.updateTime} />}
-        </div>
-        <div className={styles.sub}>
           <TimerControls
             onTimerStart={this.onTimerStart}
             onTimerPause={this.onTimerPause}
@@ -206,6 +203,7 @@ export default class App extends Component {
             totalTime={this.state.totalTime}
             toggleLoop={this.toggleLoop}
           />
+          {stopped && <TimerForm updateTime={this.updateTime} />}
           <AudioControls
             muted={muted}
             onToggleChimeMute={this.toggleChimeMute}

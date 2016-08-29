@@ -19,17 +19,9 @@ img {
 .container {
   text-align: center;
   color: $fontcolor;
-  .main {
-  }
-  .sub {
-  }
   h1 {
     font-size: calc($fontsize * 2);
   }
-}
-
-button {
-  padding: 8px;
 }
 
 hr {
