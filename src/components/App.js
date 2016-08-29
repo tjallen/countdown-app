@@ -187,16 +187,11 @@ export default class App extends Component {
     remainingTime = this.formatTime(remainingTime);
     const { muted, stopped, paused } = this.state;
     const playing = !stopped && !paused;
-    // conditional rendering for TimerForm
-    let timerInputConditional;
-    if (stopped) {
-      timerInputConditional = <TimerForm updateTime={this.updateTime} />;
-    }
     return (
       <div className={styles.container}>
         <div className={styles.main}>
           <TimerDisplay time={remainingTime} />
-          {timerInputConditional}
+          {stopped && <TimerForm updateTime={this.updateTime} />}
         </div>
         <div className={styles.sub}>
           <TimerControls
