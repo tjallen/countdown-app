@@ -180,9 +180,7 @@ export default class App extends Component {
     if (theArgs.length === 1) {
       ms = theArgs[0];
     } else {
-      const hours = theArgs[0];
-      const minutes = theArgs[1];
-      const seconds = theArgs[2];
+      const [hours, minutes, seconds] = theArgs;
       ms = ((hours * 3600) + (minutes * 60) + seconds) * 1000;
     }
     this.setState({
