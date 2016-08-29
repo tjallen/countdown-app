@@ -7,6 +7,10 @@ html, body, div#app, div.container {
   height: 100%;
 }
 
+*:focus {
+  outline: none!important;
+}
+
 img {
   height: auto;
   max-width: 200px;

@@ -1,0 +1,19 @@
+.btn {
+  border: none;
+  margin: 5px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.playpause {
+  border-radius: 50px;
+}
+
+.play {
+  background-color: green;
+}
+
+.pause {
+  background-color: red;
+}
