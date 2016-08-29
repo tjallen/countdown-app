@@ -1,3 +1,5 @@
+/* eslint-disable no-console, no-alert */
+
 import React, { Component } from 'react';
 // css module
 import styles from './App.scss';
@@ -172,9 +174,17 @@ export default class App extends Component {
     const paddedNum = `0${num}`;
     return paddedNum;
   }
-  // update state.targetTime from user h/m/s inputs
-  updateTime(hours, minutes, seconds) {
-    const ms = ((hours * 3600) + (minutes * 60) + seconds) * 1000;
+  // update state.targetTime from user h/m/s inputs or directly from single arg
+  updateTime(...theArgs) {
+    let ms;
+    if (theArgs.length === 1) {
+      ms = theArgs[0];
+    } else {
+      const hours = theArgs[0];
+      const minutes = theArgs[1];
+      const seconds = theArgs[2];
+      ms = ((hours * 3600) + (minutes * 60) + seconds) * 1000;
+    }
     this.setState({
       totalTime: ms,
       remainingTime: ms,
