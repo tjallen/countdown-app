@@ -16,23 +16,24 @@ const TimerControls = ({
   let loopToggle;
   if (totalTime > 0) {
     if (playing) {
-      playOrPause = <TimerButton action={onTimerPause} glyph={pause} title="Pause" />;
+      playOrPause = <TimerButton action={onTimerPause} glyph={pause} title="Pause" css="play" />;
     } else {
-      playOrPause = <TimerButton action={onTimerStart} glyph={play} title="Play" />;
+      playOrPause = <TimerButton action={onTimerStart} glyph={play} title="Play" css="pause" />;
     }
   }
   if (!stopped) {
     clearButton = <TimerButton action={onTimerClear} glyph={clear} title="Clear timer" />;
-    restartButton = <TimerButton action={() => onTimerStart(totalTime)} glyph={restart} title="Restart timer" />;
+    restartButton =
+      <TimerButton action={() => onTimerStart(totalTime)} glyph={restart} title="Restart timer" />;
     loopToggle = <TimerButton action={toggleLoop} glyph={loop} title="Toggle timer loop" />;
   }
   return (
     <div>
+      {playOrPause}
+      <br />
       {clearButton}
       {restartButton}
       {loopToggle}
-      <br />
-      {playOrPause}
     </div>
   );
 };
