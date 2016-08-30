@@ -10,7 +10,7 @@ const MuteToggle = (props) =>
       onClick={props.onToggleChimeMute}
       title="Toggle mute"
     >
-      {props.isMuted
+      {props.muted
         ? <Icon glyph={unMute} />
         : <Icon glyph={mute} />
       }
@@ -19,7 +19,7 @@ const MuteToggle = (props) =>
 
 MuteToggle.propTypes = {
   onToggleChimeMute: PropTypes.func,
-  isMuted: PropTypes.bool,
+  muted: PropTypes.bool,
 };
 
 export default MuteToggle;
