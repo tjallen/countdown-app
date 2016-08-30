@@ -118,23 +118,15 @@ export default class App extends Component {
   }
   // tick method run by looping setTimeout to update timer every ~1000ms
   tick(timerStartDate) {
-    // delta time / how long since timer started
     const delta = Date.now() - timerStartDate;
-    // remaining time until 0; just 0 if last tick takes into minus
     const remainingTime = Math.max(this.state.totalTime - delta, 0);
-    // fire complete method if we've reached 0
+    const percCompleted = (delta / this.state.totalTime) * 100;
     if (remainingTime <= 0) {
       this.timerCompleted();
       return;
     }
-    // how long should next interval be to compensate for drift
     const nextInterval = (this.state.interval - (delta % this.state.interval));
-    // %
-    let percCompleted = (delta / this.state.totalTime) * 100;
-    console.log(percCompleted);
-    // continue the setTimeout loop / fire next tick() and update state
     if (!this.state.paused && !this.state.stopped) {
-      // store current timeout id in state
       const timeoutId = setTimeout(() => this.tick(timerStartDate), nextInterval);
       this.setState({
         timeoutId,
