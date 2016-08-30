@@ -27,6 +27,7 @@ export default class App extends Component {
       muted: false,
       interval: 1000,
       timeoutId: null,
+      percRemaining: 0,
     };
     this.tick = this.tick.bind(this);
     this.onTimerStart = this.onTimerStart.bind(this);
@@ -71,6 +72,7 @@ export default class App extends Component {
       paused: false,
       stopped: false,
       timeoutId: setTimeout(() => this.tick(timerStartDate), interval),
+      percRemaining: 100,
     });
   }
   onTimerPause() {
@@ -87,16 +89,7 @@ export default class App extends Component {
       stopped: true,
       paused: false,
       timeoutId: null,
-    });
-  }
-  onTimerStop() {
-    clearTimeout(this.state.timeoutId);
-    this.setState({
-      remainingTime: 0,
-      totalTime: 0,
-      stopped: true,
-      paused: false,
-      timeoutId: null,
+      percRemaining: 0,
     });
   }
   onVolumeChange(event) {
@@ -120,19 +113,18 @@ export default class App extends Component {
   tick(timerStartDate) {
     const delta = Date.now() - timerStartDate;
     const remainingTime = Math.max(this.state.totalTime - delta, 0);
-    const percCompleted = (delta / this.state.totalTime) * 100;
-    if (remainingTime <= 0) {
-      this.timerCompleted();
-      return;
-    }
-    const nextInterval = (this.state.interval - (delta % this.state.interval));
-    if (!this.state.paused && !this.state.stopped) {
-      const timeoutId = setTimeout(() => this.tick(timerStartDate), nextInterval);
+    const percRemaining = Math.max(100 - (delta / this.state.totalTime) * 100, 0);
+    let timeoutId = null;
+    if (remainingTime > 0) {
+      const nextInterval = (this.state.interval - (delta % this.state.interval));
+      timeoutId = setTimeout(() => this.tick(timerStartDate), nextInterval);
       this.setState({
         timeoutId,
         remainingTime,
-        percCompleted,
+        percRemaining,
       });
+    } else {
+      this.timerCompleted();
     }
   }
   // fire the chime, message etc when target seconds is arrived at
@@ -175,6 +167,7 @@ export default class App extends Component {
     this.setState({
       totalTime: ms,
       remainingTime: ms,
+      percRemaining: 100,
     });
     console.log(`time updated to ${ms}`);
   }
@@ -190,7 +183,8 @@ export default class App extends Component {
         <div className={styles.main}>
           <TimerDisplay
             time={remainingTime}
-            percCompleted={this.state.percCompleted}
+            perc={this.state.percRemaining}
+            playing={playing}
           />
           <TimerControls
             onTimerStart={this.onTimerStart}
