@@ -15,6 +15,7 @@ const TimerDisplay = (props) => {
 };
 TimerDisplay.propTypes = {
   time: PropTypes.string.isRequired,
+  percCompleted: PropTypes.number,
 };
 
 export default TimerDisplay;
