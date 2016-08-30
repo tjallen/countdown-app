@@ -129,6 +129,9 @@ export default class App extends Component {
     }
     // how long should next interval be to compensate for drift
     const nextInterval = (this.state.interval - (delta % this.state.interval));
+    // %
+    let percCompleted = (delta / this.state.totalTime) * 100;
+    console.log(percCompleted);
     // continue the setTimeout loop / fire next tick() and update state
     if (!this.state.paused && !this.state.stopped) {
       // store current timeout id in state
@@ -136,6 +139,7 @@ export default class App extends Component {
       this.setState({
         timeoutId,
         remainingTime,
+        percCompleted,
       });
     }
   }
@@ -192,7 +196,10 @@ export default class App extends Component {
     return (
       <div className={styles.container}>
         <div className={styles.main}>
-          <TimerDisplay time={remainingTime} />
+          <TimerDisplay
+            time={remainingTime}
+            percCompleted={this.state.percCompleted}
+          />
           <TimerControls
             onTimerStart={this.onTimerStart}
             onTimerPause={this.onTimerPause}
