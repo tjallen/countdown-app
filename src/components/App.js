@@ -28,7 +28,7 @@ export default class App extends Component {
       muted: false,
       interval: 1000,
       timeoutId: null,
-      percRemaining: null,
+      percRemaining: 0,
     };
     this.tick = this.tick.bind(this);
     this.onTimerStart = this.onTimerStart.bind(this);
@@ -116,6 +116,7 @@ export default class App extends Component {
     const remainingTime = Math.max(this.state.totalTime - delta, 0);
     const percRemaining = Math.max(100 - (delta / this.state.totalTime) * 100, 0);
     console.log(`==== tick to [${remainingTime}] ====`);
+    console.log(delta / this.state.totalTime);
     let timeoutId = null;
     if (remainingTime > 0) {
       // prep for next tick
@@ -160,16 +161,20 @@ export default class App extends Component {
   // update state.targetTime from user h/m/s inputs or directly from single arg
   updateTime(...theArgs) {
     let ms;
+    let percRemaining = 100;
     if (theArgs.length === 1) {
       ms = theArgs[0];
     } else {
       const [hours, minutes, seconds] = theArgs;
       ms = ((hours * 3600) + (minutes * 60) + seconds) * 1000;
     }
+    if (ms === 0) {
+      percRemaining = 0;
+    }
     this.setState({
       totalTime: ms,
       remainingTime: ms,
-      percRemaining: 100,
+      percRemaining,
     });
     console.log(`time updated to ${ms}`);
   }
