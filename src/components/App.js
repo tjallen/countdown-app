@@ -73,7 +73,6 @@ export default class App extends Component {
       paused: false,
       stopped: false,
       timeoutId: setTimeout(() => this.tick(timerStartDate), interval),
-      percRemaining: 100,
     });
   }
   onTimerPause() {
