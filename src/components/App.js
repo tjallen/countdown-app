@@ -113,10 +113,9 @@ export default class App extends Component {
   tick(timerStartDate) {
     const total = this.state.totalTime;
     const delta = Date.now() - timerStartDate;
-    const remainingTime = Math.max(this.state.totalTime - delta, 0);
-    const percRemaining = Math.max(100 - (delta / this.state.totalTime) * 100, 0);
+    const remainingTime = Math.max(total - delta, 0);
+    const percRemaining = Math.max(100 - (delta / total) * 100, 0);
     console.log(`==== tick to [${remainingTime}] ====`);
-    console.log(delta / this.state.totalTime);
     let timeoutId = null;
     if (remainingTime > 0) {
       // prep for next tick
