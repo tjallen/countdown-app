@@ -115,8 +115,8 @@ export default class App extends Component {
     const delta = Date.now() - timerStartDate;
     const remainingTime = Math.max(total - delta, 0);
     const percRemaining = Math.max(100 - (delta / total) * 100, 0);
-    console.log(`==== tick to [${remainingTime}] ====`);
     let timeoutId = null;
+    console.log(`==== tick to [${remainingTime}] ====`);
     if (remainingTime > 0) {
       // prep for next tick
       const nextInterval = (this.state.interval - (delta % this.state.interval));
@@ -151,10 +151,10 @@ export default class App extends Component {
   }
   // add padding zero to hh:mm:ss if needed
   zeroPad(num) {
+    const paddedNum = `0${num}`;
     if (num >= 10) {
       return num;
     }
-    const paddedNum = `0${num}`;
     return paddedNum;
   }
   // update state.targetTime from user h/m/s inputs or directly from single arg
