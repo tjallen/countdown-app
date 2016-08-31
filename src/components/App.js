@@ -27,7 +27,7 @@ export default class App extends Component {
       muted: false,
       interval: 1000,
       timeoutId: null,
-      percRemaining: 0,
+      percRemaining: null,
     };
     this.tick = this.tick.bind(this);
     this.onTimerStart = this.onTimerStart.bind(this);
@@ -114,27 +114,30 @@ export default class App extends Component {
     const delta = Date.now() - timerStartDate;
     const remainingTime = Math.max(this.state.totalTime - delta, 0);
     const percRemaining = Math.max(100 - (delta / this.state.totalTime) * 100, 0);
+    console.log(`==== tick to [${remainingTime}] ====`);
     let timeoutId = null;
     if (remainingTime > 0) {
       const nextInterval = (this.state.interval - (delta % this.state.interval));
       timeoutId = setTimeout(() => this.tick(timerStartDate), nextInterval);
-      this.setState({
-        timeoutId,
-        remainingTime,
-        percRemaining,
-      });
     } else {
-      this.timerCompleted();
+      this.timerCompleted(this.state.totalTime);
     }
+    this.setState({
+      timeoutId,
+      remainingTime,
+      percRemaining,
+    });
   }
   // fire the chime, message etc when target seconds is arrived at
-  timerCompleted() {
-    console.log('timerCompleted');
-    const total = this.state.totalTime;
-    this.onTimerClear();
+  timerCompleted(totalTime) {
+    console.log(`timerCompleted after ${totalTime}ms`);
     if (this.state.loop) {
-      console.log('restarting');
-      this.onTimerStart(total);
+      console.log('restarting in 1000ms');
+      setTimeout(() => {
+        this.onTimerStart(totalTime);
+      }, 1000);
+    } else {
+      this.onTimerClear();
     }
   }
   // takes time in milliseconds, renders to hh:mm:ss for readable time
