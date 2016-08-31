@@ -16,9 +16,9 @@ const TimerControls = ({
   let loopToggle;
   if (totalTime > 0) {
     if (playing) {
-      playOrPause = <TimerButton action={onTimerPause} glyph={pause} title="Pause" css="play" />;
+      playOrPause = <TimerButton action={onTimerPause} glyph={pause} title="Pause" />;
     } else {
-      playOrPause = <TimerButton action={onTimerStart} glyph={play} title="Play" css="pause" />;
+      playOrPause = <TimerButton action={onTimerStart} glyph={play} title="Play" />;
     }
   }
   if (!stopped) {
