@@ -6,6 +6,7 @@ import styles from './App.scss';
 
 // audio files
 import chime from '../files/chime.mp3';
+import beep from '../files/beep.mp3';
 
 // child components
 import TimerControls from './TimerControls';
@@ -22,7 +23,7 @@ export default class App extends Component {
       paused: false,
       stopped: true,
       loop: true,
-      chime,
+      chime: beep,
       volume: '0.1',
       muted: false,
       interval: 1000,
@@ -111,34 +112,33 @@ export default class App extends Component {
   }
   // tick method run by looping setTimeout to update timer every ~1000ms
   tick(timerStartDate) {
+    const total = this.state.totalTime;
     const delta = Date.now() - timerStartDate;
     const remainingTime = Math.max(this.state.totalTime - delta, 0);
     const percRemaining = Math.max(100 - (delta / this.state.totalTime) * 100, 0);
     console.log(`==== tick to [${remainingTime}] ====`);
     let timeoutId = null;
     if (remainingTime > 0) {
+      // prep for next tick
       const nextInterval = (this.state.interval - (delta % this.state.interval));
       timeoutId = setTimeout(() => this.tick(timerStartDate), nextInterval);
     } else {
-      this.timerCompleted(this.state.totalTime);
+      // timer is completed: either prepare to loop or clear
+      console.log(`timerCompleted after ${total}ms`);
+      this.audioElement.play();
+      if (this.state.loop) {
+        timeoutId = setTimeout(() => {
+          this.onTimerStart(total);
+        }, 1000);
+      } else {
+        this.onTimerClear();
+      }
     }
     this.setState({
       timeoutId,
       remainingTime,
       percRemaining,
     });
-  }
-  // fire the chime, message etc when target seconds is arrived at
-  timerCompleted(totalTime) {
-    console.log(`timerCompleted after ${totalTime}ms`);
-    if (this.state.loop) {
-      console.log('restarting in 1000ms');
-      setTimeout(() => {
-        this.onTimerStart(totalTime);
-      }, 1000);
-    } else {
-      this.onTimerClear();
-    }
   }
   // takes time in milliseconds, renders to hh:mm:ss for readable time
   formatTime(ms) {
