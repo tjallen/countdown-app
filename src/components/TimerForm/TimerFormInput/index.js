@@ -1,7 +1,15 @@
 import React, { PropTypes } from 'react';
 import styles from './TimerFormInput.scss';
 
-const TimerFormInput = ({ id, min, max, step = 1, defaultValue = 0, type = 'number', label }) =>
+const TimerFormInput = ({
+  id,
+  min,
+  max,
+  step = 1,
+  defaultValue = 0,
+  type = 'number',
+  label,
+}) =>
   <div>
     <label htmlFor={id} className={styles.label}>{id.charAt(0).toUpperCase() + id.slice(1)}</label>
     <input
