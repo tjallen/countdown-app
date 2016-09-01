@@ -195,6 +195,7 @@ export default class App extends Component {
             stopped={stopped}
             totalTime={this.state.totalTime}
             toggleLoop={this.toggleLoop}
+            looping={this.state.loop}
           />
           {stopped && <TimerForm updateTime={this.updateTime} />}
           <AudioControls

@@ -8,32 +8,40 @@ import restart from '../../icons/ic_replay_24px.svg';
 import loop from '../../icons/ic_loop_24px.svg';
 
 const TimerControls = ({
-  onTimerPause, onTimerStart, onTimerClear, stopped, playing, totalTime, toggleLoop,
+  onTimerPause, onTimerStart, onTimerClear, stopped, playing, totalTime, toggleLoop, looping,
 }) => {
   let playOrPause;
-  let clearButton;
-  let restartButton;
-  let loopToggle;
   if (totalTime > 0) {
     if (playing) {
-      playOrPause = <TimerButton action={onTimerPause} glyph={pause} title="Pause" />;
+      playOrPause = <TimerButton action={onTimerPause} glyph={pause} title="Pause" type="pause" />;
     } else {
-      playOrPause = <TimerButton action={onTimerStart} glyph={play} title="Play" />;
+      playOrPause = <TimerButton action={onTimerStart} glyph={play} title="Play" type="play" />;
     }
   }
-  if (!stopped) {
-    clearButton = <TimerButton action={onTimerClear} glyph={clear} title="Clear timer" />;
-    restartButton =
-      <TimerButton action={() => onTimerStart(totalTime)} glyph={restart} title="Restart timer" />;
-    loopToggle = <TimerButton action={toggleLoop} glyph={loop} title="Toggle timer loop" />;
-  }
   return (
-    <div className="TimerControls">
+    <div className="timercontrols">
       {playOrPause}
-      <br />
-      {clearButton}
-      {restartButton}
-      {loopToggle}
+      {!stopped &&
+        <div>
+          <TimerButton
+            action={onTimerClear}
+            glyph={clear}
+            title="Clear timer"
+          />
+          <TimerButton
+            action={() => onTimerStart(totalTime)}
+            glyph={restart}
+            title="Restart timer"
+          />
+          <TimerButton
+            action={toggleLoop}
+            glyph={loop}
+            title="Toggle timer loop"
+            type="toggle"
+            active={looping}
+          />
+        </div>
+    }
     </div>
   );
 };
@@ -44,6 +52,7 @@ TimerControls.propTypes = {
   toggleLoop: PropTypes.func,
   playing: PropTypes.bool,
   stopped: PropTypes.bool,
+  looping: PropTypes.bool,
   totalTime: PropTypes.number,
 };
 
