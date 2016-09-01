@@ -50,24 +50,18 @@ export default class App extends Component {
   componentWillUnmount() {
     clearTimeout(this.state.timeoutId);
   }
-  onTimerStart(specified) {
+  onTimerStart(optionalSpecifiedTime) {
     const { totalTime, remainingTime, interval, paused } = this.state;
-    let offset = 0;
+    // if paused, offset start date by the time it was paused at
+    const offset = paused ? (totalTime - remainingTime) : 0;
     const timerStartDate = (Date.now() - offset);
     clearTimeout(this.state.timeoutId);
-    // if optional argument is used, prepare to start at a specific time
-    if (typeof(specified) === 'number') {
-      console.log(`onTimerStart recieved argument: ${specified}`);
-      this.updateTime(specified);
-    }
     if (totalTime <= 0) {
       alert('time must be above 0 seconds');
       return;
     }
-    // if paused, offset start date by the time it was paused at
-    // otherwise just use Date.now()
-    if (paused) {
-      offset = (totalTime - remainingTime);
+    if (typeof(optionalSpecifiedTime) === 'number') {
+      this.updateTime(optionalSpecifiedTime);
     }
     this.setState({
       paused: false,
