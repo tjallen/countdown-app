@@ -1,8 +1,17 @@
+@keyframes RIPBlinkTag { /* :'( */
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
 .timer {
   font-size: 3rem;
   letter-spacing: 0.25rem;
   margin: 20px 0;
   padding: 0;
+  &.paused {
+    animation: RIPBlinkTag 1.25s infinite ease-out;
+  }
 }
 
 .percbg {

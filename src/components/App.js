@@ -184,7 +184,7 @@ export default class App extends Component {
           <TimerDisplay
             time={remainingTime}
             perc={this.state.percRemaining}
-            playing={playing}
+            paused={paused}
           />
           <TimerControls
             onTimerStart={this.onTimerStart}
