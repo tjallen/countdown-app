@@ -6,6 +6,7 @@ import pause from '../../icons/ic_pause_24px.svg';
 import clear from '../../icons/ic_delete_24px.svg';
 import restart from '../../icons/ic_replay_24px.svg';
 import loop from '../../icons/ic_loop_24px.svg';
+import styles from './TimerControls.scss';
 
 const TimerControls = ({
   onTimerPause, onTimerStart, onTimerClear, stopped, playing, totalTime, toggleLoop, looping,
@@ -19,8 +20,10 @@ const TimerControls = ({
     }
   }
   return (
-    <div className="timercontrols">
-      {playOrPause}
+    <div className={styles.timercontrols}>
+      <div className={styles.playcontainer}>
+        {playOrPause}
+      </div>
       {!stopped &&
         <div>
           <TimerButton

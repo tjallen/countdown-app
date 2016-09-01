@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import styles from './styles.scss';
+import styles from './TimerDisplay.scss';
 
 const TimerDisplay = (props) => {
   const perc = `${props.perc}%`;
@@ -8,10 +8,10 @@ const TimerDisplay = (props) => {
   };
   return (
     <div>
-      <h2 className={styles.timer}>{props.time}</h2>
       <div className={styles.percbg}>
         <div className={styles.percfilled} style={percStyles}></div>
       </div>
+      <h2 className={styles.timer}>{props.time}</h2>
     </div>
   );
 };
