@@ -9,7 +9,7 @@ import loop from '../../icons/ic_loop_24px.svg';
 import styles from './TimerControls.scss';
 
 const TimerControls = ({
-  onTimerPause, onTimerStart, onTimerClear, stopped, playing, totalTime, toggleLoop, looping,
+  onTimerPause, onTimerStart, onTimerRestart, onTimerClear, stopped, playing, totalTime, toggleLoop, looping,
 }) => {
   let playOrPause;
   if (totalTime > 0) {
@@ -32,7 +32,7 @@ const TimerControls = ({
             title="Clear timer"
           />
           <TimerButton
-            action={() => onTimerStart(totalTime)}
+            action={() => onTimerRestart(totalTime)}
             glyph={restart}
             title="Restart timer"
           />

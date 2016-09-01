@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import styles from './App.scss';
 
 // audio files
-import chime from '../files/chime.mp3';
+// import chime from '../files/chime.mp3';
 import beep from '../files/beep.mp3';
 
 // child components
@@ -34,6 +34,7 @@ export default class App extends Component {
     this.onTimerStart = this.onTimerStart.bind(this);
     this.onTimerPause = this.onTimerPause.bind(this);
     this.onTimerClear = this.onTimerClear.bind(this);
+    this.onTimerRestart = this.onTimerRestart.bind(this);
     this.toggleChimeMute = this.toggleChimeMute.bind(this);
     this.onVolumeChange = this.onVolumeChange.bind(this);
     this.updateTime = this.updateTime.bind(this);
@@ -52,8 +53,8 @@ export default class App extends Component {
   }
   onTimerStart(optionalSpecifiedTime) {
     const { totalTime, remainingTime, interval, paused } = this.state;
-    // if paused, offset start date by the time it was paused at
-    const offset = paused ? (totalTime - remainingTime) : 0;
+    // if paused && resuming (not restarting) prepare offset for start date
+    const offset = (paused) ? (totalTime - remainingTime) : 0;
     const timerStartDate = (Date.now() - offset);
     clearTimeout(this.state.timeoutId);
     if (totalTime <= 0) {
@@ -74,6 +75,15 @@ export default class App extends Component {
       paused: true,
       remainingTime: this.state.remainingTime,
     }, clearTimeout(this.state.timeoutId));
+  }
+  onTimerRestart(total) {
+    clearTimeout(this.state.timeoutId);
+    this.onTimerClear();
+    this.setState({
+      remainingTime: total,
+      totalTime: total,
+      timeoutId: null,
+    }, this.onTimerStart);
   }
   onTimerClear() {
     clearTimeout(this.state.timeoutId);
@@ -190,6 +200,7 @@ export default class App extends Component {
             onTimerStart={this.onTimerStart}
             onTimerPause={this.onTimerPause}
             onTimerClear={this.onTimerClear}
+            onTimerRestart={this.onTimerRestart}
             playing={playing}
             paused={paused}
             stopped={stopped}
