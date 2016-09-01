@@ -16,3 +16,4 @@ ProgressIndicator.propTypes = {
   perc: PropTypes.number.isRequired,
 };
 export default ProgressIndicator;
+
