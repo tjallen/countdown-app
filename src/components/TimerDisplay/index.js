@@ -4,20 +4,18 @@ import styles from './TimerDisplay.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
+import ProgressIndicator from './ProgressIndicator';
+
 const TimerDisplay = ({ time, perc, paused }) => {
   let className = cx({
     timer: true,
     paused,
   });
-  const percPlayed = `${perc}%`;
-  const percStyles = {
-    width: percPlayed,
-  };
   return (
     <div>
-      <div className={styles.percbg}>
-        <div className={styles.percfilled} style={percStyles}></div>
-      </div>
+      <ProgressIndicator
+        perc={perc}
+      />
       <h2 className={className}>{time}</h2>
     </div>
   );
