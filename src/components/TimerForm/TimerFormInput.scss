@@ -1,0 +1,17 @@
+.input, .label {
+  display: block;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+.input {
+  padding: 8px 8px 8px 8px;
+  margin: 0 auto 10px auto;
+}
+.label {
+  margin-bottom: 4px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: bold;
+}

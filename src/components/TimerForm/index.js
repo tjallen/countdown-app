@@ -3,6 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import TimerFormInput from './TimerFormInput';
+import styles from './TimerForm.scss';
 
 export default class TimerForm extends Component {
   static propTypes = {
@@ -44,7 +45,7 @@ export default class TimerForm extends Component {
   }
   render() {
     return (
-      <div onChange={this.handleChange}>
+      <div onChange={this.handleChange} className={styles.timerformwrap}>
         <TimerFormInput
           id="hours"
           type="number"
