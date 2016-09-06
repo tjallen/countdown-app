@@ -37,6 +37,7 @@ export default class App extends Component {
     this.onTimerRestart = this.onTimerRestart.bind(this);
     this.toggleChimeMute = this.toggleChimeMute.bind(this);
     this.onVolumeChange = this.onVolumeChange.bind(this);
+    this.onCustomSliderChange = this.onCustomSliderChange.bind(this);
     this.updateTime = this.updateTime.bind(this);
     this.toggleLoop = this.toggleLoop.bind(this);
   }
@@ -101,6 +102,9 @@ export default class App extends Component {
       volume: event.target.value,
     });
     this.audioElement.volume = event.target.value;
+  }
+  onCustomSliderChange(evt) {
+    console.log('customSlider changed', evt);
   }
   toggleChimeMute() {
     this.setState({
@@ -214,6 +218,7 @@ export default class App extends Component {
             onToggleChimeMute={this.toggleChimeMute}
             volumeValue={this.state.volume}
             onVolumeChange={this.onVolumeChange}
+            onCustomSliderChange={this.onCustomSliderChange}
           />
         </div>
         <audio
