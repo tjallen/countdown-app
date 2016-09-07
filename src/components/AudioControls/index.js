@@ -37,13 +37,11 @@ export default class AudioControls extends Component {
         <CustomSlider
           volumeValue={volumeValue}
           onVolumeChange={onVolumeChange}
-          onClick={this.onSliderClick}
-          onDrag={this.onSliderDrag}
-          onMouseMove={this.onMouseMove}
-          onMouseDown={this.onSliderMouseDown}
-          onMouseUp={this.onSliderMouseUp}
-          pipX={this.state.volume * 10}
           width={100}
+          min={0}
+          max={100}
+          step={10}
+          defaultValue={50}
         />
       </div>
     );
