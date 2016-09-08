@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './CustomSlider.scss';
 
-const CustomSliderTrack = ({ width }) => {
+const CustomSliderTrack = ({ trackLength }) => {
   let trackStyles = {
-    width,
+    width: `${trackLength}%`,
   };
   return (
     <div className={styles.track} style={trackStyles}></div>

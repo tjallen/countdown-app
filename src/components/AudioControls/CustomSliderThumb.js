@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './CustomSlider.scss';
 
-const CustomSliderThumb = ({ thumbX, height }) => {
+const CustomSliderThumb = ({ thumbPosition, height }) => {
   let thumbStyles = {
-    left: thumbX,
+    left: `${thumbPosition}%`,
     top: `-${height - 1}px`,
   };
   return (

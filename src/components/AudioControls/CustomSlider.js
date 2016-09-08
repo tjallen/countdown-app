@@ -1,6 +1,7 @@
 /* eslint-disable no-console, no-alert */
 
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
 import CustomSliderThumb from './CustomSliderThumb';
 import CustomSliderTrack from './CustomSliderTrack';
@@ -8,12 +9,18 @@ import CustomSliderTrack from './CustomSliderTrack';
 import styles from './CustomSlider.scss';
 
 export default class CustomSlider extends Component {
+  static propTypes = {
+    min: PropTypes.number,
+    max: PropTypes.number,
+    defaultValue: PropTypes.number,
+  }
   constructor(props) {
     super(props);
+    const value = (props.value !== undefined ? props.value : props.defaultValue);
     this.state = {
       drag: false,
-      value: this.props.defaultValue,
       height: 5,
+      value,
     };
     this.onMouseDown = this.onMouseDown.bind(this);
     this.mouseUp = this.mouseUp.bind(this);
@@ -52,37 +59,49 @@ export default class CustomSlider extends Component {
     this.updateValue(x);
   }
   checkWithinBounds(val) {
-    console.log('val to check:', val);
     let checkedVal = val;
     if (val < this.props.min) {
       checkedVal = this.props.min;
     } else if (val > this.props.max) {
       checkedVal = this.props.max;
     }
-    console.log('checked', checkedVal);
+    console.log('val checked', val, 'resolved to', checkedVal);
     return checkedVal;
   }
   updateValue(value) {
+    console.log('updateValue', value);
     const checkedValue = this.checkWithinBounds(value);
     this.setState({
-      value: checkedValue,
+      value: value,
     });
+  }
+  getSliderLength() {
+    const sl = this.refs.slider;
+    return sl.clientWidth;
+  }
+  valueToPx(value) {
+    const sliderLength = this.getSliderLength();
+    const pxVal = (sliderLength / this.props.max) * value;
+    return pxVal;
+  }
+  pxToValue() {
+    console.log('pxToValue');
   }
 /*  handleChange() {
     console.log('slider changes, send to parent plz');
   }*/
   render() {
-    const sliderStyle = {
-    };
     return (
       <div
+        ref="slider"
         className={styles.slider}
         onMouseDown={this.onMouseDown}
-        style={sliderStyle}
         onMouseLeave={this.onMouseLeave}
       >
-        <CustomSliderTrack className={styles.track} width={this.state.value} />
-        <CustomSliderThumb thumbX={this.state.value} height={this.state.height} />
+        <CustomSliderTrack className={styles.track} trackLength={this.state.value} />
+        <CustomSliderThumb
+          thumbPosition={this.state.value} height={this.state.height}
+        />
       </div>
     );
   }

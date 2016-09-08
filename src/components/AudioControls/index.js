@@ -41,7 +41,7 @@ export default class AudioControls extends Component {
           min={0}
           max={100}
           step={10}
-          defaultValue={50}
+          defaultValue={25}
         />
       </div>
     );
