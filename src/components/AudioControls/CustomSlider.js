@@ -18,7 +18,7 @@ export default class CustomSlider extends Component {
   constructor(props) {
     super(props);
     const value = (this.props.value !== undefined ? this.props.value : this.props.defaultValue);
-    const { min, max } = this.props;
+    const { min, max, step } = this.props;
     const range = max - min;
     this.state = {
       drag: false,
@@ -27,6 +27,7 @@ export default class CustomSlider extends Component {
       min,
       max,
       range,
+      step,
     };
     this.onMouseDown = this.onMouseDown.bind(this);
     this.mouseUp = this.mouseUp.bind(this);
