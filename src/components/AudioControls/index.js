@@ -38,10 +38,10 @@ export default class AudioControls extends Component {
           volumeValue={volumeValue}
           onVolumeChange={onVolumeChange}
           width={100}
-          min={0}
-          max={100}
-          step={10}
-          defaultValue={25}
+          min={50}
+          max={75}
+          step={5}
+          defaultValue={50}
         />
       </div>
     );
