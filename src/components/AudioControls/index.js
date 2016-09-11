@@ -9,39 +9,34 @@ export default class AudioControls extends Component {
     muted: PropTypes.bool,
     onToggleChimeMute: PropTypes.func,
     onVolumeChange: PropTypes.func,
-    volumeValue: PropTypes.string,
+    volumeValue: PropTypes.number,
   };
   constructor() {
     super();
     this.state = {
       muted: false,
-      volume: 1,
+      volume: 5,
     };
     this.handleChange = this.handleChange.bind(this);
   }
-  handleChange() {
-    console.log('change on ACs');
+  handleChange(newState) {
+    console.log(newState);
   }
   render() {
     const { onToggleChimeMute, volumeValue, muted, onVolumeChange } = this.props;
     return (
-      <div onChange={this.handleChange}>
+      <div>
         <MuteToggle
           muted={muted}
           onToggleChimeMute={onToggleChimeMute}
         />
-        <VolumeSlider
-          volumeValue={volumeValue}
-          onVolumeChange={onVolumeChange}
-        />
         <CustomSlider
-          volumeValue={volumeValue}
-          onVolumeChange={onVolumeChange}
+          onChange={this.handleChange}
           height={8}
           min={0}
-          max={100}
+          max={10}
           step={1}
-          defaultValue={30}
+          defaultValue={this.state.volume}
         />
       </div>
     );

@@ -14,6 +14,7 @@ export default class CustomSlider extends Component {
     step: PropTypes.number.isRequired,
     value: PropTypes.number,
     defaultValue: PropTypes.number,
+    onChange: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -30,21 +31,6 @@ export default class CustomSlider extends Component {
   componentWillReceiveProps(nextProps) {
     this.updateStateFromProps(nextProps);
   }
-  updateStateFromProps(props) {
-    const value = (props.value === undefined ? props.defaultValue : props.value);
-    const { min, max, step, height } = props;
-    const range = max - min;
-    const ratio = (value - min) * 100 / (max - min);
-    this.setState({
-      height,
-      value,
-      min,
-      max,
-      range,
-      step,
-      ratio,
-    });
-  }
   onMouseDown(evt) {
     const leftMouseButton = 0;
     if (evt.button !== leftMouseButton) return;
@@ -57,7 +43,7 @@ export default class CustomSlider extends Component {
     evt.preventDefault();
   }
   updateSliderValue(evt) {
-    const { max, min } = this.state;
+    const { max, min, value: previousValue } = this.state;
     // compare clientX to slider length to get percentage
     const x = evt.clientX - evt.target.getBoundingClientRect().left;
     const totalLength = this.getSliderLength();
@@ -72,6 +58,8 @@ export default class CustomSlider extends Component {
       value,
       ratio,
     });
+    // fire onChange if the value has actually changed
+    if (value !== previousValue) this.props.onChange(this.state);
   }
   valueFromPercent(perc) {
     const { range, min } = this.state;
@@ -115,6 +103,21 @@ export default class CustomSlider extends Component {
     const sl = this.refs.slider;
     return sl.clientWidth;
   }
+  updateStateFromProps(props) {
+    const value = (props.value === undefined ? props.defaultValue : props.value);
+    const { min, max, step, height } = props;
+    const range = max - min;
+    const ratio = (value - min) * 100 / (max - min);
+    this.setState({
+      height,
+      value,
+      min,
+      max,
+      range,
+      step,
+      ratio,
+    });
+  }
   render() {
     const sliderStyle = {
       height: `${this.state.height}px`,
@@ -124,7 +127,6 @@ export default class CustomSlider extends Component {
         ref="slider"
         className={styles.slider}
         onMouseDown={this.onMouseDown}
-        onMouseLeave={this.onMouseLeave}
         style={sliderStyle}
       >
         <CustomSliderTrack

@@ -24,7 +24,7 @@ export default class App extends Component {
       stopped: true,
       loop: true,
       chime: beep,
-      volume: '0.1',
+      volume: 0.1,
       muted: false,
       interval: 1000,
       timeoutId: null,
@@ -97,11 +97,11 @@ export default class App extends Component {
       percRemaining: 0,
     });
   }
-  onVolumeChange(event) {
+  onVolumeChange(volume) {
     this.setState({
-      volume: event.target.value,
+      volume,
     });
-    this.audioElement.volume = event.target.value;
+    this.audioElement.volume = volume;
   }
   onCustomSliderChange(evt) {
     console.log('customSlider changed', evt);
