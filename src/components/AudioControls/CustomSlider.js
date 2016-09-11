@@ -44,42 +44,25 @@ export default class CustomSlider extends Component {
     document.addEventListener('mouseup', this.mouseUp);
     evt.preventDefault();
   }
-  /*
-  take evt.pageX
-  get slider percentage from that
-  update state with percentage
-  maybe update state with the actual value
-  */
   updateSliderValue(evt) {
-    // const xMinusOffset = evt.pageX - this.refs.slider.offsetLeft;
+    // compare pageX to slider length to get percentage
     const x = evt.pageX;
     const totalLength = this.getSliderLength();
     const percent = +(x / totalLength).toFixed(2);
-    // const value = this.calculateMatchingNotch(percent);
-    const value = this.valueFromPercent(percent);
-    // work out where best to use the matching notch - probably in this method
-    console.log(this.calculateMatchingNotch(value));
+    // convert perc -> value then match value to notch as per props/state.step
+    const rawValue = this.valueFromPercent(percent);
+    const value = this.calculateMatchingNotch(rawValue);
     this.setState({
       percent,
       value,
     });
   }
-  /*
-  convert percentage -> value if needed
-  return the value
-  */
   valueFromPercent(perc) {
     const { range, min } = this.state;
     const val = (range * perc) + min;
     console.log(`${range} * ${perc} + ${min} = ${val}`);
     return val;
   }
-  /*
-    take a float/decimal value
-    work out where the step notches would be
-    calculate which is the nearest notch for the value
-    return .. the notch?
-  */
   calculateMatchingNotch(value) {
     const { step, max, min } = this.state;
     let match;
@@ -98,9 +81,6 @@ export default class CustomSlider extends Component {
     console.log('in:', value, 'out:closest/notch:', match);
     return match;
   }
-  /*
-    value clamping to be revisited as a later step
-  */
   clampValue(val, min = this.props.min, max = this.props.max) {
     let value = val;
     if (val > max) {
@@ -123,7 +103,6 @@ export default class CustomSlider extends Component {
   }
   getSliderLength() {
     const sl = this.refs.slider;
-    // console.table([{ clientWidth: sl.clientWidth, offsetTop: sl.offsetTop, offsetLeft: sl.offsetLeft }]);
     return sl.clientWidth;
   }
   render() {
