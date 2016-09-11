@@ -19,7 +19,6 @@ export default class CustomSlider extends Component {
     super(props);
     this.state = {
       drag: false,
-      height: 5,
     };
     this.onMouseDown = this.onMouseDown.bind(this);
     this.mouseUp = this.mouseUp.bind(this);
@@ -33,10 +32,11 @@ export default class CustomSlider extends Component {
   }
   updateStateFromProps(props) {
     const value = (props.value === undefined ? props.defaultValue : props.value);
-    const { min, max, step } = props;
+    const { min, max, step, height } = props;
     const range = max - min;
     const ratio = (value - min) * 100 / (max - min);
     this.setState({
+      height,
       value,
       min,
       max,
@@ -116,16 +116,25 @@ export default class CustomSlider extends Component {
     return sl.clientWidth;
   }
   render() {
+    const sliderStyle = {
+      height: `${this.state.height}px`,
+    };
     return (
       <div
         ref="slider"
         className={styles.slider}
         onMouseDown={this.onMouseDown}
         onMouseLeave={this.onMouseLeave}
+        style={sliderStyle}
       >
-        <CustomSliderTrack className={styles.track} trackLength={this.state.ratio} />
+        <CustomSliderTrack
+          className={styles.track}
+          trackLength={this.state.ratio}
+          trackHeight={this.state.height}
+        />
         <CustomSliderThumb
-          thumbPosition={this.state.ratio} height={this.state.height}
+          thumbPosition={this.state.ratio}
+          height={this.state.height}
         />
       </div>
     );

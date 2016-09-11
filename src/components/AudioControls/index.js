@@ -37,10 +37,10 @@ export default class AudioControls extends Component {
         <CustomSlider
           volumeValue={volumeValue}
           onVolumeChange={onVolumeChange}
-          width={100}
-          min={25}
-          max={75}
-          step={5}
+          height={8}
+          min={0}
+          max={100}
+          step={1}
           defaultValue={30}
         />
       </div>
