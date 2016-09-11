@@ -81,49 +81,22 @@ export default class CustomSlider extends Component {
     return .. the notch?
   */
   calculateMatchingNotch(value) {
-    // currently just determines available notches by available values
-    console.log('=== notch ===');
     const { step, max, min } = this.state;
-    let nearestNotch;
-    const allValues = [];
+    let match;
+    const values = [];
     for (let i = min; i <= max; i++) {
-      allValues.push(i);
+      values.push(i);
     }
-    const matchingNotches = [];
-    // find how many entries in allValues are divisible by step (+min,+max)
-    for (const s of allValues) {
+    const notches = [];
+    // find how many entries in values are divisible by step (+min,+max)
+    for (const s of values) {
       if (s === min || s === max || s % step === 0) {
-        matchingNotches.push(s);
+        notches.push(s);
       }
     }
-    /* replace this with binary search */
-    console.log(matchingNotches);
-    for (const n of matchingNotches) {
-      if (value === n) {
-        nearestNotch = n;
-      }
-    }
-    console.log('bSearch', this.bSearch(matchingNotches, value));
-    console.log('in:', value, 'out:closest/notch:', nearestNotch);
-    return nearestNotch;
-  }
-  // basic binary search - need to consistently return the closest if the value isnt found
-  bSearch(arr, target) {
-    // some checks for undefined, out of bounds etc here if needed
-    let min = 0;
-    let max = arr.length - 1;
-    let guess;
-    while (min <= max) {
-      guess = Math.floor((min + max) / 2);
-      if (arr[guess] < target) {
-        min = guess + 1;
-      } else if (arr[guess] > target) {
-        max = guess - 1;
-      } else {
-        return guess;
-      }
-    }
-    return -1;
+    match = notches.reduce((prev, curr) => Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev);
+    console.log('in:', value, 'out:closest/notch:', match);
+    return match;
   }
   /*
     value clamping to be revisited as a later step
@@ -153,11 +126,6 @@ export default class CustomSlider extends Component {
     // console.table([{ clientWidth: sl.clientWidth, offsetTop: sl.offsetTop, offsetLeft: sl.offsetLeft }]);
     return sl.clientWidth;
   }
-/*  valueToPx(value) {
-    const sliderLength = this.getSliderLength();
-    const pxVal = (sliderLength / this.props.max) * value;
-    return pxVal;
-  }*/
   render() {
     return (
       <div
