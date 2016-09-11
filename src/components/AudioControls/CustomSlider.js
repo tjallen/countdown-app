@@ -44,31 +44,47 @@ export default class CustomSlider extends Component {
     document.addEventListener('mouseup', this.mouseUp);
     evt.preventDefault();
   }
+  /*
+  take evt.pageX
+  get slider percentage from that
+  update state with percentage
+  maybe update state with the actual value
+  */
   updateSliderValue(evt) {
-    const { max, min, range } = this.state;
-    const xMinusOffset = evt.pageX - this.refs.slider.offsetLeft;
+    // const xMinusOffset = evt.pageX - this.refs.slider.offsetLeft;
+    const x = evt.pageX;
     const totalLength = this.getSliderLength();
-    // use 1...
-    const percentFromPxLength = (xMinusOffset / totalLength);
-    const percent = (range * percentFromPxLength) + min;
-    const value = this.calculateMatchingNotch(percentFromPxLength);
+    const percent = +(x / totalLength).toFixed(2);
+    // const value = this.calculateMatchingNotch(percent);
+    const value = this.valueFromPercent(percent);
+    // work out where best to use the matching notch - probably in this method
+    console.log(this.calculateMatchingNotch(value));
     this.setState({
       percent,
       value,
     });
   }
+  /*
+  convert percentage -> value if needed
+  return the value
+  */
   valueFromPercent(perc) {
     const { range, min } = this.state;
-    let val;
-    val = (range * perc) + min;
+    const val = (range * perc) + min;
     console.log(`${range} * ${perc} + ${min} = ${val}`);
     return val;
   }
+  /*
+    take a float/decimal value
+    work out where the step notches would be
+    calculate which is the nearest notch for the value
+    return .. the notch?
+  */
   calculateMatchingNotch(value) {
+    // currently just determines available notches by available values
     console.log('=== notch ===');
     const { step, max, min } = this.state;
-    const bar = (((value - min) / step) * step) + min;
-    let nearestNotch
+    let nearestNotch;
     const allValues = [];
     for (let i = min; i <= max; i++) {
       allValues.push(i);
@@ -80,15 +96,38 @@ export default class CustomSlider extends Component {
         matchingNotches.push(s);
       }
     }
+    /* replace this with binary search */
+    console.log(matchingNotches);
     for (const n of matchingNotches) {
-      console.log(n);
       if (value === n) {
         nearestNotch = n;
       }
     }
+    console.log('bSearch', this.bSearch(matchingNotches, value));
     console.log('in:', value, 'out:closest/notch:', nearestNotch);
     return nearestNotch;
   }
+  // basic binary search - need to consistently return the closest if the value isnt found
+  bSearch(arr, target) {
+    // some checks for undefined, out of bounds etc here if needed
+    let min = 0;
+    let max = arr.length - 1;
+    let guess;
+    while (min <= max) {
+      guess = Math.floor((min + max) / 2);
+      if (arr[guess] < target) {
+        min = guess + 1;
+      } else if (arr[guess] > target) {
+        max = guess - 1;
+      } else {
+        return guess;
+      }
+    }
+    return -1;
+  }
+  /*
+    value clamping to be revisited as a later step
+  */
   clampValue(val, min = this.props.min, max = this.props.max) {
     let value = val;
     if (val > max) {
@@ -111,11 +150,7 @@ export default class CustomSlider extends Component {
   }
   getSliderLength() {
     const sl = this.refs.slider;
-    // console.table([
-    //   { clientWidth: sl.clientWidth },
-    //   { offsetTop: sl.offsetTop },
-    //   { offsetLeft: sl.offsetLeft },
-    // ]);
+    // console.table([{ clientWidth: sl.clientWidth, offsetTop: sl.offsetTop, offsetLeft: sl.offsetLeft }]);
     return sl.clientWidth;
   }
 /*  valueToPx(value) {
