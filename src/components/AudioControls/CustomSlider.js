@@ -17,21 +17,33 @@ export default class CustomSlider extends Component {
   }
   constructor(props) {
     super(props);
-    const value = (this.props.value !== undefined ? this.props.value : this.props.defaultValue);
-    const { min, max, step } = this.props;
-    const range = max - min;
     this.state = {
       drag: false,
       height: 5,
+    };
+    this.onMouseDown = this.onMouseDown.bind(this);
+    this.mouseUp = this.mouseUp.bind(this);
+    this.mouseMove = this.mouseMove.bind(this);
+  }
+  componentWillMount() {
+    this.updateStateFromProps(this.props);
+  }
+  componentWillReceiveProps(nextProps) {
+    this.updateStateFromProps(nextProps);
+  }
+  updateStateFromProps(props) {
+    const value = (props.value === undefined ? props.defaultValue : props.value);
+    const { min, max, step } = props;
+    const range = max - min;
+    const ratio = (value - min) * 100 / (max - min);
+    this.setState({
       value,
       min,
       max,
       range,
       step,
-    };
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.mouseUp = this.mouseUp.bind(this);
-    this.mouseMove = this.mouseMove.bind(this);
+      ratio,
+    });
   }
   onMouseDown(evt) {
     const leftMouseButton = 0;
@@ -64,7 +76,7 @@ export default class CustomSlider extends Component {
   valueFromPercent(perc) {
     const { range, min } = this.state;
     const val = (range * perc) + min;
-    console.log(`${range} * ${perc} + ${min} = ${val}`);
+    // console.log(`${range} * ${perc} + ${min} = ${val}`);
     return val;
   }
   calculateMatchingNotch(value) {
@@ -82,7 +94,7 @@ export default class CustomSlider extends Component {
       }
     }
     match = notches.reduce((prev, curr) => Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev);
-    console.log('in:', value, 'out:closest/notch:', match);
+    console.log(`${value} matched to closest notch ${match}`);
     return match;
   }
   clampValue(val, min, max) {
