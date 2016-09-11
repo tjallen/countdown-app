@@ -45,6 +45,7 @@ export default class CustomSlider extends Component {
     evt.preventDefault();
   }
   updateSliderValue(evt) {
+    const { max, min } = this.state;
     // compare pageX to slider length to get percentage
     const x = evt.pageX;
     const totalLength = this.getSliderLength();
@@ -52,9 +53,12 @@ export default class CustomSlider extends Component {
     // convert perc -> value then match value to notch as per props/state.step
     const rawValue = this.valueFromPercent(percent);
     const value = this.calculateMatchingNotch(rawValue);
+    // percentage of the range to render the track/thumb to
+    const ratio = (value - min) * 100 / (max - min);
     this.setState({
       percent,
       value,
+      ratio,
     });
   }
   valueFromPercent(perc) {
@@ -81,7 +85,7 @@ export default class CustomSlider extends Component {
     console.log('in:', value, 'out:closest/notch:', match);
     return match;
   }
-  clampValue(val, min = this.props.min, max = this.props.max) {
+  clampValue(val, min, max) {
     let value = val;
     if (val > max) {
       value = max;
@@ -113,9 +117,9 @@ export default class CustomSlider extends Component {
         onMouseDown={this.onMouseDown}
         onMouseLeave={this.onMouseLeave}
       >
-        <CustomSliderTrack className={styles.track} trackLength={this.state.value * 100} />
+        <CustomSliderTrack className={styles.track} trackLength={this.state.ratio} />
         <CustomSliderThumb
-          thumbPosition={this.state.value * 100} height={this.state.height}
+          thumbPosition={this.state.ratio} height={this.state.height}
         />
       </div>
     );
