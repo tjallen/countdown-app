@@ -58,8 +58,8 @@ export default class CustomSlider extends Component {
   }
   updateSliderValue(evt) {
     const { max, min } = this.state;
-    // compare pageX to slider length to get percentage
-    const x = evt.pageX;
+    // compare clientX to slider length to get percentage
+    const x = evt.clientX - evt.target.getBoundingClientRect().left;
     const totalLength = this.getSliderLength();
     const percent = this.clampValue(+(x / totalLength).toFixed(2), 0, 1);
     // convert perc -> value then match value to notch as per props/state.step

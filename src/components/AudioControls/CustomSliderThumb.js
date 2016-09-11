@@ -3,6 +3,7 @@ import styles from './CustomSlider.scss';
 
 const CustomSliderThumb = ({ thumbPosition, height }) => {
   let thumbStyles = {
+    pointerEvents: 'none',
     left: `${thumbPosition}%`,
     marginLeft: `-${height * 0.7}px`,
     top: `-${height * 0.3}px`,
