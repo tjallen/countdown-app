@@ -11,21 +11,6 @@ export default class Audio extends Component {
     super();
   }
   componentDidMount() {
-    console.log(this.audioElement);
-    this.audioElement.load();
-    this.audioElement.addEventListener("loadeddata",console.log("DEBUG (loadeddata version): Audio Duration: " + this.audioElement.duration));
-  }
-  onLoadedData() {
-    const dura = this.audioElement.duration;
-    console.log('DEBUG, old', dura);
-  }
-  getDuration() {
-    this.audioElement.load();
-    const duration = this.audioElement.duration;
-    console.log(duration);
-    this.setState({
-      duration,
-    });
   }
   render() {
     return (
