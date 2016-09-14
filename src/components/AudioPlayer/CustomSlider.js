@@ -43,23 +43,25 @@ export default class CustomSlider extends Component {
     evt.preventDefault();
   }
   updateSliderValue(evt) {
-    const { max, min, value: previousValue } = this.state;
+    const { max, min } = this.state;
+    let { value } = this.state;
     // compare clientX to slider length to get percentage
     const x = evt.clientX - evt.target.getBoundingClientRect().left;
     const totalLength = this.getSliderLength();
     const percent = this.clampValue(+(x / totalLength).toFixed(2), 0, 1);
     // convert perc -> value then match value to notch as per props/state.step
     const rawValue = this.valueFromPercent(percent);
-    const value = this.calculateMatchingNotch(rawValue);
+    value = this.calculateMatchingNotch(rawValue);
     // percentage of the range to render the track/thumb to
     const ratio = (value - min) * 100 / (max - min);
     this.setState({
       percent,
       value,
       ratio,
-    });
-    // fire onChange if the value has actually changed
-    if (value !== previousValue) this.props.onChange(this.state);
+    }, this.handleChange);
+  }
+  handleChange() {
+    this.props.onChange(this.state);
   }
   valueFromPercent(perc) {
     const { range, min } = this.state;
@@ -82,7 +84,7 @@ export default class CustomSlider extends Component {
       }
     }
     match = notches.reduce((prev, curr) => Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev);
-    console.log(`${value} matched to closest notch ${match}`);
+    // console.log(`${value} matched to closest notch ${match}`);
     return match;
   }
   clampValue(val, min, max) {
