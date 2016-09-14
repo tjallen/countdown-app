@@ -4,50 +4,41 @@ import React, { Component } from 'react';
 // css module
 import styles from './App.scss';
 
-// audio files
-// import chime from '../files/chime.mp3';
-import beep from '../files/beep.mp3';
-
 // child components
 import TimerControls from './TimerControls';
 import TimerDisplay from './TimerDisplay';
 import TimerForm from './TimerForm';
-import AudioControls from './AudioControls';
+import AudioPlayer from './AudioPlayer';
 
 export default class App extends Component {
   constructor() {
     super();
     this.state = {
+      // timer
       remainingTime: 0,
       totalTime: 0,
       paused: false,
       stopped: true,
-      loop: true,
-      chime: beep,
-      volume: 0.1,
-      muted: false,
+      loop: false,
       interval: 1000,
       timeoutId: null,
       percRemaining: 0,
+      // audio
+      volume: 0.1,
+      muted: false,
+      audioPlaying: false,
     };
     this.tick = this.tick.bind(this);
     this.onTimerStart = this.onTimerStart.bind(this);
     this.onTimerPause = this.onTimerPause.bind(this);
     this.onTimerClear = this.onTimerClear.bind(this);
     this.onTimerRestart = this.onTimerRestart.bind(this);
-    this.toggleChimeMute = this.toggleChimeMute.bind(this);
-    this.onVolumeChange = this.onVolumeChange.bind(this);
-    this.onCustomSliderChange = this.onCustomSliderChange.bind(this);
     this.updateTime = this.updateTime.bind(this);
     this.toggleLoop = this.toggleLoop.bind(this);
+    this.onAudioComplete = this.onAudioComplete.bind(this);
   }
   componentWillMount() {
     this.state.totalTime = this.state.remainingTime;
-  }
-  componentDidMount() {
-    // initialize audio element
-    this.audioElement.volume = this.state.volume;
-    this.audioElement.muted = this.state.muted;
   }
   componentWillUnmount() {
     clearTimeout(this.state.timeoutId);
@@ -97,20 +88,9 @@ export default class App extends Component {
       percRemaining: 0,
     });
   }
-  onVolumeChange(volume) {
-    this.setState({
-      volume,
-    });
-    this.audioElement.volume = volume;
-  }
-  onCustomSliderChange(evt) {
-    console.log('customSlider changed', evt);
-  }
-  toggleChimeMute() {
-    this.setState({
-      muted: !this.audioElement.muted,
-    });
-    this.audioElement.muted = !this.audioElement.muted;
+  onAudioComplete() {
+    console.log('onAudCom');
+    this.setState({ audioPlaying: false });
   }
   toggleLoop() {
     this.setState({
@@ -124,7 +104,7 @@ export default class App extends Component {
     const remainingTime = Math.max(total - delta, 0);
     const percRemaining = Math.max(100 - (delta / total) * 100, 0);
     let timeoutId = null;
-    console.log(`==== tick to [${remainingTime}] ====`);
+    // console.log(`==== tick to [${remainingTime}] ====`);
     if (remainingTime > 0) {
       // prep for next tick
       const nextInterval = (this.state.interval - (delta % this.state.interval));
@@ -132,7 +112,8 @@ export default class App extends Component {
     } else {
       // timer is completed: either prepare to loop or clear
       console.log(`timerCompleted after ${total}ms`);
-      this.audioElement.play();
+      // this.audioElement.play();
+      this.setState({ audioPlaying: true });
       if (this.state.loop) {
         timeoutId = setTimeout(() => {
           this.onTimerStart(total);
@@ -183,7 +164,7 @@ export default class App extends Component {
       remainingTime: ms,
       percRemaining,
     });
-    console.log(`time updated to ${ms}`);
+    // console.log(`time updated to ${ms}`);
   }
   render() {
     // helper/readability vars for jsx
@@ -213,21 +194,13 @@ export default class App extends Component {
             looping={this.state.loop}
           />
           {stopped && <TimerForm updateTime={this.updateTime} />}
-          <AudioControls
+          <AudioPlayer
             muted={muted}
-            onToggleChimeMute={this.toggleChimeMute}
             volumeValue={this.state.volume}
-            onVolumeChange={this.onVolumeChange}
-            onCustomSliderChange={this.onCustomSliderChange}
+            audioPlaying={this.state.audioPlaying}
+            onAudioComplete={this.onAudioComplete}
           />
         </div>
-        <audio
-          ref={(c) => (this.audioElement = c)}
-        >
-          html5 <code>audio</code> element not supported by your browser, dayum.
-          <source src={this.state.chime} type="audio/mpeg">
-          </source>
-        </audio>
       </div>
     );
   }

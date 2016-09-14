@@ -8,6 +8,7 @@
     "classnames": "^2.2.5",
     "normalize.css": "^4.1.1",
     "react": "^15.3.1",
+    "react-audio-player": "^0.2.5",
     "react-dom": "^15.3.1"
   },
   "devDependencies": {
