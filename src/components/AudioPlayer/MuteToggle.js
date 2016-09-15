@@ -7,7 +7,7 @@ import unMute from '../../icons/ic_volume_off_24px.svg';
 const MuteToggle = (props) =>
   <div>
     <button
-      onClick={props.toggleChimeMute}
+      onClick={props.onChange}
       title="Toggle mute"
     >
       {props.muted

@@ -10,10 +10,6 @@ import beep from './files/beep.mp3';
 
 export default class AudioPlayer extends Component {
   static propTypes = {
-    muted: PropTypes.bool,
-    onToggleChimeMute: PropTypes.func,
-    onVolumeChange: PropTypes.func,
-    volumeValue: PropTypes.number,
     audioPlaying: PropTypes.bool,
     onAudioComplete: PropTypes.func,
   };
@@ -22,6 +18,7 @@ export default class AudioPlayer extends Component {
     this.state = {
       muted: false,
       volume: 5,
+      previousVolume: null,
       audioPlaying: props.audioPlaying,
       chime,
       pauseInterval: null,
@@ -29,7 +26,6 @@ export default class AudioPlayer extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.playAudio = this.playAudio.bind(this);
     this.pauseAudio = this.pauseAudio.bind(this);
-    this.toggleChimeMute = this.toggleChimeMute.bind(this);
   }
   componentDidMount() {
     // initialize audio element
@@ -68,26 +64,45 @@ export default class AudioPlayer extends Component {
     this.props.onAudioComplete();
   }
   handleChange(newState) {
-    const volume = newState.value;
-    console.log('vol', volume);
+    let volume;
+    let muted;
+    let previousVolume = null;
+    // if we're setting volume using component state from CustomSlider
+    if (newState.hasOwnProperty('value')) {
+      if (newState.value > 0) {
+        volume = newState.value;
+        muted = false;
+      } else {
+        previousVolume = this.state.volume;
+        volume = 0;
+        muted = true;
+      }
+    } else {
+      // else we're just toggling mute by inverting this.state
+      muted = !this.state.muted;
+      // muting: cache current volume for future unmute
+      if (muted) {
+        previousVolume = this.state.volume;
+        volume = 0;
+      // toggle unmute and return previous volume value
+      } else if (!muted) {
+        volume = this.state.previousVolume;
+      }
+    }
     this.setState({
-      volume, // / 10 for HTML5 audio element
+      volume,
+      muted,
+      previousVolume,
     });
-    this.audioElement.volume = volume / 10;
-  }
-  toggleChimeMute() {
-    console.log('muteToggle');
-    this.setState({
-      muted: !this.state.muted,
-    });
-    this.audioElement.muted = !this.audioElement.muted;
+    this.audioElement.volume = volume / 10; // html5 audio api is 0-1
+    this.audioElement.muted = muted;
   }
   render() {
     return (
       <div>
         <MuteToggle
+          onChange={this.handleChange}
           muted={this.state.muted}
-          toggleChimeMute={this.toggleChimeMute}
         />
         <CustomSlider
           onChange={this.handleChange}
