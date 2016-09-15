@@ -29,30 +29,30 @@ export default class AudioPlayer extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.playAudio = this.playAudio.bind(this);
     this.pauseAudio = this.pauseAudio.bind(this);
+    this.toggleChimeMute = this.toggleChimeMute.bind(this);
   }
   componentDidMount() {
     // initialize audio element
     this.audioElement.volume = this.state.volume / 10;
     this.audioElement.muted = this.state.muted;
   }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   const { audioPlaying, volume } = this.state;
+  //   return (nextProps.audioPlaying !== audioPlaying || nextState.volume !== volume);
+  // }
   componentWillReceiveProps(nextProps) {
     const currentState = this.state.audioPlaying;
     const { audioPlaying } = nextProps;
+    // should be redundant w/ shouldComponentUpdate but needs test
     if (audioPlaying === currentState) return;
-    switch (audioPlaying) {
-      case true: {
-        this.playAudio();
-        break;
-      }
-      case false: {
-        this.pauseAudio();
-        break;
-      }
-      default: // nuttin
+    if (audioPlaying) {
+      this.playAudio();
+    } else if (!audioPlaying) {
+      this.pauseAudio();
     }
   }
   playAudio() {
-    const duration = this.audioElement.duration * 1000; // .duration prop is in seconds
+    const duration = this.audioElement.duration * 1000; // .duration uses secs
     const pauseInterval = setTimeout(this.pauseAudio, duration);
     this.audioElement.play();
     this.setState({
@@ -71,22 +71,23 @@ export default class AudioPlayer extends Component {
     const volume = newState.value;
     console.log('vol', volume);
     this.setState({
-      volume, // divide by 10 in render method and pass to <Audio /> wrapper c
+      volume, // / 10 for HTML5 audio element
     });
+    this.audioElement.volume = volume / 10;
   }
   toggleChimeMute() {
+    console.log('muteToggle');
     this.setState({
-      muted: !this.audioElement.muted,
+      muted: !this.state.muted,
     });
     this.audioElement.muted = !this.audioElement.muted;
   }
   render() {
-    const { onToggleChimeMute, volumeValue, muted, onVolumeChange } = this.props;
     return (
       <div>
         <MuteToggle
-          muted={muted}
-          onToggleChimeMute={onToggleChimeMute}
+          muted={this.state.muted}
+          toggleChimeMute={this.toggleChimeMute}
         />
         <CustomSlider
           onChange={this.handleChange}

@@ -171,7 +171,7 @@ export default class App extends Component {
     let { totalTime, remainingTime } = this.state;
     totalTime = this.formatTime(totalTime);
     remainingTime = this.formatTime(remainingTime);
-    const { muted, stopped, paused } = this.state;
+    const { stopped, paused } = this.state;
     const playing = !stopped && !paused;
     return (
       <div className={styles.container}>
@@ -195,8 +195,6 @@ export default class App extends Component {
           />
           {stopped && <TimerForm updateTime={this.updateTime} />}
           <AudioPlayer
-            muted={muted}
-            volumeValue={this.state.volume}
             audioPlaying={this.state.audioPlaying}
             onAudioComplete={this.onAudioComplete}
           />
