@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import MuteToggle from './MuteToggle';
-// import VolumeSlider from './VolumeSlider';
-import CustomSlider from './CustomSlider';
+import ReactSimpleRange from 'react-simple-range';
 
 // audio files
 import chime from './files/chime.mp3';
@@ -104,9 +103,8 @@ export default class AudioPlayer extends Component {
           onChange={this.handleChange}
           muted={this.state.muted}
         />
-        <CustomSlider
+        <ReactSimpleRange
           onChange={this.handleChange}
-          height={8}
           min={0}
           max={10}
           step={1}
