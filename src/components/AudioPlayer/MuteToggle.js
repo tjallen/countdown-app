@@ -6,7 +6,7 @@ import unMute from '../../icons/ic_volume_off_24px.svg';
 
 const MuteToggle = (props) =>
   <div>
-    <button
+    <div
       onClick={props.onChange}
       title="Toggle mute"
     >
@@ -14,7 +14,7 @@ const MuteToggle = (props) =>
         ? <Icon glyph={unMute} />
         : <Icon glyph={mute} />
       }
-    </button>
+    </div>
   </div>;
 
 MuteToggle.propTypes = {

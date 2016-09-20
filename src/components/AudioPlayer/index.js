@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react';
 import MuteToggle from './MuteToggle';
 import ReactSimpleRange from 'react-simple-range';
 
+import styles from './AudioPlayer.scss';
+
 // audio files
 import chime from './files/chime.mp3';
 import beep from './files/beep.mp3';
@@ -99,17 +101,21 @@ export default class AudioPlayer extends Component {
   render() {
     return (
       <div>
-        <MuteToggle
-          onChange={this.handleChange}
-          muted={this.state.muted}
-        />
-        <ReactSimpleRange
-          onChange={this.handleChange}
-          min={0}
-          max={10}
-          step={1}
-          defaultValue={this.state.volume}
-        />
+        <div className={styles.iconwrap}>
+          <MuteToggle
+            onChange={this.handleChange}
+            muted={this.state.muted}
+          />
+        </div>
+        <div className={styles.sliderwrap}>
+          <ReactSimpleRange
+            onChange={this.handleChange}
+            min={0}
+            max={10}
+            step={1}
+            defaultValue={this.state.volume}
+          />
+        </div>
         <audio
           ref={(c) => (this.audioElement = c)}
         >
