@@ -59,6 +59,7 @@ export default class App extends Component {
     this.setState({
       paused: false,
       stopped: false,
+      loop: false,
       timeoutId: setTimeout(() => this.tick(timerStartDate), interval),
     });
   }
