@@ -1,13 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 
-import MuteToggle from './MuteToggle';
+import Icon from '../Icon';
 import ReactSimpleRange from 'react-simple-range';
 
 import styles from './AudioPlayer.scss';
 
-// audio files
+// files
 import chime from './files/chime.mp3';
 import beep from './files/beep.mp3';
+import mute from '../../icons/ic_volume_up_24px.svg';
+import unMute from '../../icons/ic_volume_off_24px.svg';
 
 export default class AudioPlayer extends Component {
   static propTypes = {
@@ -38,6 +40,7 @@ export default class AudioPlayer extends Component {
   //   return (nextProps.audioPlaying !== audioPlaying || nextState.volume !== volume);
   // }
   componentWillReceiveProps(nextProps) {
+    console.log('audio index.js cWRP');
     const currentState = this.state.audioPlaying;
     const { audioPlaying } = nextProps;
     // should be redundant w/ shouldComponentUpdate but needs test
@@ -101,20 +104,27 @@ export default class AudioPlayer extends Component {
   render() {
     return (
       <div>
-        <div className={styles.iconwrap}>
-          <MuteToggle
-            onChange={this.handleChange}
-            muted={this.state.muted}
-          />
-        </div>
-        <div className={styles.sliderwrap}>
-          <ReactSimpleRange
-            onChange={this.handleChange}
-            min={0}
-            max={10}
-            step={1}
-            defaultValue={this.state.volume}
-          />
+        <div className={styles.audiocontrolswrap}>
+          <div className={styles.sliderwrap}>
+            <ReactSimpleRange
+              onChange={this.handleChange}
+              min={0}
+              max={10}
+              step={1}
+              defaultValue={this.state.volume}
+              vertical
+              disableThumb
+              sliderSize={30}
+              trackColor="#00BCD4"
+              sliderColor="#B2EBF2"
+            />
+          </div>
+          <div className={styles.iconwrap}>
+            {this.state.muted
+              ? <Icon glyph={unMute} className={styles.icon} />
+              : <Icon glyph={mute} className={styles.icon} />
+            }
+          </div>
         </div>
         <audio
           ref={(c) => (this.audioElement = c)}

@@ -16,7 +16,11 @@ const TimerDisplay = ({ time, perc, paused }) => {
       <ProgressIndicator
         perc={perc}
       />
-      <h2 className={className}>{time}</h2>
+      <div className={styles.timewrap}>
+        <div className={styles.timewrapinner}>
+          <h2 className={className}>{time}</h2>
+        </div>
+      </div>
     </div>
   );
 };

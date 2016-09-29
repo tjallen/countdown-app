@@ -1,17 +1,28 @@
+.audiocontrolswrap {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
 .iconwrap, .sliderwrap {
-  float: left;
+  height: 40px;
+}
+
+.icon {
+  pointer-events: none;
 }
 
 .iconwrap {
-  width: 20px;
-  float: left;
-  position: relative;
-  top: -2px;
+  pointer-events: none;
+  width: 30px;
+  position: absolute;
+  top: 10px;
   margin-right: 5px;
+  z-index: 3;
 }
 .sliderwrap {
-  width: 100px;
-  float: left;
+  width: 30px;
+  position: relative;
 }
 
 

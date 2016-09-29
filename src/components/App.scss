@@ -1,10 +1,13 @@
 $primary: blue;
 $dividers: lightgray;
-$fontsize: 1rem;
 $fontcolor: black;
 
 html, body, div#app, div.container {
   height: 100%;
+}
+
+html {
+  font-size: 62.5%;
 }
 
 *:focus {
@@ -19,9 +22,6 @@ img {
 .container {
   text-align: center;
   color: $fontcolor;
-  h1 {
-    font-size: calc($fontsize * 2);
-  }
 }
 
 hr {

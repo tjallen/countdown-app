@@ -8,7 +8,8 @@
     "classnames": "^2.2.5",
     "normalize.css": "^4.1.1",
     "react": "^15.3.1",
-    "react-dom": "^15.3.1"
+    "react-dom": "^15.3.1",
+    "react-simple-range": "^1.2.1"
   },
   "devDependencies": {
     "babel-core": "^6.14.0",

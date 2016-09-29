@@ -4,11 +4,25 @@
   100% { opacity: 1; }
 }
 
+.timewrap {
+  text-align: center;
+  width: 100%;
+}
+
+.timewrapinner {
+  margin: 0 auto;
+  width: 45%;
+  display: table;
+}
+
 .timer {
+  pointer-events: none;
   font-size: 3rem;
-  letter-spacing: 0.25rem;
+  letter-spacing: 0.15rem;
   margin: 20px 0;
   padding: 0;
+  position: relative;
+  z-index: 9;
   &.paused {
     animation: RIPBlinkTag 1.25s infinite ease-out;
   }
