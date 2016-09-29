@@ -15,6 +15,7 @@ import volumeMuted from '../../icons/ic_volume_mute_24px.svg';
 export default class AudioPlayer extends Component {
   static propTypes = {
     audioPlaying: PropTypes.bool,
+    timerPlaying: PropTypes.bool,
     onAudioComplete: PropTypes.func,
   };
   constructor(props) {
@@ -116,7 +117,11 @@ export default class AudioPlayer extends Component {
     }
     return (
       <div>
-        <div className={styles.audiocontrolswrap}>
+        {this.props.timerPlaying
+        ? <div className={styles.audiocontrolswrap}>
+          <div className={styles.iconwrap}>
+            {currentVolumeIcon}
+          </div>
           <div className={styles.sliderwrap}>
             <ReactSimpleRange
               onChange={this.handleChange}
@@ -124,17 +129,13 @@ export default class AudioPlayer extends Component {
               max={10}
               step={1}
               defaultValue={volume}
-              vertical
               disableThumb
-              sliderSize={30}
               trackColor="#00BCD4"
               sliderColor="#B2EBF2"
             />
           </div>
-          <div className={styles.iconwrap}>
-            {currentVolumeIcon}
-          </div>
         </div>
+        : null}
         <audio
           ref={(c) => (this.audioElement = c)}
         >

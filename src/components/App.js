@@ -197,6 +197,7 @@ export default class App extends Component {
           <AudioPlayer
             audioPlaying={this.state.audioPlaying}
             onAudioComplete={this.onAudioComplete}
+            timerPlaying={!stopped}
           />
         </div>
       </div>
