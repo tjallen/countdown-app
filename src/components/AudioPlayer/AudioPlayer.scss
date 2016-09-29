@@ -1,20 +1,27 @@
 .audiocontrolswrap {
+  width: 100%;
+}
+
+.audiocontrolsinner {
   margin: 20px auto;
   width: 45%;
+  overflow: visible;
 }
 
 .iconwrap, .sliderwrap {
   display: inline;
-  float: left;
 }
 
 .iconwrap {
   position: relative;
-  top: -6px;
-  width: 30px;
+  top: 7px;
+  width: 24px;
+  height: 20px;
+  display: inline-block;
 }
 .sliderwrap {
   width: 120px;
+  display: inline-block;
 }
 
 

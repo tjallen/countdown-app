@@ -117,8 +117,9 @@ export default class AudioPlayer extends Component {
     }
     return (
       <div>
+        <div className={styles.audiocontrolswrap}>
         {this.props.timerPlaying
-        ? <div className={styles.audiocontrolswrap}>
+        ? <div className={styles.audiocontrolsinner}>
           <div className={styles.iconwrap}>
             {currentVolumeIcon}
           </div>
@@ -136,6 +137,7 @@ export default class AudioPlayer extends Component {
           </div>
         </div>
         : null}
+        </div>
         <audio
           ref={(c) => (this.audioElement = c)}
         >
