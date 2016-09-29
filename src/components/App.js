@@ -14,7 +14,6 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      // timer
       remainingTime: 0,
       totalTime: 0,
       paused: false,
@@ -23,10 +22,6 @@ export default class App extends Component {
       interval: 1000,
       timeoutId: null,
       percRemaining: 0,
-      // audio
-      volume: 0.1,
-      muted: false,
-      audioPlaying: false,
     };
     this.tick = this.tick.bind(this);
     this.onTimerStart = this.onTimerStart.bind(this);
@@ -35,7 +30,6 @@ export default class App extends Component {
     this.onTimerRestart = this.onTimerRestart.bind(this);
     this.updateTime = this.updateTime.bind(this);
     this.toggleLoop = this.toggleLoop.bind(this);
-    this.onAudioComplete = this.onAudioComplete.bind(this);
   }
   componentWillMount() {
     this.state.totalTime = this.state.remainingTime;
@@ -88,10 +82,6 @@ export default class App extends Component {
       percRemaining: 0,
     });
   }
-  onAudioComplete() {
-    console.log('onAudCom');
-    this.setState({ audioPlaying: false });
-  }
   toggleLoop() {
     this.setState({
       loop: !this.state.loop,
@@ -112,8 +102,7 @@ export default class App extends Component {
     } else {
       // timer is completed: either prepare to loop or clear
       console.log(`timerCompleted after ${total}ms`);
-      // this.audioElement.play();
-      this.setState({ audioPlaying: true });
+      this.audioPlayer.playAudio();
       if (this.state.loop) {
         timeoutId = setTimeout(() => {
           this.onTimerStart(total);
@@ -195,9 +184,8 @@ export default class App extends Component {
           />
           {stopped && <TimerForm updateTime={this.updateTime} />}
           <AudioPlayer
-            audioPlaying={this.state.audioPlaying}
-            onAudioComplete={this.onAudioComplete}
             timerPlaying={!stopped}
+            ref={(c) => (this.audioPlayer = c)}
           />
         </div>
       </div>

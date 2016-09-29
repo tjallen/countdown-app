@@ -32,42 +32,11 @@ export default class AudioPlayer extends Component {
     this.playAudio = this.playAudio.bind(this);
     this.pauseAudio = this.pauseAudio.bind(this);
   }
-  componentDidMount() {
-    // initialize audio element
-    this.audioElement.volume = this.state.volume / 10;
-    this.audioElement.muted = this.state.muted;
-  }
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   const { audioPlaying, volume } = this.state;
-  //   return (nextProps.audioPlaying !== audioPlaying || nextState.volume !== volume);
-  // }
-  componentWillReceiveProps(nextProps) {
-    console.log('audio index.js cWRP');
-    const currentState = this.state.audioPlaying;
-    const { audioPlaying } = nextProps;
-    // should be redundant w/ shouldComponentUpdate but needs test
-    if (audioPlaying === currentState) return;
-    if (audioPlaying) {
-      this.playAudio();
-    } else if (!audioPlaying) {
-      this.pauseAudio();
-    }
-  }
   playAudio() {
-    const duration = this.audioElement.duration * 1000; // .duration uses secs
-    const pauseInterval = setTimeout(this.pauseAudio, duration);
     this.audioElement.play();
-    this.setState({
-      pauseInterval,
-    });
   }
   pauseAudio() {
-    clearTimeout(this.state.pauseInterval);
-    this.setState({
-      pauseInterval: null,
-    });
     this.audioElement.pause();
-    this.props.onAudioComplete();
   }
   handleChange(newState) {
     let volume;
