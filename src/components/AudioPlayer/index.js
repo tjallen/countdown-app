@@ -6,10 +6,11 @@ import ReactSimpleRange from 'react-simple-range';
 import styles from './AudioPlayer.scss';
 
 // files
-import chime from './files/chime.mp3';
-import beep from './files/beep.mp3';
-import mute from '../../icons/ic_volume_up_24px.svg';
-import unMute from '../../icons/ic_volume_off_24px.svg';
+// import westminster from './files/chime.mp3';
+import singleBeep from './files/beep.mp3';
+import volumeUp from '../../icons/ic_volume_up_24px.svg';
+import volumeDown from '../../icons/ic_volume_down_24px.svg';
+import volumeMuted from '../../icons/ic_volume_mute_24px.svg';
 
 export default class AudioPlayer extends Component {
   static propTypes = {
@@ -23,7 +24,7 @@ export default class AudioPlayer extends Component {
       volume: 5,
       previousVolume: null,
       audioPlaying: props.audioPlaying,
-      chime,
+      chime: singleBeep,
       pauseInterval: null,
     };
     this.handleChange = this.handleChange.bind(this);
@@ -102,6 +103,17 @@ export default class AudioPlayer extends Component {
     this.audioElement.muted = muted;
   }
   render() {
+    let currentVolumeIcon;
+    const { muted, volume } = this.state;
+    if (muted) {
+      currentVolumeIcon = <Icon glyph={volumeMuted} className={styles.icon} />;
+    } else {
+      if (volume > 4) {
+        currentVolumeIcon = <Icon glyph={volumeUp} className={styles.icon} />;
+      } else {
+        currentVolumeIcon = <Icon glyph={volumeDown} className={styles.icon} />;
+      }
+    }
     return (
       <div>
         <div className={styles.audiocontrolswrap}>
@@ -111,7 +123,7 @@ export default class AudioPlayer extends Component {
               min={0}
               max={10}
               step={1}
-              defaultValue={this.state.volume}
+              defaultValue={volume}
               vertical
               disableThumb
               sliderSize={30}
@@ -120,10 +132,7 @@ export default class AudioPlayer extends Component {
             />
           </div>
           <div className={styles.iconwrap}>
-            {this.state.muted
-              ? <Icon glyph={unMute} className={styles.icon} />
-              : <Icon glyph={mute} className={styles.icon} />
-            }
+            {currentVolumeIcon}
           </div>
         </div>
         <audio
