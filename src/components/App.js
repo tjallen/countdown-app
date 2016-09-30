@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import styles from './App.scss';
 
 // child components
+import AppBar from './AppBar';
 import TimerControls from './TimerControls';
 import TimerDisplay from './TimerDisplay';
 import TimerForm from './TimerForm';
@@ -164,6 +165,7 @@ export default class App extends Component {
     const playing = !stopped && !paused;
     return (
       <div className={styles.container}>
+        <AppBar appTitle="Chime" />
         <div className={styles.main}>
           <TimerDisplay
             time={remainingTime}

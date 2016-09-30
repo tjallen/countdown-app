@@ -101,7 +101,7 @@ export default class AudioPlayer extends Component {
               defaultValue={volume}
               disableThumb
               sliderColor="#C5CAE9"
-              trackColor="#FF4081"
+              trackColor="#FF5252"
             />
           </div>
         </div>

@@ -23,6 +23,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   height: 200px;
   border: 3px solid #fff;
   border-radius: 100%;
@@ -34,12 +35,17 @@
   display: flex;
 }
 
+.title {
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+}
+
 .timer {
   font-weight: normal;
   pointer-events: none;
   font-size: 3rem;
   letter-spacing: 0.15rem;
-  margin: 0;
+  margin: -5px 0 0 0;
   padding: 0;
   position: relative;
   z-index: 9;
