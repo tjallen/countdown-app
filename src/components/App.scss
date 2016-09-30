@@ -1,3 +1,5 @@
+@import "material-colors/dist/colors.scss";
+
 $fontcolor: #fff;
 
 *, *:before, *:after {
@@ -10,7 +12,7 @@ body {
 
 html, body, div#app {
   height: 100%;
-  background-color: #455A64;
+  background-color: $md-blue-grey-700;
   color: #fff;
 }
 

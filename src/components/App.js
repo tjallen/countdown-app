@@ -144,7 +144,9 @@ export default class App extends Component {
       ms = theArgs[0];
     } else {
       const [hours, minutes, seconds] = theArgs;
-      ms = ((hours * 3600) + (minutes * 60) + seconds) * 1000;
+      ms = (
+        (Math.min(hours, 24) * 3600) + (Math.min(minutes, 59) * 60) + Math.min(seconds, 59)
+      ) * 1000;
     }
     if (ms === 0) {
       percRemaining = 0;

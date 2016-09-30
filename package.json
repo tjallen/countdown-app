@@ -33,6 +33,7 @@
     "handlebars-loader": "^1.2.0",
     "html-webpack-plugin": "^2.8.2",
     "image-webpack-loader": "^1.8.0",
+    "material-colors": "^1.1.1",
     "postcss-browser-reporter": "^0.5.0",
     "postcss-cssnext": "^2.6.0",
     "postcss-extend": "^1.0.5",
