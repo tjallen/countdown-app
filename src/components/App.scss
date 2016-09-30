@@ -1,9 +1,21 @@
-$primary: blue;
-$dividers: lightgray;
-$fontcolor: black;
+$fontcolor: #fff;
 
-html, body, div#app, div.container {
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+}
+
+html, body, div#app {
   height: 100%;
+  background-color: #3F51B5;
+  color: #fff;
+}
+
+.container {
+  text-align: center;
 }
 
 html {
@@ -17,28 +29,6 @@ html {
 img {
   height: auto;
   max-width: 200px;
-}
-
-.container {
-  text-align: center;
-  color: $fontcolor;
-}
-
-hr {
-  width: 35%;
-  margin: 20px auto;
-  border: none;
-  border-bottom: 2px solid $dividers;
-}
-
-.red {
-  color: red;
-  border-bottom: 3px solid red;
-}
-
-.blue {
-  color: blue;
-  border-bottom: 3px solid blue;
 }
 
 input {
