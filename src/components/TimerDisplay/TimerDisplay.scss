@@ -38,6 +38,20 @@
 .title {
   text-transform: uppercase;
   letter-spacing: 0.05rem;
+  margin: 0 0 5px 0;
+  padding: 8px;
+}
+
+.input {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 0.05rem;
+  // border-bottom: 2px solid #FF5252;
+  padding: 8px;
+  margin: 0 0 5px 0;
 }
 
 .timer {

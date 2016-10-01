@@ -23,6 +23,7 @@ export default class App extends Component {
       interval: 1000,
       timeoutId: null,
       percRemaining: 0,
+      timerLabel: 'Label',
     };
     this.tick = this.tick.bind(this);
     this.onTimerStart = this.onTimerStart.bind(this);
