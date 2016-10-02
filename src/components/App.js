@@ -85,9 +85,9 @@ export default class App extends Component {
     });
   }
   toggleLoop() {
-    this.setState({
-      loop: !this.state.loop,
-    });
+    this.setState((prevState) => ({
+      loop: !prevState.loop,
+    }));
   }
   // tick method run by looping setTimeout to update timer every ~1000ms
   tick(timerStartDate) {
