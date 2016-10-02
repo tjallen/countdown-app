@@ -28,9 +28,9 @@ const AppBar = ({ appTitle }) => {
       <div style={upperBar}></div>
       <div style={lowerStyle}>
         <h1 style={upperStyle}>{appTitle}</h1>
-        <OverflowMenu>
+        {/* <OverflowMenu>
           {overflowItems}
-        </OverflowMenu>
+        </OverflowMenu> */}
       </div>
     </div>
   );

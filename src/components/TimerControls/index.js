@@ -22,29 +22,22 @@ const TimerControls = ({
   return (
     <div className={styles.timercontrols}>
       <div className={styles.playcontainer}>
-        {playOrPause}
-      </div>
-      {!stopped &&
-        <div>
+        {!stopped &&
           <TimerButton
             action={onTimerClear}
             glyph={clear}
             title="Clear timer"
           />
+        }
+        {playOrPause}
+        {!stopped &&
           <TimerButton
             action={() => onTimerRestart(totalTime)}
             glyph={restart}
             title="Restart timer"
           />
-          <TimerButton
-            action={toggleLoop}
-            glyph={loop}
-            title="Toggle timer loop"
-            type="toggle"
-            active={looping}
-          />
-        </div>
-    }
+        }
+      </div>
     </div>
   );
 };
