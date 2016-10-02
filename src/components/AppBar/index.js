@@ -1,7 +1,5 @@
 import React, { PropTypes } from 'react';
-
-import kebab from '../../icons/ic_more_vert_24px.svg';
-import Icon from '../Icon';
+import OverflowMenu from '../OverflowMenu';
 
 const AppBar = ({ appTitle }) => {
   const upperBar = {
@@ -20,17 +18,19 @@ const AppBar = ({ appTitle }) => {
     width: 'auto',
     display: 'inline-block',
   };
-  const kebabStyle = {
-    display: 'inline-block',
-    float: 'right',
-    fill: '#fff',
-  };
+  const overflowItems = [
+    <a>Toggle loop</a>,
+    <a>Toggle label</a>,
+    <a>Repo</a>,
+  ];
   return (
     <div>
       <div style={upperBar}></div>
       <div style={lowerStyle}>
         <h1 style={upperStyle}>{appTitle}</h1>
-        <a href="#" style={kebabStyle}><Icon glyph={kebab} /></a>
+        <OverflowMenu>
+          {overflowItems}
+        </OverflowMenu>
       </div>
     </div>
   );
