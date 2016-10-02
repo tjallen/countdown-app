@@ -41,6 +41,20 @@ export default class TimerDisplay extends Component {
       timer: true,
       paused,
     });
+    const labelWrap = {
+      padding: '0px',
+      margin: '0 0 5px 0',
+      borderBottom: '2px solid transparent',
+      transition: 'all .25s ease-out',
+      minWidth: '105px',
+    };
+    const labelWrapEditing = {
+      padding: '0px 0px 4px 0px',
+      margin: '0 0 5px 0',
+      borderBottom: '2px solid #FF5252',
+      transition: 'all .25s ease-in',
+      minWidth: '105px',
+    };
     const labelDisplay = <span className={styles.title} onClick={this.beginEdit}>{label}</span>;
     const labelForm =
       <input autoFocus className={styles.input} type="text" value={label} onChange={this.onChange} onBlur={this.finishEdit}></input>;
@@ -52,7 +66,10 @@ export default class TimerDisplay extends Component {
         <div className={styles.timewrap}>
           <div className={styles.timewrapinner}>
             <div className={styles.clockface}>
-              {!editing ? labelDisplay : labelForm}
+              {!editing
+                ? <div style={labelWrap}>{labelDisplay}</div>
+                : <div style={labelWrapEditing}>{labelForm}</div>
+              }
               <h2 className={className}>{time}</h2>
             </div>
           </div>
