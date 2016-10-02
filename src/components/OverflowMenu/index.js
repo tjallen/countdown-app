@@ -13,6 +13,7 @@ export default class OverflowMenu extends Component {
       menuOpen: false,
     };
     this.toggleMenu = this.toggleMenu.bind(this);
+    this.closeMenu = this.closeMenu.bind(this);
   }
   toggleMenu(e) {
     const menuOpen = !this.state.menuOpen;
@@ -20,24 +21,27 @@ export default class OverflowMenu extends Component {
     this.setState({
       menuOpen,
     });
-    console.log('oepn menu');
   }
   render() {
     const { children } = this.props;
     const wrapperStyle = {
       position: 'relative',
-      border: '1px solid orange',
+      float: 'right',
     };
-    const kebabStyle = {
+    const toggleStyle = {
       display: 'inline-block',
       float: 'right',
       fill: '#fff',
+      cursor: 'pointer',
     };
     const menuStyle = {
-      backgroundColor: '#242424',
+      backgroundColor: '#fff',
+      color: '#242424',
+      fontSize: '1.2rem',
+      borderRadius: '2px',
       textAlign: 'left',
       position: 'absolute',
-      top: '15px',
+      top: '16px',
       right: '0px',
       listStyle: 'none',
       margin: '5px',
@@ -53,17 +57,20 @@ export default class OverflowMenu extends Component {
       display: 'block',
       clear: 'both',
       whiteSpace: 'nowrap',
-      margin: '0 0 5px 0',
+      margin: '8px 0',
+      padding: '0 5px',
       // backgroundColor: 'blue',
     };
     return (
       <div style={wrapperStyle}>
-        <a onClick={this.toggleMenu} style={kebabStyle}><Icon glyph={kebab} /></a>
+        <a onClick={this.toggleMenu} style={toggleStyle}><Icon glyph={kebab} /></a>
+        {this.state.menuOpen &&
         <div style={menuStyle}>
           <ul style={listStyle}>
             {children.map((child) => <li style={itemStyle}>{child}</li>)}
           </ul>
         </div>
+      }
       </div>
     );
   }
