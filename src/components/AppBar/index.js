@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import OverflowMenu from '../OverflowMenu';
 import OverflowMenuItem from '../OverflowMenu/OverflowMenuItem';
 
-const AppBar = ({ appTitle, toggleLoop, toggleLabel }) => {
+const AppBar = ({ appTitle, toggleLoop, loopStatus }) => {
   const upperBar = {
     height: '14px',
     backgroundColor: '#263238',
@@ -28,11 +28,13 @@ const AppBar = ({ appTitle, toggleLoop, toggleLabel }) => {
           <OverflowMenuItem
             preventMenuHide
             onClick={toggleLoop}
+            active={loopStatus}
+            toggle
           >
-            Toggle loop
+            Looping timer
           </OverflowMenuItem>
           <OverflowMenuItem>
-            <a href="#">Outside link with no preventMenuHide</a>
+            <a href="https://github.com/tjallen/chime">Github repo</a>
           </OverflowMenuItem>
         </OverflowMenu>
       </div>
@@ -41,5 +43,7 @@ const AppBar = ({ appTitle, toggleLoop, toggleLabel }) => {
 };
 AppBar.propTypes = {
   appTitle: PropTypes.string,
+  toggleLoop: PropTypes.func,
+  loopStatus: PropTypes.bool,
 };
 export default AppBar;

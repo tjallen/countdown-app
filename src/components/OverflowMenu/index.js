@@ -17,7 +17,6 @@ export default class OverflowMenu extends Component {
     };
     this.menuToggle = this.menuToggle.bind(this);
     this.menuHide = this.menuHide.bind(this);
-    this.menuItemClick = this.menuItemClick.bind(this);
     this.menuShow = this.menuShow.bind(this);
   }
   getChildContext() {
@@ -37,10 +36,6 @@ export default class OverflowMenu extends Component {
       menuOpen: false,
     });
   }
-  menuItemClick(child) {
-    console.log('menu item clicked', child.props);
-    this.menuHide();
-  }
   render() {
     const { children } = this.props;
     const wrapperStyle = {
@@ -55,6 +50,12 @@ export default class OverflowMenu extends Component {
     };
     const menuStyle = {
       backgroundColor: '#fff',
+      boxShadow: '4px 8px 4px rgba(25, 25, 25, 0.2)',
+      border: '1px solid grey',
+      userSelect: 'none',
+      WebkitUserSelect: 'none',
+      MozUserSelect: 'none',
+      msUserSelect: 'none',
       color: '#242424',
       fontSize: '1.2rem',
       borderRadius: '2px',
@@ -68,7 +69,7 @@ export default class OverflowMenu extends Component {
     };
     const listStyle = {
       width: 'auto',
-      // backgroundColor: 'red',
+      padding: '0 10px',
     };
     const itemStyle = {
       listStyleType: 'none',
@@ -77,14 +78,13 @@ export default class OverflowMenu extends Component {
       clear: 'both',
       whiteSpace: 'nowrap',
       margin: '8px 0',
-      padding: '0 5px',
-      // backgroundColor: 'blue',
+      padding: '6px 20px',
+      cursor: 'pointer',
+      lineHeight: '20px',
     };
     return (
       <div style={wrapperStyle} tabIndex="1" onBlur={this.menuHide}>
         <a onClick={this.menuToggle} style={toggleStyle}><Icon glyph={kebab} /></a>
-      {/* <div style={wrapperStyle}>
-        <a onClick={this.menuShow} style={toggleStyle}><Icon glyph={kebab} /></a> */}
         {this.state.menuOpen &&
           <div style={menuStyle}>
             <ul style={listStyle}>

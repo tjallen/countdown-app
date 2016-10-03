@@ -171,6 +171,7 @@ export default class App extends Component {
           appTitle="Chime"
           toggleLoop={this.toggleLoop}
           toggleLabel={this.toggleLabel}
+          loopStatus={this.state.loop}
         />
         <div className={styles.main}>
           <TimerDisplay
