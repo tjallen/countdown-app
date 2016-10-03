@@ -23,7 +23,6 @@ export default class App extends Component {
       interval: 1000,
       timeoutId: null,
       percRemaining: 0,
-      timerLabel: 'Label',
     };
     this.tick = this.tick.bind(this);
     this.onTimerStart = this.onTimerStart.bind(this);
@@ -32,7 +31,6 @@ export default class App extends Component {
     this.onTimerRestart = this.onTimerRestart.bind(this);
     this.updateTime = this.updateTime.bind(this);
     this.toggleLoop = this.toggleLoop.bind(this);
-    this.toggleLabel = this.toggleLabel.bind(this);
   }
   componentWillMount() {
     this.state.totalTime = this.state.remainingTime;
@@ -89,9 +87,6 @@ export default class App extends Component {
     this.setState((prevState) => ({
       loop: !prevState.loop,
     }));
-  }
-  toggleLabel() {
-    this.setState({ label: null });
   }
   // tick method run by looping setTimeout to update timer every ~1000ms
   tick(timerStartDate) {

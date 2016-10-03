@@ -31,12 +31,6 @@ const AppBar = ({ appTitle, toggleLoop, toggleLabel }) => {
           >
             Toggle loop
           </OverflowMenuItem>
-          <OverflowMenuItem
-            preventMenuHide
-            onClick={toggleLabel}
-          >
-            Toggle label
-          </OverflowMenuItem>
           <OverflowMenuItem>
             <a href="#">Outside link with no preventMenuHide</a>
           </OverflowMenuItem>

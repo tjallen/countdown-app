@@ -11,14 +11,15 @@ export default class TimerDisplay extends Component {
     time: PropTypes.string.isRequired,
     perc: PropTypes.number,
     paused: PropTypes.bool,
+    label: PropTypes.string,
   }
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.onChange = this.onChange.bind(this);
     this.beginEdit = this.beginEdit.bind(this);
     this.finishEdit = this.finishEdit.bind(this);
     this.state = {
-      label: 'Label',
+      label: 'label',
       editing: false,
     };
   }
