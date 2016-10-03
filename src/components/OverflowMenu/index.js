@@ -7,20 +7,39 @@ export default class OverflowMenu extends Component {
   static propTypes = {
     children: PropTypes.array,
   };
+  static childContextTypes = {
+    menuHide: PropTypes.func,
+  };
   constructor() {
     super();
     this.state = {
       menuOpen: false,
     };
-    this.toggleMenu = this.toggleMenu.bind(this);
-    this.closeMenu = this.closeMenu.bind(this);
+    this.menuToggle = this.menuToggle.bind(this);
+    this.menuHide = this.menuHide.bind(this);
+    this.menuItemClick = this.menuItemClick.bind(this);
+    this.menuShow = this.menuShow.bind(this);
   }
-  toggleMenu(e) {
-    const menuOpen = !this.state.menuOpen;
+  getChildContext() {
+    return { menuHide: this.menuHide };
+  }
+  menuToggle(e) {
     e.preventDefault();
+    this.setState((prevState) => ({
+      menuOpen: !prevState.menuOpen,
+    }));
+  }
+  menuShow() {
+    this.setState({ menuOpen: true });
+  }
+  menuHide() {
     this.setState({
-      menuOpen,
+      menuOpen: false,
     });
+  }
+  menuItemClick(child) {
+    console.log('menu item clicked', child.props);
+    this.menuHide();
   }
   render() {
     const { children } = this.props;
@@ -62,15 +81,17 @@ export default class OverflowMenu extends Component {
       // backgroundColor: 'blue',
     };
     return (
-      <div style={wrapperStyle}>
-        <a onClick={this.toggleMenu} style={toggleStyle}><Icon glyph={kebab} /></a>
+      <div style={wrapperStyle} tabIndex="1" onBlur={this.menuHide}>
+        <a onClick={this.menuToggle} style={toggleStyle}><Icon glyph={kebab} /></a>
+      {/* <div style={wrapperStyle}>
+        <a onClick={this.menuShow} style={toggleStyle}><Icon glyph={kebab} /></a> */}
         {this.state.menuOpen &&
-        <div style={menuStyle}>
-          <ul style={listStyle}>
-            {children.map((child) => <li style={itemStyle}>{child}</li>)}
-          </ul>
-        </div>
-      }
+          <div style={menuStyle}>
+            <ul style={listStyle}>
+              {children.map((child, index) => <li key={index} style={itemStyle}>{child}</li>)}
+            </ul>
+          </div>
+        }
       </div>
     );
   }

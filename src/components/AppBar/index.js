@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import OverflowMenu from '../OverflowMenu';
+import OverflowMenuItem from '../OverflowMenu/OverflowMenuItem';
 
-const AppBar = ({ appTitle, toggleLoop }) => {
+const AppBar = ({ appTitle, toggleLoop, toggleLabel }) => {
   const upperBar = {
     height: '14px',
     backgroundColor: '#263238',
@@ -18,19 +19,28 @@ const AppBar = ({ appTitle, toggleLoop }) => {
     width: 'auto',
     display: 'inline-block',
   };
-  const overflowItems = [
-    <a onClick={toggleLoop}>Toggle loop</a>,
-    <a>Toggle label</a>,
-    <a>Repo</a>,
-  ];
   return (
     <div>
       <div style={upperBar}></div>
       <div style={lowerStyle}>
         <h1 style={upperStyle}>{appTitle}</h1>
-        {/* <OverflowMenu>
-          {overflowItems}
-        </OverflowMenu> */}
+        <OverflowMenu>
+          <OverflowMenuItem
+            preventMenuHide
+            onClick={toggleLoop}
+          >
+            Toggle loop
+          </OverflowMenuItem>
+          <OverflowMenuItem
+            preventMenuHide
+            onClick={toggleLabel}
+          >
+            Toggle label
+          </OverflowMenuItem>
+          <OverflowMenuItem>
+            <a href="#">Outside link with no preventMenuHide</a>
+          </OverflowMenuItem>
+        </OverflowMenu>
       </div>
     </div>
   );
