@@ -168,7 +168,10 @@ export default class App extends Component {
     const playing = !stopped && !paused;
     return (
       <div className={styles.container}>
-        <AppBar appTitle="Chime" />
+        <AppBar
+          appTitle="Chime"
+          toggleLoop={this.toggleLoop}
+        />
         <div className={styles.main}>
           <TimerDisplay
             time={remainingTime}

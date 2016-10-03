@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import OverflowMenu from '../OverflowMenu';
 
-const AppBar = ({ appTitle }) => {
+const AppBar = ({ appTitle, toggleLoop }) => {
   const upperBar = {
     height: '14px',
     backgroundColor: '#263238',
@@ -19,7 +19,7 @@ const AppBar = ({ appTitle }) => {
     display: 'inline-block',
   };
   const overflowItems = [
-    <a>Toggle loop</a>,
+    <a onClick={toggleLoop}>Toggle loop</a>,
     <a>Toggle label</a>,
     <a>Repo</a>,
   ];
