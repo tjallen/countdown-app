@@ -17,7 +17,8 @@ export default class OverflowMenu extends Component {
     };
     this.menuToggle = this.menuToggle.bind(this);
     this.menuHide = this.menuHide.bind(this);
-    this.menuShow = this.menuShow.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    // this.menuShow = this.menuShow.bind(this);
   }
   getChildContext() {
     return { menuHide: this.menuHide };
@@ -28,13 +29,17 @@ export default class OverflowMenu extends Component {
       menuOpen: !prevState.menuOpen,
     }));
   }
-  menuShow() {
-    this.setState({ menuOpen: true });
-  }
+  // menuShow() {
+  //   console.log('Menu show');
+  //   this.setState({ menuOpen: true });
+  // }
   menuHide() {
     this.setState({
       menuOpen: false,
     });
+  }
+  handleKeyDown(e) {
+    if (e.keyCode === 27) this.menuHide();
   }
   render() {
     const { children } = this.props;
@@ -83,7 +88,12 @@ export default class OverflowMenu extends Component {
       lineHeight: '20px',
     };
     return (
-      <div style={wrapperStyle} tabIndex="1" onBlur={this.menuHide}>
+      <div
+        onKeyDown={this.handleKeyDown}
+        onBlur={this.menuHide}
+        style={wrapperStyle}
+        tabIndex="1"
+      >
         <a onClick={this.menuToggle} style={toggleStyle}><Icon glyph={kebab} /></a>
         {this.state.menuOpen &&
           <div style={menuStyle}>
