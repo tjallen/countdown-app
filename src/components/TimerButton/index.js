@@ -5,20 +5,23 @@ import classNames from 'classnames/bind';
 import styles from './TimerButton.scss';
 const cx = classNames.bind(styles);
 
-const TimerButton = ({ action, glyph, title, type, active }) => {
+const TimerButton = ({ action, glyph, text, title, type, active }) => {
   let className = cx({
     btn: true,
     playpause: type === 'play' || type === 'pause',
     [type]: type !== undefined,
     active,
   });
+  const optionalText = (text ? <span>{text}</span> : null);
+  const optionalGlyph = (glyph ? <Icon glyph={glyph} /> : null);
   return (
     <button
       onClick={action}
       title={title}
       className={className}
     >
-      <Icon glyph={glyph} />
+      {optionalGlyph}
+      {optionalText}
     </button>
   );
 };
@@ -26,6 +29,7 @@ const TimerButton = ({ action, glyph, title, type, active }) => {
 TimerButton.propTypes = {
   action: PropTypes.func.isRequired,
   glyph: PropTypes.string,
+  text: PropTypes.string,
   title: PropTypes.string,
   type: PropTypes.string,
   active: PropTypes.bool,
