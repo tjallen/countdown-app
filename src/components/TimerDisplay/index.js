@@ -4,6 +4,7 @@ import styles from './TimerDisplay.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
+import TimerButton from '../TimerButton';
 import ProgressIndicator from './ProgressIndicator';
 
 export default class TimerDisplay extends Component {
@@ -18,6 +19,7 @@ export default class TimerDisplay extends Component {
     this.onChange = this.onChange.bind(this);
     this.beginEdit = this.beginEdit.bind(this);
     this.finishEdit = this.finishEdit.bind(this);
+    this.plusOneMinute = this.plusOneMinute.bind(this);
     this.state = {
       label: 'label',
       editing: false,
@@ -34,6 +36,10 @@ export default class TimerDisplay extends Component {
   }
   finishEdit() {
     this.setState({ editing: false });
+  }
+  plusOneMinute() {
+    console.log('plusOneMinute()');
+    // this.props.updateTime(currentTime + 1min);
   }
   render() {
     const { paused, perc, time } = this.props;
@@ -72,6 +78,11 @@ export default class TimerDisplay extends Component {
                 : <div style={labelWrapEditing}>{labelForm}</div>
               }
               <h2 className={className}>{time}</h2>
+              <TimerButton
+                text="+1"
+                title="Add one minute"
+                action={this.plusOneMinute}
+              />
             </div>
           </div>
         </div>
