@@ -120,6 +120,7 @@ export default class App extends Component {
   }
   // update state.targetTime from user h/m/s inputs or directly from single arg
   updateTime(...theArgs) {
+    if (!this.state.stopped) this.onTimerPause();
     let ms;
     let percRemaining = 100;
     if (theArgs.length === 1) {
@@ -138,6 +139,7 @@ export default class App extends Component {
       remainingTime: ms,
       percRemaining,
     });
+    if (!this.state.stopped) this.onTimerStart();
     // console.log(`time updated to ${ms}`);
   }
   render() {

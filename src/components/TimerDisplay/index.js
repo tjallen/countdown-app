@@ -13,6 +13,7 @@ export default class TimerDisplay extends Component {
     perc: PropTypes.number,
     paused: PropTypes.bool,
     label: PropTypes.string,
+    updateTime: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -57,7 +58,8 @@ export default class TimerDisplay extends Component {
   }
   plusOneMinute() {
     console.log('plusOneMinute()');
-    // this.props.updateTime(remainingTime + 1min);
+    const oneMinuteAdded = (this.props.remainingTime + 60000);
+    this.props.updateTime(oneMinuteAdded);
   }
   render() {
     const { paused, perc, remainingTime } = this.props;
