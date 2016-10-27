@@ -118,24 +118,6 @@ export default class App extends Component {
       percRemaining,
     });
   }
-  // takes time in milliseconds, renders to hh:mm:ss for readable time
-  formatTime(ms) {
-    const seconds = ms / 1000;
-    let mins = Math.floor(seconds / 60);
-    const secs = this.zeroPad(Math.round(seconds % 60));
-    const hours = this.zeroPad(Math.floor(mins / 60));
-    mins = this.zeroPad(mins % 60);
-    const output = `${hours}:${mins}:${secs}`;
-    return output;
-  }
-  // add padding zero to hh:mm:ss if needed
-  zeroPad(num) {
-    const paddedNum = `0${num}`;
-    if (num >= 10) {
-      return num;
-    }
-    return paddedNum;
-  }
   // update state.targetTime from user h/m/s inputs or directly from single arg
   updateTime(...theArgs) {
     let ms;
@@ -159,10 +141,6 @@ export default class App extends Component {
     // console.log(`time updated to ${ms}`);
   }
   render() {
-    // helper/readability vars for jsx
-    let { totalTime, remainingTime } = this.state;
-    totalTime = this.formatTime(totalTime);
-    remainingTime = this.formatTime(remainingTime);
     const { stopped, paused } = this.state;
     const playing = !stopped && !paused;
     return (
@@ -175,7 +153,7 @@ export default class App extends Component {
         />
         <div className={styles.main}>
           <TimerDisplay
-            time={remainingTime}
+            remainingTime={this.state.remainingTime}
             perc={this.state.percRemaining}
             paused={paused}
             updateTime={this.updateTime}

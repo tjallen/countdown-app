@@ -9,7 +9,7 @@ import ProgressIndicator from './ProgressIndicator';
 
 export default class TimerDisplay extends Component {
   static propTypes = {
-    time: PropTypes.string.isRequired,
+    remainingTime: PropTypes.number.isRequired,
     perc: PropTypes.number,
     paused: PropTypes.bool,
     label: PropTypes.string,
@@ -31,6 +31,24 @@ export default class TimerDisplay extends Component {
       label,
     });
   }
+  // takes time in milliseconds, renders to hh:mm:ss for readable time
+  formatTime(ms) {
+    const seconds = ms / 1000;
+    let mins = Math.floor(seconds / 60);
+    const secs = this.zeroPad(Math.round(seconds % 60));
+    const hours = this.zeroPad(Math.floor(mins / 60));
+    mins = this.zeroPad(mins % 60);
+    const output = `${hours}:${mins}:${secs}`;
+    return output;
+  }
+  // add padding zero to hh:mm:ss if needed
+  zeroPad(num) {
+    const paddedNum = `0${num}`;
+    if (num >= 10) {
+      return num;
+    }
+    return paddedNum;
+  }
   beginEdit() {
     this.setState({ editing: true });
   }
@@ -39,11 +57,12 @@ export default class TimerDisplay extends Component {
   }
   plusOneMinute() {
     console.log('plusOneMinute()');
-    // this.props.updateTime(currentTime + 1min);
+    // this.props.updateTime(remainingTime + 1min);
   }
   render() {
-    const { paused, perc, time } = this.props;
+    const { paused, perc, remainingTime } = this.props;
     const { label, editing } = this.state;
+    const formattedTime = this.formatTime(remainingTime);
     let className = cx({
       timer: true,
       paused,
@@ -77,7 +96,7 @@ export default class TimerDisplay extends Component {
                 ? <div style={labelWrap}>{labelDisplay}</div>
                 : <div style={labelWrapEditing}>{labelForm}</div>
               }
-              <h2 className={className}>{time}</h2>
+              <h2 className={className}>{formattedTime}</h2>
               <TimerButton
                 text="+1"
                 title="Add one minute"
