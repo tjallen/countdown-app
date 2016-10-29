@@ -12,6 +12,7 @@ export default class TimerDisplay extends Component {
     remainingTime: PropTypes.number.isRequired,
     perc: PropTypes.number,
     paused: PropTypes.bool,
+    playing: PropTypes.bool,
     label: PropTypes.string,
     updateTime: PropTypes.func,
   }
@@ -62,7 +63,7 @@ export default class TimerDisplay extends Component {
     this.props.updateTime(oneMinuteAdded);
   }
   render() {
-    const { paused, perc, remainingTime } = this.props;
+    const { paused, playing, perc, remainingTime } = this.props;
     const { label, editing } = this.state;
     const formattedTime = this.formatTime(remainingTime);
     let className = cx({
@@ -99,11 +100,13 @@ export default class TimerDisplay extends Component {
                 : <div style={labelWrapEditing}>{labelForm}</div>
               }
               <h2 className={className}>{formattedTime}</h2>
-              <TimerButton
+              {playing
+              ? <TimerButton
                 text="+1"
                 title="Add one minute"
                 action={this.plusOneMinute}
               />
+              : null}
             </div>
           </div>
         </div>
