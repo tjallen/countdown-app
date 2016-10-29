@@ -58,10 +58,11 @@ export default class App extends Component {
     });
   }
   onTimerPause() {
+    clearTimeout(this.state.timeoutId);
     this.setState({
       paused: true,
       remainingTime: this.state.remainingTime,
-    }, clearTimeout(this.state.timeoutId));
+    });
   }
   onTimerRestart(total) {
     clearTimeout(this.state.timeoutId);
@@ -118,29 +119,18 @@ export default class App extends Component {
       percRemaining,
     });
   }
-  // update state.targetTime from user h/m/s inputs or directly from single arg
-  updateTime(...theArgs) {
-    if (!this.state.stopped) this.onTimerPause();
-    let ms;
-    let percRemaining = 100;
-    if (theArgs.length === 1) {
-      ms = theArgs[0];
-    } else {
-      const [hours, minutes, seconds] = theArgs;
-      ms = (
-        (Math.min(hours, 24) * 3600) + (Math.min(minutes, 59) * 60) + Math.min(seconds, 59)
-      ) * 1000;
-    }
-    if (ms === 0) {
-      percRemaining = 0;
-    }
+  // update state.targetTime from user inputs
+  updateTime(ms) {
+    // if updating while playing (+1" btn) pause for accuracy
+    const playing = !this.state.stopped && !this.state.paused;
+    if (playing) this.onTimerPause();
     this.setState({
       totalTime: ms,
       remainingTime: ms,
-      percRemaining,
+      percRemaining: (ms !== 0 ? 100 : 0), // ensure ProgressIndicator displays when TimerForm used
     });
-    if (!this.state.stopped) this.onTimerStart();
-    // console.log(`time updated to ${ms}`);
+    if (playing) this.onTimerStart();
+    console.log(`time updated to ${ms}`);
   }
   render() {
     const { stopped, paused } = this.state;

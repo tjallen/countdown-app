@@ -40,8 +40,15 @@ export default class TimerForm extends Component {
       [type]: inputValue,
     }, this.changeCallback);
   }
+  calculateMs(hours, minutes, seconds) {
+    const ms = (
+      (Math.min(hours, 24) * 3600) + (Math.min(minutes, 59) * 60) + Math.min(seconds, 59)
+    ) * 1000;
+    return ms;
+  }
   changeCallback() {
-    this.props.updateTime(this.state.hours, this.state.minutes, this.state.seconds);
+    const calculatedMs = this.calculateMs(this.state.hours, this.state.minutes, this.state.seconds);
+    this.props.updateTime(calculatedMs);
   }
   render() {
     return (
