@@ -22,7 +22,7 @@ export default class AudioPlayer extends Component {
     super(props);
     this.state = {
       muted: false,
-      volume: 5,
+      volume: 3,
       previousVolume: null,
       audioPlaying: props.audioPlaying,
       chime: singleBeep,
