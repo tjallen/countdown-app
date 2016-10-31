@@ -1,3 +1,8 @@
-# chime
+# countdown-app
 
-Yet another highly WIP React project.
+A countdown timer app using React
+
+## Future changes
+- Electron port
+- A better name
+- MobX or Redux port

@@ -1,7 +1,7 @@
 {
-  "name": "tja-webpack",
+  "name": "countdown-app",
   "version": "0.0.0",
-  "description": "tja webpack setup",
+  "description": "countdown-app",
   "main": "webpack.config.js",
   "dependencies": {
     "babel-runtime": "^6.9.2",

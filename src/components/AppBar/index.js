@@ -18,6 +18,7 @@ const AppBar = ({ appTitle, toggleLoop, loopStatus }) => {
     fontWeight: 'normal',
     width: 'auto',
     display: 'inline-block',
+    fontSize: '1.5em',
   };
   return (
     <div>

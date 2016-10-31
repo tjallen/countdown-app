@@ -148,7 +148,7 @@ export default class App extends Component {
     return (
       <div className={styles.container}>
         <AppBar
-          appTitle="Chime"
+          appTitle="countdown-app"
           toggleLoop={this.toggleLoop}
           toggleLabel={this.toggleLabel}
           loopStatus={this.state.loop}
