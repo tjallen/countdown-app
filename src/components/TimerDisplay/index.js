@@ -95,6 +95,10 @@ export default class TimerDisplay extends Component {
     const labelForm =
       <input autoFocus className={styles.input} type="text" value={label} onChange={this.onChange} onBlur={this.finishEdit}></input>;
     const timeUpMessage = <span className={styles.timeup}>Time's up!</span>;
+    const plusOneStyles = {
+      marginBottom: '0px',
+      paddingBottom: '0px',
+    }
     return (
       <div>
         <ProgressIndicator
@@ -110,6 +114,7 @@ export default class TimerDisplay extends Component {
               <h2 className={timeCx}>{!completed ? formattedTime : timeUpMessage}</h2>
               {playing
               ? <TimerButton
+                customStyles={plusOneStyles}
                 text="+1&#39;"
                 title="Add one minute"
                 action={this.plusOneMinute}
