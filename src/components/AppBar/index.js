@@ -10,7 +10,7 @@ const AppBar = ({ appTitle, toggleLoop, loopStatus }) => {
   const lowerStyle = {
     height: '56px',
     backgroundColor: '#37474F',
-    padding: '15px',
+    padding: '19px',
   };
   const upperStyle = {
     margin: '0',

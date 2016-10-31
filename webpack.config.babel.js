@@ -36,8 +36,8 @@ module.exports = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
     new HtmlWebpackPlugin({
-      title: 'My app title',
-      description: 'My app description',
+      title: 'countdown-app',
+      description: 'Countdown timer app',
       template: 'src/index.hbs',
     }),
     new CleanWebpackPlugin([
