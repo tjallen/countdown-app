@@ -12,7 +12,7 @@ const TimerButton = ({ action, glyph, text, title, type, active }) => {
     [type]: type !== undefined,
     active,
   });
-  const optionalText = (text ? <span>{text}</span> : null);
+  const optionalText = (text ? <span className={styles.text}>{text}</span> : null);
   const optionalGlyph = (glyph ? <Icon glyph={glyph} /> : null);
   return (
     <button

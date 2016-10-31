@@ -102,7 +102,7 @@ export default class TimerDisplay extends Component {
               <h2 className={className}>{formattedTime}</h2>
               {playing
               ? <TimerButton
-                text="+1"
+                text="+1&#39;"
                 title="Add one minute"
                 action={this.plusOneMinute}
               />
