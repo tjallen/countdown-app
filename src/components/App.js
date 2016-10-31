@@ -23,6 +23,7 @@ export default class App extends Component {
       interval: 1000,
       timeoutId: null,
       percRemaining: 0,
+      completed: false,
     };
     this.tick = this.tick.bind(this);
     this.onTimerStart = this.onTimerStart.bind(this);
@@ -31,6 +32,7 @@ export default class App extends Component {
     this.onTimerRestart = this.onTimerRestart.bind(this);
     this.updateTime = this.updateTime.bind(this);
     this.toggleLoop = this.toggleLoop.bind(this);
+    this.toggleTimerCompleted = this.toggleTimerCompleted.bind(this);
   }
   componentWillMount() {
     this.state.totalTime = this.state.remainingTime;
@@ -74,6 +76,7 @@ export default class App extends Component {
     }, this.onTimerStart);
   }
   onTimerClear() {
+    if (this.state.completed) this.toggleTimerCompleted();
     clearTimeout(this.state.timeoutId);
     this.setState({
       remainingTime: 0,
@@ -83,6 +86,12 @@ export default class App extends Component {
       timeoutId: null,
       percRemaining: 0,
     });
+  }
+  toggleTimerCompleted() {
+    console.log(`complete ${this.state.completed} => ${!this.state.completed}`);
+    this.setState((prevState) => ({
+      completed: !prevState.completed,
+    }));
   }
   toggleLoop() {
     this.setState((prevState) => ({
@@ -110,7 +119,7 @@ export default class App extends Component {
           this.onTimerStart(total);
         }, 1000);
       } else {
-        this.onTimerClear();
+        this.toggleTimerCompleted();
       }
     }
     this.setState({
@@ -121,6 +130,7 @@ export default class App extends Component {
   }
   // update state.targetTime from user inputs
   updateTime(ms) {
+    if (this.state.completed) this.toggleTimerCompleted();
     // if updating while playing (+1" btn) pause for accuracy
     const playing = !this.state.stopped && !this.state.paused;
     if (playing) this.onTimerPause();
@@ -133,7 +143,7 @@ export default class App extends Component {
     console.log(`time updated to ${ms}`);
   }
   render() {
-    const { stopped, paused } = this.state;
+    const { stopped, paused, completed } = this.state;
     const playing = !stopped && !paused;
     return (
       <div className={styles.container}>
@@ -150,6 +160,8 @@ export default class App extends Component {
             paused={paused}
             playing={playing}
             updateTime={this.updateTime}
+            toggleTimerCompleted={this.toggleTimerCompleted}
+            completed={completed}
           />
           <TimerControls
             onTimerStart={this.onTimerStart}
@@ -162,6 +174,8 @@ export default class App extends Component {
             totalTime={this.state.totalTime}
             toggleLoop={this.toggleLoop}
             looping={this.state.loop}
+            toggleTimerCompleted={this.toggleTimerCompleted}
+            completed={completed}
           />
           {stopped && <TimerForm updateTime={this.updateTime} />}
           <AudioPlayer

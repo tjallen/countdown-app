@@ -9,7 +9,16 @@ import loop from '../../icons/ic_loop_24px.svg';
 import styles from './TimerControls.scss';
 
 const TimerControls = ({
-  onTimerPause, onTimerStart, onTimerRestart, onTimerClear, stopped, playing, totalTime, toggleLoop, looping,
+  onTimerPause,
+  onTimerStart,
+  onTimerRestart,
+  onTimerClear,
+  stopped,
+  playing,
+  totalTime,
+  toggleLoop,
+  looping,
+  completed,
 }) => {
   let playOrPause;
   if (totalTime > 0) {
@@ -29,7 +38,7 @@ const TimerControls = ({
             title="Clear timer"
           />
         }
-        {playOrPause}
+        {!completed && playOrPause}
         {!stopped &&
           <TimerButton
             action={() => onTimerRestart(totalTime)}

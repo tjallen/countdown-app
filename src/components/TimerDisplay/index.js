@@ -13,6 +13,7 @@ export default class TimerDisplay extends Component {
     perc: PropTypes.number,
     paused: PropTypes.bool,
     playing: PropTypes.bool,
+    completed: PropTypes.bool,
     label: PropTypes.string,
     updateTime: PropTypes.func,
   }
@@ -63,12 +64,18 @@ export default class TimerDisplay extends Component {
     this.props.updateTime(oneMinuteAdded);
   }
   render() {
-    const { paused, playing, perc, remainingTime } = this.props;
+    const { paused, playing, completed, perc, remainingTime } = this.props;
     const { label, editing } = this.state;
     const formattedTime = this.formatTime(remainingTime);
-    let className = cx({
+    const timeCx = cx({
       timer: true,
       paused,
+      completed,
+    });
+    const clockfaceCx = cx({
+      clockface: true,
+      paused,
+      completed,
     });
     const labelWrap = {
       padding: '0px',
@@ -87,6 +94,7 @@ export default class TimerDisplay extends Component {
     const labelDisplay = <span className={styles.title} onClick={this.beginEdit}>{label}</span>;
     const labelForm =
       <input autoFocus className={styles.input} type="text" value={label} onChange={this.onChange} onBlur={this.finishEdit}></input>;
+    const timeUpMessage = <span className={styles.timeup}>Time's up!</span>;
     return (
       <div>
         <ProgressIndicator
@@ -94,12 +102,12 @@ export default class TimerDisplay extends Component {
         />
         <div className={styles.timewrap}>
           <div className={styles.timewrapinner}>
-            <div className={styles.clockface}>
+            <div className={clockfaceCx}>
               {!editing
                 ? <div style={labelWrap}>{labelDisplay}</div>
                 : <div style={labelWrapEditing}>{labelForm}</div>
               }
-              <h2 className={className}>{formattedTime}</h2>
+              <h2 className={timeCx}>{!completed ? formattedTime : timeUpMessage}</h2>
               {playing
               ? <TimerButton
                 text="+1&#39;"
