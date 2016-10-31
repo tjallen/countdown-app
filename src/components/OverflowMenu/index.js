@@ -46,6 +46,7 @@ export default class OverflowMenu extends Component {
     const wrapperStyle = {
       position: 'relative',
       float: 'right',
+      marginTop: '3px',
     };
     const toggleStyle = {
       display: 'inline-block',
