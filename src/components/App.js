@@ -15,11 +15,11 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      remainingTime: 0,
-      totalTime: 0,
+      remainingTime: 3000,
+      totalTime: 3000,
       paused: false,
       stopped: true,
-      loop: false,
+      loop: true,
       interval: 1000,
       timeoutId: null,
       percRemaining: 0,
