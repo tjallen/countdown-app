@@ -98,8 +98,14 @@ export default class App extends Component {
       loop: !prevState.loop,
     }));
   }
+  // temp for debug
+  clearTimeout(id) {
+    console.log(`clearing ${id}`);
+    clearTimeout(id);
+  }
   // tick method run by looping setTimeout to update timer every ~1000ms
   tick(timerStartDate) {
+    this.clearTimeout(this.state.timeoutId);
     const total = this.state.totalTime;
     const delta = Date.now() - timerStartDate;
     const remainingTime = Math.max(total - delta, 0);
@@ -127,6 +133,7 @@ export default class App extends Component {
       remainingTime,
       percRemaining,
     });
+    // console.log(`final tick ${timeoutId}`);
   }
   // update state.targetTime from user inputs
   updateTime(ms) {
