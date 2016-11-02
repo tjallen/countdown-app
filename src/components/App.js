@@ -20,7 +20,7 @@ export default class App extends Component {
       paused: false,
       stopped: true,
       loop: true,
-      interval: 1000,
+      interval: 250,
       timeoutId: null,
       percRemaining: 0,
       completed: false,
@@ -41,13 +41,14 @@ export default class App extends Component {
     clearTimeout(this.state.timeoutId);
   }
   onTimerStart(optionalSpecifiedTime) {
-    const { totalTime, remainingTime, interval, paused } = this.state;
+    const { totalTime, remainingTime, interval, paused, pauseDelta } = this.state;
     // if paused && resuming (not restarting) prepare offset for start date
-    const offset = (paused) ? (totalTime - remainingTime) : 0;
+    const offset = (paused) ? (totalTime - remainingTime) + pauseDelta : 0;
+    console.log('timerStart offset', offset);
     const timerStartDate = (Date.now() - offset);
     clearTimeout(this.state.timeoutId);
     if (totalTime <= 0) {
-      alert('time must be above 0 seconds');
+      console.log('!!! time must be above 0 seconds !!!');
       return;
     }
     if (typeof(optionalSpecifiedTime) === 'number') {
@@ -61,9 +62,12 @@ export default class App extends Component {
   }
   onTimerPause() {
     clearTimeout(this.state.timeoutId);
+    const now = Date.now();
+    const pauseDelta = now - this.state.lastTick;
     this.setState({
       paused: true,
       remainingTime: this.state.remainingTime,
+      pauseDelta,
     });
   }
   onTimerRestart(total) {
@@ -72,7 +76,7 @@ export default class App extends Component {
     this.setState({
       remainingTime: total,
       totalTime: total,
-      timeoutId: null,
+      // timeoutId: null,
     }, this.onTimerStart);
   }
   onTimerClear() {
@@ -83,7 +87,7 @@ export default class App extends Component {
       totalTime: 0,
       stopped: true,
       paused: false,
-      timeoutId: null,
+      // timeoutId: null,
       percRemaining: 0,
     });
   }
@@ -109,21 +113,21 @@ export default class App extends Component {
     const total = this.state.totalTime;
     const delta = Date.now() - timerStartDate;
     const remainingTime = Math.max(total - delta, 0);
+    const closestSecond = Math.round(remainingTime / 1000);
     const percRemaining = Math.max(100 - (delta / total) * 100, 0);
     let timeoutId = null;
+    let nextInterval;
     // console.log(`==== tick to [${remainingTime}] ====`);
     if (remainingTime > 0) {
       // prep for next tick
-      const nextInterval = (this.state.interval - (delta % this.state.interval));
+      nextInterval = (this.state.interval - (delta % this.state.interval));
       timeoutId = setTimeout(() => this.tick(timerStartDate), nextInterval);
     } else {
       // timer is completed: either prepare to loop or clear
       console.log(`timerCompleted after ${total}ms`);
       this.audioPlayer.playAudio();
       if (this.state.loop) {
-        timeoutId = setTimeout(() => {
-          this.onTimerStart(total);
-        }, 1000);
+        this.onTimerRestart(total);
       } else {
         this.toggleTimerCompleted();
       }
@@ -132,6 +136,9 @@ export default class App extends Component {
       timeoutId,
       remainingTime,
       percRemaining,
+      lastTick: Date.now(),
+      closestSecond,
+      nextInterval,
     });
     // console.log(`final tick ${timeoutId}`);
   }
