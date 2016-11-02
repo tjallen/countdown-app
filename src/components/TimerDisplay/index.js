@@ -39,6 +39,7 @@ export default class TimerDisplay extends Component {
     const seconds = ms / 1000;
     let mins = Math.floor(seconds / 60);
     let secs = Math.ceil(seconds % 60);
+    // prevent displaying ex. 00:00:60 for 1min
     if (secs === 60) {
       mins++;
       secs = 0;

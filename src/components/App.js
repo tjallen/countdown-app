@@ -62,8 +62,8 @@ export default class App extends Component {
     });
   }
   onTimerPause() {
-    clearTimeout(this.state.timeoutId);
-    console.log(`oTPause`, this.state.remainingTime);
+    this.clearTimeout(this.state.timeoutId);
+    console.log(` >> oTPause`, this.state.remainingTime);
     const now = Date.now();
     const pauseDelta = now - this.state.lastTick;
     this.setState({
@@ -109,12 +109,12 @@ export default class App extends Component {
   }
   // temp for debug
   clearTimeout(id) {
-    // console.log(`clearing ${id}`);
+    // console.log(`clearing ${id} =>`);
     clearTimeout(id);
   }
   // tick method run by looping setTimeout to update timer every ~1000ms
   tick(timerStartDate) {
-    this.clearTimeout(this.state.timeoutId);
+    clearTimeout(this.state.timeoutId);
     const total = this.state.totalTime;
     const delta = Date.now() - timerStartDate;
     const remainingTime = Math.max(total - delta, 0);
@@ -126,12 +126,15 @@ export default class App extends Component {
     console.log(
       `>>> tick to [${closestSecond}]s (${remainingTime})ms ${delta}d ${percRemaining}%`
     );
+    // TIMER STILL RUNNING
     if (remainingTime > 0) {
       // prep for next tick
       nextInterval = (this.state.interval - (delta % this.state.interval));
-      timeoutId = setTimeout(() => this.tick(timerStartDate), nextInterval);
+      if (!this.state.paused) {
+        timeoutId = setTimeout(() => this.tick(timerStartDate), nextInterval);
+      }
     } else {
-      // timer is completed: either prepare to loop or clear
+      // TIMER COMPLETED: LOOP OR CLEAR
       console.log(`timerCompleted after ${total}ms`);
       this.audioPlayer.playAudio();
       if (this.state.loop) {
@@ -148,7 +151,6 @@ export default class App extends Component {
       closestSecond,
       nextInterval,
     });
-    // console.log(`final tick ${timeoutId}`);
   }
   getPercRemaining(current, total) {
     const perc = (current / total) * 100 || 0; // becomes NaN if divided by zero, we return 0 if so
