@@ -38,9 +38,19 @@ export default class TimerDisplay extends Component {
   formatTime(ms) {
     const seconds = ms / 1000;
     let mins = Math.floor(seconds / 60);
-    const secs = this.zeroPad(Math.round(seconds % 60));
-    const hours = this.zeroPad(Math.floor(mins / 60));
+    let secs = Math.ceil(seconds % 60);
+    if (secs === 60) {
+      mins++;
+      secs = 0;
+    }
+    let hours = Math.floor(mins / 60);
+    if (mins === 60) {
+      hours++;
+      mins = 0;
+    }
+    hours = this.zeroPad(hours);
     mins = this.zeroPad(mins % 60);
+    secs = this.zeroPad(secs);
     const output = `${hours}:${mins}:${secs}`;
     return output;
   }

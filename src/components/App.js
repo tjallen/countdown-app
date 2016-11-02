@@ -54,6 +54,7 @@ export default class App extends Component {
     if (typeof(optionalSpecifiedTime) === 'number') {
       this.updateTime(optionalSpecifiedTime);
     }
+    this.tick(timerStartDate); // 0 tick change for resiliency; will need a delay on loop 1+
     this.setState({
       paused: false,
       stopped: false,
@@ -104,7 +105,7 @@ export default class App extends Component {
   }
   // temp for debug
   clearTimeout(id) {
-    console.log(`clearing ${id}`);
+    // console.log(`clearing ${id}`);
     clearTimeout(id);
   }
   // tick method run by looping setTimeout to update timer every ~1000ms
@@ -113,11 +114,13 @@ export default class App extends Component {
     const total = this.state.totalTime;
     const delta = Date.now() - timerStartDate;
     const remainingTime = Math.max(total - delta, 0);
-    const closestSecond = Math.round(remainingTime / 1000);
+    const closestSecond = Math.ceil(remainingTime / 1000); // debug
     const percRemaining = Math.max(100 - (delta / total) * 100, 0);
     let timeoutId = null;
     let nextInterval;
-    // console.log(`==== tick to [${remainingTime}] ====`);
+    console.log(
+      `==== tick to [${closestSecond}] (${remainingTime}) ${delta} ====`
+    );
     if (remainingTime > 0) {
       // prep for next tick
       nextInterval = (this.state.interval - (delta % this.state.interval));
