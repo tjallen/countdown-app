@@ -63,6 +63,7 @@ export default class App extends Component {
   }
   onTimerPause() {
     clearTimeout(this.state.timeoutId);
+    console.log(`oTPause`, this.state.remainingTime);
     const now = Date.now();
     const pauseDelta = now - this.state.lastTick;
     this.setState({
@@ -83,13 +84,16 @@ export default class App extends Component {
   onTimerClear() {
     if (this.state.completed) this.toggleTimerCompleted();
     clearTimeout(this.state.timeoutId);
+    const remainingTime = 0;
+    const totalTime = 0;
+    const percRemaining = this.getPercRemaining(remainingTime, totalTime);
     this.setState({
-      remainingTime: 0,
-      totalTime: 0,
+      remainingTime,
+      totalTime,
       stopped: true,
       paused: false,
       // timeoutId: null,
-      percRemaining: 0,
+      percRemaining,
     });
   }
   toggleTimerCompleted() {
@@ -115,11 +119,12 @@ export default class App extends Component {
     const delta = Date.now() - timerStartDate;
     const remainingTime = Math.max(total - delta, 0);
     const closestSecond = Math.ceil(remainingTime / 1000); // debug
-    const percRemaining = Math.max(100 - (delta / total) * 100, 0);
+    // const percRemaining = Math.max(100 - (delta / total) * 100, 0);
+    const percRemaining = this.getPercRemaining(remainingTime, total);
     let timeoutId = null;
     let nextInterval;
     console.log(
-      `==== tick to [${closestSecond}] (${remainingTime}) ${delta} ====`
+      `>>> tick to [${closestSecond}]s (${remainingTime})ms ${delta}d ${percRemaining}%`
     );
     if (remainingTime > 0) {
       // prep for next tick
@@ -145,16 +150,23 @@ export default class App extends Component {
     });
     // console.log(`final tick ${timeoutId}`);
   }
+  getPercRemaining(current, total) {
+    const perc = (current / total) * 100 || 0; // becomes NaN if divided by zero, we return 0 if so
+    return perc;
+  }
   // update state.targetTime from user inputs
   updateTime(ms) {
     if (this.state.completed) this.toggleTimerCompleted();
     // if updating while playing (+1" btn) pause for accuracy
     const playing = !this.state.stopped && !this.state.paused;
     if (playing) this.onTimerPause();
+    const totalTime = ms;
+    const remainingTime = ms;
+    const percRemaining = this.getPercRemaining(remainingTime, totalTime);
     this.setState({
-      totalTime: ms,
-      remainingTime: ms,
-      percRemaining: (ms !== 0 ? 100 : 0), // ensure ProgressIndicator displays when TimerForm used
+      totalTime,
+      remainingTime,
+      percRemaining,
     });
     if (playing) this.onTimerStart();
     console.log(`time updated to ${ms}`);
