@@ -44,10 +44,6 @@ export default class TimerDisplay extends Component {
       secs = 0;
     }
     let hours = Math.floor(mins / 60);
-    if (mins === 60) {
-      hours++;
-      mins = 0;
-    }
     hours = this.zeroPad(hours);
     mins = this.zeroPad(mins % 60);
     secs = this.zeroPad(secs);
