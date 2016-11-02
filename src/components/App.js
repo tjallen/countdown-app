@@ -73,6 +73,7 @@ export default class App extends Component {
     });
   }
   onTimerRestart(total) {
+    if (this.state.stopped) return;
     clearTimeout(this.state.timeoutId);
     this.onTimerClear();
     this.setState({
