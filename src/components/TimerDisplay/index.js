@@ -16,13 +16,14 @@ export default class TimerDisplay extends Component {
     completed: PropTypes.bool,
     label: PropTypes.string,
     updateTime: PropTypes.func,
+    stopped: PropTypes.bool,
+    addOneMinute: PropTypes.func,
   }
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.beginEdit = this.beginEdit.bind(this);
     this.finishEdit = this.finishEdit.bind(this);
-    this.plusOneMinute = this.plusOneMinute.bind(this);
     this.state = {
       label: 'label',
       editing: false,
@@ -65,13 +66,8 @@ export default class TimerDisplay extends Component {
   finishEdit() {
     this.setState({ editing: false });
   }
-  plusOneMinute() {
-    console.log('plusOneMinute()');
-    const oneMinuteAdded = (this.props.remainingTime + 60000);
-    this.props.updateTime(oneMinuteAdded);
-  }
   render() {
-    const { paused, playing, completed, perc, remainingTime } = this.props;
+    const { paused, completed, stopped, perc, remainingTime } = this.props;
     const { label, editing } = this.state;
     const formattedTime = this.formatTime(remainingTime);
     const timeCx = cx({
@@ -105,7 +101,7 @@ export default class TimerDisplay extends Component {
     const plusOneStyles = {
       marginBottom: '0px',
       paddingBottom: '0px',
-    }
+    };
     return (
       <div>
         <ProgressIndicator
@@ -119,12 +115,12 @@ export default class TimerDisplay extends Component {
                 : <div style={labelWrapEditing}>{labelForm}</div>
               }
               <h2 className={timeCx}>{!completed ? formattedTime : timeUpMessage}</h2>
-              {playing
+              {!stopped
               ? <TimerButton
                 customStyles={plusOneStyles}
                 text="+1&#39;"
                 title="Add one minute"
-                action={this.plusOneMinute}
+                action={this.props.addOneMinute}
               />
               : null}
             </div>

@@ -15,8 +15,8 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      remainingTime: 3000,
-      totalTime: 3000,
+      remainingTime: 0,
+      totalTime: 0,
       paused: false,
       stopped: true,
       loop: true,
@@ -31,6 +31,7 @@ export default class App extends Component {
     this.onTimerClear = this.onTimerClear.bind(this);
     this.onTimerRestart = this.onTimerRestart.bind(this);
     this.updateTime = this.updateTime.bind(this);
+    this.addOneMinute = this.addOneMinute.bind(this);
     this.toggleLoop = this.toggleLoop.bind(this);
     this.toggleTimerCompleted = this.toggleTimerCompleted.bind(this);
   }
@@ -63,7 +64,6 @@ export default class App extends Component {
   }
   onTimerPause() {
     this.clearTimeout(this.state.timeoutId);
-    console.log(` >> oTPause`, this.state.remainingTime);
     const now = Date.now();
     const pauseDelta = now - this.state.lastTick;
     this.setState({
@@ -97,6 +97,10 @@ export default class App extends Component {
       percRemaining,
     });
   }
+  getPercRemaining(current, total) {
+    const perc = (current / total) * 100 || 0; // becomes NaN if divided by zero, we return 0 if so
+    return perc;
+  }
   toggleTimerCompleted() {
     console.log(`complete ${this.state.completed} => ${!this.state.completed}`);
     this.setState((prevState) => ({
@@ -120,12 +124,11 @@ export default class App extends Component {
     const delta = Date.now() - timerStartDate;
     const remainingTime = Math.max(total - delta, 0);
     const closestSecond = Math.ceil(remainingTime / 1000); // debug
-    // const percRemaining = Math.max(100 - (delta / total) * 100, 0);
     const percRemaining = this.getPercRemaining(remainingTime, total);
     let timeoutId = null;
     let nextInterval;
     console.log(
-      `>>> tick to [${closestSecond}]s (${remainingTime})ms ${delta}d ${percRemaining}%`
+      `>>> tick to [${closestSecond}]s (${remainingTime})ms ${delta}d`
     );
     // TIMER STILL RUNNING
     if (remainingTime > 0) {
@@ -153,16 +156,8 @@ export default class App extends Component {
       nextInterval,
     });
   }
-  getPercRemaining(current, total) {
-    const perc = (current / total) * 100 || 0; // becomes NaN if divided by zero, we return 0 if so
-    return perc;
-  }
   // update state.targetTime from user inputs
   updateTime(ms) {
-    if (this.state.completed) this.toggleTimerCompleted();
-    // if updating while playing (+1" btn) pause for accuracy
-    const playing = !this.state.stopped && !this.state.paused;
-    if (playing) this.onTimerPause();
     const totalTime = ms;
     const remainingTime = ms;
     const percRemaining = this.getPercRemaining(remainingTime, totalTime);
@@ -171,8 +166,26 @@ export default class App extends Component {
       remainingTime,
       percRemaining,
     });
-    if (playing) this.onTimerStart();
     console.log(`time updated to ${ms}`);
+  }
+  // +1min btn
+  addOneMinute() {
+    /* in the completed state, totalTime is cached for use by onTimerRestart.
+    so +1 would become totalTime+1min rather than just 1min
+    */
+    if (this.state.completed) {
+      this.setState({
+        totalTime: 60000,
+        remainingTime: 60000,
+      }, this.onTimerStart);
+      this.toggleTimerCompleted();
+    } else {
+      // otherwise if the timer is running or paused, we use the safe prevState variant
+      this.setState((prevState) => ({
+        totalTime: prevState.totalTime + 60000,
+        remainingTime: prevState.remainingTime + 60000,
+      }));
+    }
   }
   render() {
     const { stopped, paused, completed } = this.state;
@@ -190,10 +203,11 @@ export default class App extends Component {
             remainingTime={this.state.remainingTime}
             perc={this.state.percRemaining}
             paused={paused}
-            playing={playing}
             updateTime={this.updateTime}
             toggleTimerCompleted={this.toggleTimerCompleted}
             completed={completed}
+            stopped={stopped}
+            addOneMinute={this.addOneMinute}
           />
           <TimerControls
             onTimerStart={this.onTimerStart}
