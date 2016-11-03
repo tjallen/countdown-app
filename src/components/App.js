@@ -37,7 +37,7 @@ export default class App extends Component {
   componentWillUnmount() {
     clearTimeout(this.state.timeoutId);
   }
-  onTimerStart(optionalSpecifiedTime) {
+  onTimerStart() {
     const { totalTime, remainingTime, interval, paused, pauseDelta } = this.state;
     // if paused && resuming (not restarting) prepare offset for start date
     const offset = (paused) ? (totalTime - remainingTime) + pauseDelta : 0;
@@ -47,9 +47,6 @@ export default class App extends Component {
     // should no longer happen but leaving in to catch for now
     if (totalTime <= 0) {
       console.log('!!! time must be above 0 seconds !!!'); return;
-    }
-    if (typeof(optionalSpecifiedTime) === 'number') {
-      this.updateTime(optionalSpecifiedTime);
     }
     // immediate tick to improve accuracy
     this.tick(timerStartDate);
