@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 
 import Icon from '../Icon';
 
-import tick from '../../icons/ic_done_black_24px.svg';
 import inactiveIcon from '../../icons/ic_check_box_outline_blank_black_24px.svg';
 import activeIcon from '../../icons/ic_check_box_black_24px.svg';
 
@@ -22,11 +21,13 @@ export default class OverflowMenuItem extends Component {
     super();
     this.handleClick = this.handleClick.bind(this);
   }
-  handleClick() {
+  handleClick(e) {
     const { onClick, preventMenuHide } = this.props;
     if (typeof onClick === 'function') onClick();
-    if (preventMenuHide) return;
-    this.context.menuHide();
+    // if (preventMenuHide) return;
+    // this.context.menuHide();
+    e.preventDefault();
+    e.stopPropagation();
   }
   render() {
     const { children, active, toggle } = this.props;
@@ -49,7 +50,7 @@ export default class OverflowMenuItem extends Component {
     }
     return (
       <div>
-        <span style={itemStyle} onClick={this.handleClick}>
+        <span style={itemStyle} onMouseDown={this.handleClick}>
           <div style={iconWrapper}>{status}</div>
           {children}
         </span>
