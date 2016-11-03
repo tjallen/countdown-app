@@ -116,9 +116,7 @@ export default class App extends Component {
     const percRemaining = this.getPercRemaining(remainingTime, total);
     let timeoutId = null;
     let nextInterval;
-    console.log(
-      `>>> tick to [${closestSecond}]s (${remainingTime})ms ${delta}d`
-    );
+    // console.log(`>>> tick to [${closestSecond}]s (${remainingTime})ms ${delta}d`);
     // TIMER STILL RUNNING
     if (remainingTime > 0) {
       // prep for next tick
