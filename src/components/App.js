@@ -215,12 +215,8 @@ export default class App extends Component {
             onTimerClear={this.onTimerClear}
             onTimerRestart={this.onTimerRestart}
             playing={playing}
-            paused={paused}
             stopped={stopped}
             totalTime={this.state.totalTime}
-            toggleLoop={this.toggleLoop}
-            looping={this.state.loop}
-            toggleTimerCompleted={this.toggleTimerCompleted}
             completed={completed}
           />
           {stopped && <TimerForm updateTime={this.updateTime} />}

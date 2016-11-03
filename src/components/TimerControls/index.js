@@ -5,7 +5,6 @@ import play from '../../icons/ic_play_arrow_24px.svg';
 import pause from '../../icons/ic_pause_24px.svg';
 import clear from '../../icons/ic_delete_24px.svg';
 import restart from '../../icons/ic_replay_24px.svg';
-import loop from '../../icons/ic_loop_24px.svg';
 import styles from './TimerControls.scss';
 
 const TimerControls = ({
@@ -16,8 +15,6 @@ const TimerControls = ({
   stopped,
   playing,
   totalTime,
-  toggleLoop,
-  looping,
   completed,
 }) => {
   let playOrPause;
@@ -54,10 +51,10 @@ TimerControls.propTypes = {
   onTimerClear: PropTypes.func,
   onTimerPause: PropTypes.func,
   onTimerStart: PropTypes.func,
-  toggleLoop: PropTypes.func,
+  onTimerRestart: PropTypes.func,
   playing: PropTypes.bool,
   stopped: PropTypes.bool,
-  looping: PropTypes.bool,
+  completed: PropTypes.bool,
   totalTime: PropTypes.number,
 };
 
