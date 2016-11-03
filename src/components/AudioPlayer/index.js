@@ -1,11 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-
 import Icon from '../Icon';
 import ReactSimpleRange from 'react-simple-range';
-
 import styles from './AudioPlayer.scss';
 
-// files
 // import westminster from './files/chime.mp3';
 import singleBeep from './files/beep.mp3';
 import volumeUp from '../../icons/ic_volume_up_24px.svg';
@@ -41,6 +38,7 @@ export default class AudioPlayer extends Component {
   pauseAudio() {
     this.audioElement.pause();
   }
+  // handle changes to volume / mute
   handleChange(newState) {
     let volume;
     let muted;
