@@ -1,10 +1,6 @@
 /* eslint-disable no-console, no-alert */
-
 import React, { Component } from 'react';
-// css module
 import styles from './App.scss';
-
-// child components
 import AppBar from './AppBar';
 import TimerControls from './TimerControls';
 import TimerDisplay from './TimerDisplay';
@@ -48,14 +44,15 @@ export default class App extends Component {
     console.log('timerStart offset', offset);
     const timerStartDate = (Date.now() - offset);
     clearTimeout(this.state.timeoutId);
+    // should no longer happen but leaving in to catch for now
     if (totalTime <= 0) {
-      console.log('!!! time must be above 0 seconds !!!');
-      return;
+      console.log('!!! time must be above 0 seconds !!!'); return;
     }
     if (typeof(optionalSpecifiedTime) === 'number') {
       this.updateTime(optionalSpecifiedTime);
     }
-    this.tick(timerStartDate); // 0 tick change for resiliency; will need a delay on loop 1+
+    // immediate tick to improve accuracy
+    this.tick(timerStartDate);
     this.setState({
       paused: false,
       stopped: false,
@@ -63,7 +60,7 @@ export default class App extends Component {
     });
   }
   onTimerPause() {
-    this.clearTimeout(this.state.timeoutId);
+    clearTimeout(this.state.timeoutId);
     const now = Date.now();
     const pauseDelta = now - this.state.lastTick;
     this.setState({
@@ -111,11 +108,6 @@ export default class App extends Component {
     this.setState((prevState) => ({
       loop: !prevState.loop,
     }));
-  }
-  // temp for debug
-  clearTimeout(id) {
-    // console.log(`clearing ${id} =>`);
-    clearTimeout(id);
   }
   // tick method run by looping setTimeout to update timer every ~1000ms
   tick(timerStartDate) {
