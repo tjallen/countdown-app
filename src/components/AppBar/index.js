@@ -35,7 +35,7 @@ const AppBar = ({ appTitle, toggleLoop, loopStatus }) => {
             Looping timer
           </OverflowMenuItem>
           <OverflowMenuItem>
-            <a href="https://github.com/tjallen/chime">Github repo</a>
+            <a href="https://github.com/tjallen/countdown-app">Github repo</a>
           </OverflowMenuItem>
         </OverflowMenu>
       </div>
