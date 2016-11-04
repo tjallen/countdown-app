@@ -15,7 +15,7 @@ export default class App extends Component {
       totalTime: 0,
       paused: false,
       stopped: true,
-      loop: true,
+      loop: false,
       interval: 250,
       timeoutId: null,
       percRemaining: 0,
