@@ -46,6 +46,7 @@ export default class OverflowMenu extends Component {
     const wrapperStyle = {
       position: 'relative',
       float: 'right',
+      zIndex: '5',
     };
     const toggleStyle = {
       display: 'inline-block',
@@ -62,7 +63,7 @@ export default class OverflowMenu extends Component {
       MozUserSelect: 'none',
       msUserSelect: 'none',
       color: '#242424',
-      fontSize: '1.2rem',
+      fontSize: '1.3rem',
       borderRadius: '2px',
       textAlign: 'left',
       position: 'absolute',
@@ -78,14 +79,15 @@ export default class OverflowMenu extends Component {
     };
     const itemStyle = {
       listStyleType: 'none',
-      width: 'auto',
       display: 'block',
       clear: 'both',
-      whiteSpace: 'nowrap',
       margin: '8px 0',
       padding: '6px 20px',
       cursor: 'pointer',
       lineHeight: '20px',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      maxWidth: '320px',
     };
     return (
       <div

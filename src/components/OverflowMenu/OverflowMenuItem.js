@@ -38,7 +38,7 @@ export default class OverflowMenuItem extends Component {
     const iconWrapper = {
       position: 'absolute',
       left: '-26px',
-      top: '-1px',
+      top: '1px',
       fill: '#FF5252',
     };
     if (toggle) {
