@@ -67,8 +67,8 @@ module.exports = {
             loader: 'babel',
             query: {
               cacheDirectory: true,
-              presets: ['es2015', 'react', 'stage-1'],
-              plugins: ['transform-runtime', 'transform-class-properties'],
+              presets: ['es2015', 'react', 'stage-2'],
+              plugins: ['transform-runtime'],
             },
           },
         ]),
