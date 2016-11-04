@@ -9,7 +9,7 @@
     "normalize.css": "^4.1.1",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
-    "react-simple-range": "^1.2.1"
+    "react-simple-range": "^1.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.14.0",
