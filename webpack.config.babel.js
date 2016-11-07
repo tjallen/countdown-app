@@ -36,9 +36,7 @@ module.exports = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
     new HtmlWebpackPlugin({
-      title: 'countdown-app',
-      description: 'Countdown timer app',
-      template: 'src/index.hbs',
+      template: 'src/index.html',
     }),
     new CleanWebpackPlugin([
       PATHS.dist,
@@ -72,10 +70,6 @@ module.exports = {
             },
           },
         ]),
-      },
-      {
-        test: /\.hbs$/,
-        loader: 'handlebars-loader',
       },
       {
         test: /\.(png|gif|jpe?g)$/,

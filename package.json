@@ -28,8 +28,6 @@
     "eslint-plugin-jsx-a11y": "^1.5.5",
     "eslint-plugin-react": "^5.2.2",
     "file-loader": "^0.8.5",
-    "handlebars": "^4.0.5",
-    "handlebars-loader": "^1.2.0",
     "html-webpack-plugin": "^2.8.2",
     "image-webpack-loader": "^1.8.0",
     "material-colors": "^1.1.1",
