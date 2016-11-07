@@ -1,0 +1,5 @@
+*
+!.gitignore
+!readme.md
+!main.js
+!index-electron.html
