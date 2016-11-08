@@ -1,3 +1,5 @@
+/* electron main.js */
+
 /* eslint-disable */
 const electron = require('electron')
 // Module to control application life.
@@ -12,9 +14,9 @@ let mainWindow
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 760,
+    width: 460,
     height: 660,
-    frame: false,
+    frame: true,
     resizable: true,
   })
 
@@ -22,7 +24,7 @@ function createWindow () {
   mainWindow.loadURL(`file://${__dirname}/index-electron.html`)
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
