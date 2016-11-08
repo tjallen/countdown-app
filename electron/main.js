@@ -12,7 +12,7 @@ let mainWindow
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 360,
+    width: 760,
     height: 660,
     frame: false,
     resizable: true,
@@ -22,7 +22,7 @@ function createWindow () {
   mainWindow.loadURL(`file://${__dirname}/index-electron.html`)
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
