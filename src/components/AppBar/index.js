@@ -6,6 +6,7 @@ const AppBar = ({ appTitle, toggleLoop, loopStatus }) => {
   const upperBar = {
     height: '14px',
     backgroundColor: '#263238',
+    WebkitAppRegion: 'drag',
   };
   const lowerStyle = {
     height: '56px',

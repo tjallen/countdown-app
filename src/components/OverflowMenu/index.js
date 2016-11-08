@@ -45,6 +45,7 @@ export default class OverflowMenu extends Component {
     const { children } = this.props;
     const wrapperStyle = {
       position: 'relative',
+      WebkitAppRegion: 'no-drag',
       float: 'right',
       zIndex: '5',
     };

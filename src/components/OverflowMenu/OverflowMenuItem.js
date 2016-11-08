@@ -34,9 +34,11 @@ export default class OverflowMenuItem extends Component {
     let status;
     const itemStyle = {
       position: 'relative',
+      WebkitAppRegion: 'no-drag',
     };
     const iconWrapper = {
       position: 'absolute',
+      WebkitAppRegion: 'no-drag',
       left: '-26px',
       top: '1px',
       fill: '#FF5252',

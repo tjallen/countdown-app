@@ -21,6 +21,7 @@
   fill: #fff;
 }
 .sliderwrap {
+  -webkit-app-region: no-drag;
   width: 120px;
   display: inline-block;
 }
