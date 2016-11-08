@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes, Children } from 'react';
 
 import kebab from '../../icons/ic_more_vert_24px.svg';
 import Icon from '../Icon';
@@ -43,6 +43,7 @@ export default class OverflowMenu extends Component {
   }
   render() {
     const { children } = this.props;
+    const flatChildren = Children.toArray(children);
     const wrapperStyle = {
       position: 'relative',
       WebkitAppRegion: 'no-drag',
@@ -93,7 +94,7 @@ export default class OverflowMenu extends Component {
     return (
       <div
         onKeyDown={this.handleKeyDown}
-        onBlur={this.menuHide}
+        // onBlur={this.menuHide}
         style={wrapperStyle}
         tabIndex="1"
       >
@@ -101,7 +102,7 @@ export default class OverflowMenu extends Component {
         {this.state.menuOpen &&
           <div style={menuStyle}>
             <ul style={listStyle}>
-              {children.map((child, index) => <li key={index} style={itemStyle}>{child}</li>)}
+              {flatChildren.map((child, index) => <li key={index} style={itemStyle}>{child}</li>)}
             </ul>
           </div>
         }
