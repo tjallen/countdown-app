@@ -5,6 +5,9 @@ import OverflowMenuItem from '../OverflowMenu/OverflowMenuItem';
 const AppBar = ({ appTitle, toggleLoop, loopStatus }) => {
   const upperBar = {
     height: '24px',
+    get height() {
+      return !window.isElectron || typeof window.isElectron === 'undefined' ? '14px' : '24px';
+    },
     backgroundColor: '#263238',
     WebkitAppRegion: 'drag',
   };
