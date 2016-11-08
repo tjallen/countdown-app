@@ -1,0 +1,8 @@
+{
+  "name": "countdown-app",
+  "version": "1.0.0",
+  "description": "countdown-app",
+  "main": "main.js",
+  "author": "Thom Allen",
+  "license": "ISC"
+}
