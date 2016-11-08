@@ -44,7 +44,7 @@ module.exports = {
     ], {
       verbose: true,
       dry: false,
-      exclude: ['main.js', 'index-electron.html'],
+      exclude: ['.gitignore', 'main.js', 'index-electron.html'],
     }),
 /*    new CopyWebpackPlugin([
       { from: 'src/images', to: PATHS.distImages },
