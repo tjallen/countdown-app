@@ -94,7 +94,7 @@ export default class OverflowMenu extends Component {
     return (
       <div
         onKeyDown={this.handleKeyDown}
-        // onBlur={this.menuHide}
+        onBlur={this.menuHide}
         style={wrapperStyle}
         tabIndex="1"
       >
