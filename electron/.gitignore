@@ -1,7 +1,3 @@
-*
-!.gitignore
-!readme.md
-!main.js
-!index-electron.html
-!package.json
-!icons
+src.js
+vendor.js
+files
