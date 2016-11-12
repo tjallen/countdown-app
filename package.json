@@ -1,8 +1,10 @@
 {
   "name": "countdown-app",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "countdown-app",
-  "main": "main.js",
+  "main": "electron/main.js",
+  "author": "Thom Allen",
+  "license": "ISC",
   "dependencies": {
     "babel-runtime": "^6.9.2",
     "classnames": "^2.2.5",
@@ -62,10 +64,9 @@
     "electron:pre": "webpack --config webpack.config-electron-production.babel.js -p",
     "electron:start": "electron ./electron/main.js",
     "electron": "npm run electron:pre && npm run electron:start",
-    "electron:build": "npm run electron:pre && electron-packager ./electron --platform=win32 --out=dist-electron --overwrite",
+    "pkg:win": "npm run electron:pre && electron-packager ./electron --platform=win32 --out=dist-electron --icon=./icons/icon.ico --overwrite",
+    "pkg:osx": "npm run electron:pre && electron-packager ./electron --platform=mas --out=dist-electron --icon=./icons/icon.icns --overwrite",
     "dad": "webpack --display-error-details",
     "stats": "webpack --profile --json > stats.json"
-  },
-  "author": "",
-  "license": "ISC"
+  }
 }
