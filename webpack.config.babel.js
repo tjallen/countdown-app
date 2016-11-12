@@ -37,6 +37,7 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
+      favicon: 'src/icons/favicon.png',
     }),
     new CleanWebpackPlugin([
       PATHS.dist,
